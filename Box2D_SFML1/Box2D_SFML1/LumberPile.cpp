@@ -9,8 +9,9 @@ LumberPile::LumberPile()
 	m_Shape.setTexture(*m_Texture, true);
 }
 
-LumberPile::LumberPile(sf::RenderWindow* _renderwindow, b2World& _world, float _posX, float _posY)
+LumberPile::LumberPile(sf::RenderWindow* _renderwindow, b2World& _world, int _amount, float _posX, float _posY)
 {
+	SetLumberPileAmount(_amount);
 	m_RenderWindow = _renderwindow;
 	m_World = &_world;
 	m_Type = ITEMTYPE::LUMBERPILE;

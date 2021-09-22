@@ -16,6 +16,7 @@ public:
 	sf::Texture* m_LumberPile;
 	sf::Texture* m_StonePile;
 	sf::Texture* m_BackgroundTexture;
+	sf::Texture* m_GrassTexture;
 
 	sf::Texture* m_CIITexture;
 	sf::Texture* m_ItemSlot;

@@ -15,7 +15,6 @@ public:
 		LUMBERPILE,
 		STONEPILE,
 		STAFF,
-		//whatever the fuck else
 	};
 
 	ITEMTYPE m_Type = ITEMTYPE::DEFAULT;

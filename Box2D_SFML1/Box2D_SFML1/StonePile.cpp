@@ -10,9 +10,10 @@ StonePile::StonePile()
 	m_Shape.setTexture(*m_Texture, true);
 }
 
-StonePile::StonePile(sf::RenderWindow* _renderwindow, b2World& _world, float _posX, float _posY)
+StonePile::StonePile(sf::RenderWindow* _renderwindow, b2World& _world, int _amount, float _posX, float _posY)
 {
 	m_RenderWindow = _renderwindow;
+	SetStonePileAmount(_amount);
 	m_World = &_world;
 	m_Type = ITEMTYPE::STONEPILE;
 	m_Texture = new sf::Texture();

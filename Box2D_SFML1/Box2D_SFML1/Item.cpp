@@ -62,7 +62,7 @@ void Item::CreateBody(float _posX, float _posY, b2Vec2(_size), b2BodyType _type,
 	m_BodyDef.type = _type;
 	m_BodyDef.position = b2Vec2(_posX / m_Scale, (_posY / m_Scale));
 	m_BodyDef.allowSleep = true;
-
+	m_BodyDef.bullet = true;
 
 	m_Body = m_World->CreateBody(&m_BodyDef);
 	m_b2pShape.SetAsBox((_size.x / 2) / m_Scale, (_size.y / 2) / m_Scale);

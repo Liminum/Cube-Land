@@ -8,7 +8,7 @@ public:
 
 	LumberPile();
 
-	LumberPile(sf::RenderWindow* _renderwindow, b2World& _world, float _posX, float _posY);
+	LumberPile(sf::RenderWindow* _renderwindow, b2World& _world, int _amount, float _posX, float _posY);
 
 	void Start();
 	void Update();

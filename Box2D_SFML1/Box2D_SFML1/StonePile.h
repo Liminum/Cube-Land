@@ -8,10 +8,9 @@ public:
 
 	StonePile();
 
-	StonePile(sf::RenderWindow* _renderwindow, b2World& _world, float _posX, float _posY);
+	StonePile(sf::RenderWindow* _renderwindow, b2World& _world, int _amount, float _posX, float _posY);
 
 	~StonePile();
-
 
 	void Start();
 	void Update();
@@ -19,16 +18,9 @@ public:
 	void SetStonePileAmount(int _stoneamount);
 	int GetStonePileAmount();
 
-
-
-
 private:
 
 	int StoneAmount = 5;
-
-
-
-
 };
 
 #endif

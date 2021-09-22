@@ -10,7 +10,7 @@ class GUI
 {
 public:
 
-	GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster);
+	GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster, sf::Font &_font);
 
 	~GUI();
 
@@ -26,6 +26,8 @@ public:
 	int FindFirstEmptyInventorySlot(Player* _player);
 	void HotBarScrolling(sf::Event& _event, Player* _player);
 	void InitHotBarScrolling(sf::Event& _event, Player* _player);
+	
+	sf::Font m_Font;
 
 private:
 
@@ -33,7 +35,6 @@ private:
 	std::map<int, sf::Text> m_InventoryStackCounters;
 	sf::Clock m_FirstEmptySlotTimer;
 	std::map<int, sf::Sprite> m_InventorySlotMap;
-	sf::Font m_Font;
 	sf::RenderWindow* m_RenderWindow;
 	TextureMaster* m_TextureMaster;
 	sf::Clock m_Timer;

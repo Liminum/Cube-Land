@@ -147,9 +147,9 @@ void Player::Update(sf::Vector2f _mousepos)
 
 	if (m_ManaRegen.getElapsedTime().asSeconds() >= m_ManaRegenFrequency)
 	{
-		if (GetMana() < m_MaxMana)
+		if (GetCurrentMana() < m_MaxMana)
 		{
-			SetMana(GetMana() + 1);
+			SetCurrentMana(GetCurrentMana() + 1);
 			m_ManaRegen.restart();
 		}
 
@@ -216,22 +216,22 @@ void Player::Attack(Projectile::PROJECTILETYPE _type)
 		{
 		case Projectile::PROJECTILETYPE::PLAYERBASICATTACK:
 		{
-			if (GetMana() >= 4.f)
+			if (GetCurrentMana() >= 4.f)
 			{
 				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos);
-				SetMana(GetMana() - m_Projectile->m_ManaCost);
+				SetCurrentMana(GetCurrentMana() - m_Projectile->m_ManaCost);
 				m_Projectiles.push_back(*m_Projectile);
 				m_Projectile = nullptr;
 				m_AttackTimer.restart();
 				m_ParticleClock.restart();
 				m_AudioManager->FireBow();
 
-				// Player left
+				// if player is facing left then create the particle emitter on the left
 				if (m_Shape.getScale().x < 0)
 				{
 					m_ParticleSystem->SetEmitter(sf::Vector2f(m_Shape.getPosition().x - 85, m_Shape.getPosition().y - 10));
 				}
-				// Player right
+				// else the player is facing right so create the particle emitter on the right
 				else
 				{
 					m_ParticleSystem->SetEmitter(sf::Vector2f(m_Shape.getPosition().x + 85, m_Shape.getPosition().y - 10));
@@ -486,24 +486,35 @@ b2Body* Player::GetBody()
 	return m_Body;
 }
 
-void Player::SetMana(float _mana)
+void Player::SetCurrentMana(float _mana)
 {
-	m_Mana = _mana;
+	m_CurrentMana = _mana;
 }
 
-float Player::GetMana()
+float Player::GetCurrentMana()
 {
-	return m_Mana;
+	return m_CurrentMana;
 }
 
-void Player::SetHealth(float _health)
+void Player::TakeDamage(float _damage)
 {
-	m_Health = _health;
+	if (m_DamageTakenTimer.getElapsedTime().asSeconds() >= 0.3f)
+	{
+		SetCurrentHealth(GetCurrentHealth() - _damage);
+		std::cout << "Damage Taken : " << _damage << std::endl;
+		std::cout << "Current Health : " << GetCurrentHealth() << std::endl;
+		m_DamageTakenTimer.restart();
+	}
 }
 
-float Player::GetHealth()
+void Player::SetCurrentHealth(float _health)
 {
-	return m_Health;
+	m_CurrentHealth = _health;
+}
+
+float Player::GetCurrentHealth()
+{
+	return m_CurrentHealth;
 }
 
 sf::Sprite Player::GetShape()

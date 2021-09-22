@@ -33,10 +33,11 @@ public:
 	void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);
 	void DestroyBody();
 	b2Body* GetBody();
-	void SetMana(float _mana);
-	float GetMana();
-	void SetHealth(float _health);
-	float GetHealth();
+	void SetCurrentMana(float _mana);
+	float GetCurrentMana();
+	void TakeDamage(float _damage);
+	void SetCurrentHealth(float _health);
+	float GetCurrentHealth();
 	void Attack(Projectile::PROJECTILETYPE _type);
 	sf::Sprite GetShape();
 
@@ -49,12 +50,12 @@ public:
 private:
 	
 	sf::RenderWindow* m_RenderWindow;
-
+	sf::Clock m_DamageTakenTimer;
 	sf::Clock m_ManaRegen;
 	float m_ManaRegenFrequency = 1.f;
-	float m_Mana = 100.f;
+	float m_CurrentMana = 100.f;
 	float m_MaxMana = 100.f;
-	float m_Health = 100.f;
+	float m_CurrentHealth = 100.f;
 	float m_MaxHealth = 100.f;
 	float m_JumpForce = 500.0f;
 	int m_InventorySize = -1;

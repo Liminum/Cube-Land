@@ -16,9 +16,7 @@ namespace Utils
 
 // Forward Declaration
 void Start();
-
 void Update();
-
 void Render();
 
 void InitUIView();
@@ -26,6 +24,8 @@ void InitView();
 
 void CenterViewTo(sf::Sprite _object);
 
+void InitGameOver();
+void GameOverScreen();
 
 WorldManager* m_WorldManager;
 sf::Vector2f m_MousePos;
@@ -48,6 +48,14 @@ Player* m_Player;
 Spawner* m_SlimeSpawner;
 sf::Clock m_DeathTimer;
 
+// Gameover screen variables
+float m_PlayerRespawnTime = 6;
+sf::Clock m_FadeTimer;
+sf::RectangleShape m_FadeScreen;
+sf::Text m_GameOverText;
+sf::Font m_Font;
+
+
 sf::Event m_Event;
 
 int main()
@@ -58,7 +66,7 @@ int main()
 
 	// Render Window Creation
 	m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "Cube Land", sf::Style::Default, m_Settings);
-	m_RenderWindow->setFramerateLimit(60);
+	m_RenderWindow->setVerticalSyncEnabled(true);
 	m_RenderWindow->setKeyRepeatEnabled(false);
 
 	Start();
@@ -90,7 +98,8 @@ void Start()
 	InitUIView();
 	InitView();
 	
-	
+	InitGameOver();
+
 
 	m_Event = sf::Event();
 	m_TextureMaster = new TextureMaster();
@@ -101,20 +110,19 @@ void Start()
 	m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager);
 	m_Player->Start();
 
-	m_WorldManager = new WorldManager(m_RenderWindow, m_World, m_TextureMaster, m_Player);
+	m_WorldManager = new WorldManager(m_RenderWindow, m_World, m_TextureMaster, m_Player, Utils::m_Scale);
 	m_WorldManager->Start();
 
-	m_GUI = new GUI(m_RenderWindow, m_TextureMaster);
+	m_GUI = new GUI(m_RenderWindow, m_TextureMaster, m_Font);
 	m_GUI->Start();
 	m_GUI->InitInventoryUI(m_Player);
 	m_GUI->InitHotBarScrolling(m_Event, m_Player);
 
 	// Monster spawners, given a place to spawn at and what type of enemy to spawn
-	m_SlimeSpawner = new Spawner(m_RenderWindow, m_World, m_TextureMaster, m_AudioManager, Utils::m_Scale, 0,0, 5, m_Player,Enemy::ENEMYTYPE::SLIME);
+	m_SlimeSpawner = new Spawner(m_RenderWindow, m_World, m_TextureMaster, m_AudioManager, Utils::m_Scale, 0, 0, 5, m_Player, Enemy::ENEMYTYPE::SLIME);
 	m_SlimeSpawner->SetPlayer(m_Player);
 	m_SlimeSpawner->ToggleSpawning();
 	m_SlimeSpawner->SetSpawnCount(30);
-
 }
 
 void Update()
@@ -164,7 +172,8 @@ void Update()
 			
 			m_WorldManager->Update();
 
-			if (m_Player->GetHealth() <= 0 && m_Player != nullptr)
+
+			if (m_Player->GetCurrentHealth() <= 0 && m_Player != nullptr)
 			{
 				m_AudioManager->PlayerDeath();
 				m_DeathTimer.restart();
@@ -172,25 +181,37 @@ void Update()
 				m_Player = nullptr;
 				m_WorldManager->LosePlayer();
 				m_SlimeSpawner->LosePlayer();
+				m_FadeScreen.setPosition(m_View.getCenter());
+				m_GameOverText.setPosition(m_View.getCenter());
+				m_FadeTimer.restart();
 			}
-			// Render
-			Render();
+		
 		}
 		else if (m_Player == nullptr)
 		{
-			if (m_DeathTimer.getElapsedTime().asSeconds() >= 3)
+			GameOverScreen();
+
+			if (m_DeathTimer.getElapsedTime().asSeconds() >= m_PlayerRespawnTime)
 			{
 				m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager);
 				m_Player->Start();
 				m_GUI->InitHotBarScrolling(m_Event, m_Player);
+				m_WorldManager = new WorldManager(m_RenderWindow, m_World, m_TextureMaster, m_Player, Utils::m_Scale);
+				m_WorldManager->Start();
 				m_WorldManager->SetPlayer(m_Player);
 				m_SlimeSpawner->SetPlayer(m_Player);
 			}
-
+			else if (m_DeathTimer.getElapsedTime().asSeconds() >= m_PlayerRespawnTime - 0.1f)
+			{
+				if (m_WorldManager != nullptr)
+				{
+					delete m_WorldManager;
+				}
+				m_WorldManager = nullptr;
+			}
 		}
-
-
-
+		// Render
+		Render();
 	}
 }
 
@@ -199,7 +220,10 @@ void Render()
 	m_RenderWindow->clear();
 	m_RenderWindow->setView(m_View);
 
-	m_WorldManager->Render();
+	if (m_WorldManager != nullptr)
+	{
+		m_WorldManager->Render();
+	}
 	if (m_Player != nullptr)
 	{
 		m_SlimeSpawner->Render();
@@ -211,6 +235,10 @@ void Render()
 		m_GUI->HealthAndManaUI(m_RenderWindow, m_UIView, m_Player);
 		m_GUI->Render(m_Player);
 	}
+
+	m_RenderWindow->draw(m_FadeScreen);
+	m_RenderWindow->draw(m_GameOverText);
+
 	m_RenderWindow->display();
 }
 
@@ -231,3 +259,32 @@ void CenterViewTo(sf::Sprite _object)
 	m_RenderWindow->setView(m_View);
 }
 
+void InitGameOver()
+{
+	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
+	m_FadeScreen.setSize(sf::Vector2f(30000, 30000));
+	m_FadeScreen.setOrigin(sf::Vector2f(15000, 15000));
+	m_FadeScreen.setFillColor(sf::Color::Transparent);
+	m_GameOverText.setCharacterSize(1000);
+	m_GameOverText.setString("Game Over");
+	m_GameOverText.setFont(m_Font);
+	m_GameOverText.setOrigin(m_GameOverText.getGlobalBounds().width / 2, m_GameOverText.getGlobalBounds().height / 2);
+	m_GameOverText.setFillColor(sf::Color::Transparent);
+	m_GameOverText.setOutlineColor(sf::Color::Transparent);
+}
+
+void GameOverScreen()
+{
+	float elapsedtime = m_FadeTimer.getElapsedTime().asSeconds() / m_PlayerRespawnTime;
+	
+	if (m_DeathTimer.getElapsedTime().asSeconds() >= m_PlayerRespawnTime)
+	{
+		m_FadeScreen.setFillColor(sf::Color::Transparent);
+		m_GameOverText.setFillColor(sf::Color::Transparent);
+	}
+	else
+	{
+		m_FadeScreen.setFillColor(sf::Color(0, 0, 0, elapsedtime * 255));
+		m_GameOverText.setFillColor(sf::Color(255, 0, 0, elapsedtime * 255));
+	}
+}

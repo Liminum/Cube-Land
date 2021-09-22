@@ -209,48 +209,43 @@ void Slime::Attack()
         DistanceToPlayer = sqrt(((m_Player->GetShape().getPosition().x - m_Shape.getPosition().x) * (m_Player->GetShape().getPosition().x - m_Shape.getPosition().x)) + ((m_Player->GetShape().getPosition().y - m_Shape.getPosition().y) * (m_Player->GetShape().getPosition().y - m_Shape.getPosition().y)));
         DirectionToPlayer = m_Player->GetShape().getPosition().x - m_Shape.getPosition().x;
 
-        if (DistanceToPlayer <= 300.0f)
+        switch (m_SlimeType)
         {
 
-            switch (m_SlimeType)
+        case Slime::SLIMETYPE::GREEN:
+        {
+            if (DistanceToPlayer <= 110.0f)
             {
-
-            case Slime::SLIMETYPE::GREEN:
-            {
-                if (DistanceToPlayer <= 110.0f)
-                {
-                    std::cout << "Attack Player" << std::endl;
-                    m_Body->SetLinearVelocity(b2Vec2(DirectionToPlayer * -4,0));
-                    m_Body->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * -5, -200), true);
-                    m_Player->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * 1 / 2, 0), true);
-                    m_Player->SetHealth(m_Player->GetHealth() - 12.25f);
-                    std::cout << m_Player->GetHealth() << std::endl;
-                }
-                break;
-            }
-
-            case Slime::SLIMETYPE::BOSS:
-            {
-                std::cout << "Attack Player" << std::endl;
+                m_Body->SetLinearVelocity(b2Vec2(DirectionToPlayer * -4, 0));
                 m_Body->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * -5, -200), true);
                 m_Player->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * 1 / 2, 0), true);
-                m_Player->SetHealth(m_Player->GetHealth() - 35.0f);
+                m_Player->TakeDamage(12.25f);
+            }
+            break;
+        }
 
-                break;
-            }
-            default:
+        case Slime::SLIMETYPE::BOSS:
+        {
+            if (DistanceToPlayer <= 300.0f)
             {
-                if (DistanceToPlayer <= 110.0f)
-                {
-                    std::cout << "Attack Player" << std::endl;
-                    m_Body->SetLinearVelocity(b2Vec2(DirectionToPlayer * -4, 0));
-                    m_Body->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * -5, -200), true);
-                    m_Player->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * 1 / 2, 0), true);
-                    m_Player->SetHealth(m_Player->GetHealth() - 12.25f);
-                }
-                break;
+                m_Body->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * -5, -200), true);
+                m_Player->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * 1 / 2, 0), true);
+                m_Player->TakeDamage(35.0f);
             }
+            break;
+        }
+
+        default:
+        {
+            if (DistanceToPlayer <= 110.0f)
+            {
+                m_Body->SetLinearVelocity(b2Vec2(DirectionToPlayer * -4, 0));
+                m_Body->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * -5, -200), true);
+                m_Player->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(DirectionToPlayer * 1 / 2, 0), true);
+                m_Player->TakeDamage(1.f);
             }
+            break;
+        }
         }
     }
 }

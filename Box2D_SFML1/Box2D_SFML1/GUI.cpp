@@ -1,13 +1,12 @@
 #include "GUI.h"
 
 
-GUI::GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster)
+GUI::GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster, sf::Font& _font)
 {
 	m_RenderWindow = _renderwindow;
 	m_TextureMaster = _texturemaster;
+	m_Font = _font;
 	m_Timer = sf::Clock();
-	m_Font = sf::Font();
-	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
 	m_DisplayText = sf::Text();
 	m_DisplayText.setFont(m_Font);
 }
@@ -84,7 +83,7 @@ void GUI::InitHealthAndManaUI()
 	m_ManaSprite.scale(1.51, 1.5);
 	m_ManaBorderSprite.scale(1.5, 1.5);
 
-	m_HealthTexture.loadFromFile("Resources/Sprites/Bar.png");
+	m_HealthTexture.loadFromFile("Resources/Sprites/HealthBar.png");
 	m_HealthBorderTexture.loadFromFile("Resources/Sprites/HealthBarBorder.png");
 	m_HealthSprite.setTexture(m_HealthTexture, true);
 	m_HealthBorderSprite.setTexture(m_HealthBorderTexture, true);
@@ -99,9 +98,9 @@ void GUI::HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Pl
 	m_RenderWindow->mapCoordsToPixel(m_HealthBorderSprite.getPosition());
 	m_HealthSprite.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 200, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 80);
 	m_HealthBorderSprite.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 200, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 80);
-	if (_player->GetHealth() > 0)
+	if (_player->GetCurrentHealth() > 0)
 	{
-		m_HealthSprite.setTextureRect(sf::IntRect(0, 0, _player->GetHealth(), m_HealthTexture.getSize().y));
+		m_HealthSprite.setTextureRect(sf::IntRect(0, 0, _player->GetCurrentHealth(), m_HealthTexture.getSize().y));
 	}
 	else
 	{
@@ -112,9 +111,9 @@ void GUI::HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Pl
 	m_RenderWindow->mapCoordsToPixel(m_ManaBorderSprite.getPosition());
 	m_ManaSprite.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 200, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 100);
 	m_ManaBorderSprite.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 200, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 100);
-	if (_player->GetMana() > 0)
+	if (_player->GetCurrentMana() > 0)
 	{
-		m_ManaSprite.setTextureRect(sf::IntRect(0, 0, _player->GetMana(), m_ManaTexture.getSize().y));
+		m_ManaSprite.setTextureRect(sf::IntRect(0, 0, _player->GetCurrentMana(), m_ManaTexture.getSize().y));
 	}
 	else
 	{

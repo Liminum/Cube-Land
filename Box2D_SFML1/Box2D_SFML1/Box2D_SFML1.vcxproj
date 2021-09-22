@@ -143,6 +143,7 @@
     <ClCompile Include="LumberPile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="LumberPile.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="Spawner.h" />
