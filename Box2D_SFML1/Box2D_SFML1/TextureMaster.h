@@ -17,9 +17,16 @@ public:
 	sf::Texture* m_StonePile;
 	sf::Texture* m_BackgroundTexture;
 	sf::Texture* m_GrassTexture;
+	
+	// Projectile Textures
+	sf::Texture* m_PlayerBasicAttackTexture;
+	sf::Texture* m_EnemyMageAttackTexture;
+	sf::Texture* m_CoinTexture;
 
+	sf::Texture* m_MousePosTex;
 	sf::Texture* m_CIITexture;
 	sf::Texture* m_ItemSlot;
+	sf::Texture* m_ItemSelectedTex;
 
 private:
 

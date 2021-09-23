@@ -1,11 +1,12 @@
 #include "Player.h"
 
-Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, const float& _scale, AudioManager* _audiomanager)
+Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, const float& _scale, AudioManager* _audiomanager, TextureMaster* _texturemaster)
 {
 	m_RenderWindow = _renderWindow;
 	m_Scale = _scale;
 	m_World = &_world;
 	m_AudioManager = _audiomanager;
+	m_TextureMaster = _texturemaster;
 
 	m_Projectile = nullptr;
 	m_Staff = nullptr;
@@ -29,13 +30,18 @@ Player::~Player()
 	m_RenderWindow = nullptr;
 	m_World = nullptr;
 	m_Projectile = nullptr;
+
 	if (m_Staff != nullptr)
 	{
 		delete m_Staff;
 	}
 	m_Staff = nullptr;
-	delete m_ParticleSystem;
+	if (m_ParticleSystem != nullptr)
+	{
+		delete m_ParticleSystem;
+	}
 	m_ParticleSystem = nullptr;
+	m_TextureMaster = nullptr;
 }
 
 void Player::Start()
@@ -57,7 +63,7 @@ void Player::Start()
 
 	for (int i = 0; i < 9; i++)
 	{
-		m_Inventory[i];
+		m_InventoryMap[i];
 	}
 
 	
@@ -84,7 +90,7 @@ void Player::Update(sf::Vector2f _mousepos)
 	}
 
 	// Items
-	for (std::map<int, Item>::iterator iit = m_Inventory.begin(); iit != m_Inventory.end(); iit++)
+	for (std::map<int, Item>::iterator iit = m_InventoryMap.begin(); iit != m_InventoryMap.end(); iit++)
 	{
 		// Player Selects Bow
 		if (iit->second.m_bIsItemSelected == true && iit->second.m_Type == Item::ITEMTYPE::STAFF)
@@ -179,9 +185,6 @@ void Player::PollMovement(sf::Event& _event)
 	{
 		m_Body->ApplyLinearImpulseToCenter(b2Vec2(0,-m_JumpForce), true);
 	}
-
-	
-
 }
 
 void Player::Movement()
@@ -218,7 +221,7 @@ void Player::Attack(Projectile::PROJECTILETYPE _type)
 		{
 			if (GetCurrentMana() >= 4.f)
 			{
-				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos);
+				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos, m_TextureMaster, m_Scale);
 				SetCurrentMana(GetCurrentMana() - m_Projectile->m_ManaCost);
 				m_Projectiles.push_back(*m_Projectile);
 				m_Projectile = nullptr;
@@ -279,7 +282,7 @@ void Player::AddItemToInventory(Item* _item, bool _bCanStack)
 				// increase number of that type
 				m_InventoryStackValues[firstEmpty]++;
 				_item->m_PositionInInventory = firstEmpty;
-				m_Inventory.insert_or_assign(firstEmpty, *_item);
+				m_InventoryMap.insert_or_assign(firstEmpty, *_item);
 			}
 			else
 			{
@@ -306,7 +309,7 @@ void Player::AddItemToInventory(Item* _item, bool _bCanStack)
 			// increase number of that type
 			m_InventoryStackValues[firstEmpty]++;
 			_item->m_PositionInInventory = firstEmpty;
-			m_Inventory.insert_or_assign(firstEmpty, *_item);
+			m_InventoryMap.insert_or_assign(firstEmpty, *_item);
 		}
 		else
 		{
@@ -349,7 +352,7 @@ void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
 					++m_InventoryStackValues[firstEmpty];
 				}
 				_item->m_PositionInInventory = firstEmpty;
-				m_Inventory.insert_or_assign(firstEmpty, *_item);
+				m_InventoryMap.insert_or_assign(firstEmpty, *_item);
 			}
 			else
 			{
@@ -377,7 +380,7 @@ void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
 				// increase number of that type
 				m_InventoryStackValues[firstEmpty + i]++;
 				_item->m_PositionInInventory = firstEmpty + i;
-				m_Inventory.insert_or_assign(firstEmpty + i, *_item);
+				m_InventoryMap.insert_or_assign(firstEmpty + i, *_item);
 			}
 			else
 			{
@@ -393,7 +396,7 @@ void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
 bool Player::IsItemInInventory(Item* _item)
 {
 	std::map<int, Item>::iterator it;
-	for (it = m_Inventory.begin(); it != m_Inventory.end(); it++)
+	for (it = m_InventoryMap.begin(); it != m_InventoryMap.end(); it++)
 	{
 		if (it->second.m_Type == _item->m_Type)
 		{
@@ -413,7 +416,7 @@ bool Player::IsItemInInventory(Item* _item)
 bool Player::IsItemInInventory(Item* _item, int _amount)
 {
 	std::map<int, Item>::iterator it;
-	for (it = m_Inventory.begin(); it != m_Inventory.end(); it++)
+	for (it = m_InventoryMap.begin(); it != m_InventoryMap.end(); it++)
 	{
 		if (it->second.m_Type == _item->m_Type)
 		{
@@ -434,14 +437,14 @@ bool Player::IsItemInInventory(Item* _item, int _amount)
 
 void Player::RemoveItemFromInventory(int _pos)
 {
-	std::map<int, Item>::iterator it = m_Inventory.begin();
+	std::map<int, Item>::iterator it = m_InventoryMap.begin();
 
-	while (it != m_Inventory.end())
+	while (it != m_InventoryMap.end())
 	{
 		if (it->first == _pos)
 		{
 			it->second.m_PositionInInventory = -1;
-			it = m_Inventory.erase(it);
+			it = m_InventoryMap.erase(it);
 
 			return;
 		}
@@ -484,6 +487,12 @@ void Player::DestroyBody()
 b2Body* Player::GetBody()
 {
 	return m_Body;
+}
+
+void Player::TogglebInventoryOpen()
+{
+	m_bInventoryOpen = !m_bInventoryOpen;
+	std::cout << m_bInventoryOpen << std::endl;
 }
 
 void Player::SetCurrentMana(float _mana)

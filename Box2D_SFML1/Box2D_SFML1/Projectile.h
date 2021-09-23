@@ -3,6 +3,7 @@
 #define _PROJECTILE_H__
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
+#include "TextureMaster.h"
 
 class Projectile
 {
@@ -14,11 +15,12 @@ public:
 		DEFAULT = 0,
 		PLAYERBASICATTACK,
 		ENEMYMAGEATTACK,
+		COIN,
 
 	};
 
 
-	Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos);
+	Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster, const float _scale);
 
 	~Projectile();
 
@@ -39,11 +41,13 @@ protected:
 
 	b2World* m_World;
 	float m_Scale = 50.0f;
-	sf::Texture* m_Texture;
+	
+	TextureMaster* m_TextureMaster;
 	b2BodyDef m_BodyDef;
 	b2PolygonShape m_b2pShape;
 	b2FixtureDef m_FixtureDef;
 	b2Body* m_Body;
+	sf::Vector2f m_MousePos;
 };
 
 #endif

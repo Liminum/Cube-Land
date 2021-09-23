@@ -1,39 +1,41 @@
 #include "Projectile.h"
 
-Projectile::Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos)
+Projectile::Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster, const float _scale)
 {
 
 	m_World = &_world;
-	
+	m_TextureMaster = _texturemaster;
+	m_Scale = _scale;
+	m_MousePos = _mousepos;
 
 	m_Body = nullptr;
-	m_Texture = new sf::Texture;
 	
 	switch (_type)
 	{
 	case Projectile::PROJECTILETYPE::DEFAULT:
-		m_Texture->loadFromFile("Resources/Sprites/PlayerBasicAttack.png");
-		m_Shape.setTexture(*m_Texture, true);
+		m_Shape.setTexture(*m_TextureMaster->m_PlayerBasicAttackTexture, true);
 		CreateBody(10, 10, 0, 0, b2_dynamicBody, true, true);
 		m_Type = Projectile::PROJECTILETYPE::DEFAULT;
 		break;
 	case Projectile::PROJECTILETYPE::PLAYERBASICATTACK:
-		m_Texture->loadFromFile("Resources/Sprites/PlayerBasicAttack.png");
-		m_Shape.setTexture(*m_Texture, true);
+		m_Shape.setTexture(*m_TextureMaster->m_PlayerBasicAttackTexture, true);
 		CreateBody(50, 50, _position.x, _position.y, b2_dynamicBody, true, true);
 		m_Type = Projectile::PROJECTILETYPE::PLAYERBASICATTACK;
 		m_ManaCost = 4.f;
 		break;
 	case Projectile::PROJECTILETYPE::ENEMYMAGEATTACK:
-		m_Texture->loadFromFile("Resources/Sprites/PlayerBasicAttack.png");
-		m_Shape.setTexture(*m_Texture, true);
-		CreateBody(5,5,0,0,b2_dynamicBody, true, true);
+		m_Shape.setTexture(*m_TextureMaster->m_EnemyMageAttackTexture, true);
+		CreateBody(5, 5, _position.x, _position.y, b2_dynamicBody, true, true);
 		m_Type = Projectile::PROJECTILETYPE::ENEMYMAGEATTACK;
 		break;
 
+	case Projectile::PROJECTILETYPE::COIN:
+		m_Shape.setTexture(*m_TextureMaster->m_CoinTexture, true);
+		CreateBody(10, 10, _position.x, _position.y, b2_dynamicBody, false, true);
+		m_Type = Projectile::PROJECTILETYPE::COIN;
+		break;
 	default:
-		m_Texture->loadFromFile("Resources/Sprites/PlayerBasicAttack.png");
-		m_Shape.setTexture(*m_Texture, true);
+		m_Shape.setTexture(*m_TextureMaster->m_PlayerBasicAttackTexture, true);
 		CreateBody(5, 5, 0, 0, b2_dynamicBody, true, true);
 		m_Type = Projectile::PROJECTILETYPE::DEFAULT;
 		break;
@@ -49,9 +51,8 @@ Projectile::~Projectile()
 {
 	DestroyBody();
 
-	delete m_Texture;
+	m_TextureMaster = nullptr;
 	m_World = nullptr;
-	m_Texture = nullptr;
 }
 
 void Projectile::Start()
@@ -60,7 +61,6 @@ void Projectile::Start()
 
 void Projectile::Update()
 {
-
 	m_Shape.setPosition(m_Body->GetPosition().x * m_Scale, m_Body->GetPosition().y * m_Scale);
 	m_Shape.setRotation(m_Body->GetAngle() * 180 / b2_pi);
 
@@ -92,16 +92,16 @@ void Projectile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY
 {
 	//ground physics
 	m_BodyDef.type = _type;
-	m_BodyDef.position = b2Vec2(_posX / 50.0f, (_posY / 50.0f));
+	m_BodyDef.position = b2Vec2(_posX / m_Scale, (_posY / m_Scale));
 	m_BodyDef.allowSleep = false;
 	m_BodyDef.gravityScale = 0;
-
+	
 	if (_bullet)
 	{
 		m_BodyDef.bullet = true;
 	}
 	m_Body = m_World->CreateBody(&m_BodyDef);
-	m_b2pShape.SetAsBox((_sizeX / 2) / 50.0f, (_sizeY / 2) / 50.0f);
+	m_b2pShape.SetAsBox((_sizeX / 2) / m_Scale, (_sizeY / 2) / m_Scale);
 
 	if (_sensor)
 	{
@@ -114,7 +114,8 @@ void Projectile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY
 	m_FixtureDef.filter.maskBits = 0x0004;
 	m_Body->CreateFixture(&m_FixtureDef);
 
-	m_Shape.setPosition(m_Body->GetPosition().x * 50.f, m_Body->GetPosition().y * 50.0f);
+	m_Shape.setPosition(m_Body->GetPosition().x * m_Scale, m_Body->GetPosition().y * m_Scale);
+	m_Body->SetTransform(m_Body->GetPosition(), atan2(m_MousePos.y - m_Shape.getPosition().y, m_MousePos.x - m_Shape.getPosition().x));
 	m_Shape.setRotation(m_Body->GetAngle() * 180 / b2_pi);
 }
 

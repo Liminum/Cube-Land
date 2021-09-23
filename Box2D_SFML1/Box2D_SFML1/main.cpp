@@ -79,12 +79,13 @@ int main()
 	m_GUI = nullptr;
 	delete m_SlimeSpawner;
 	m_SlimeSpawner = nullptr;
+	delete m_TextureMaster;
+	m_TextureMaster = nullptr;
 	delete m_WorldManager;
 	m_WorldManager = nullptr;
 	delete m_AudioManager;
 	m_AudioManager = nullptr;
-	delete m_TextureMaster;
-	m_TextureMaster = nullptr;
+
 
 	// Render Window is always last
 	delete m_RenderWindow;
@@ -107,7 +108,7 @@ void Start()
 	m_AudioManager = new AudioManager();
 	m_AudioManager->PlayMusic();
 
-	m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager);
+	m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager, m_TextureMaster);
 	m_Player->Start();
 
 	m_WorldManager = new WorldManager(m_RenderWindow, m_World, m_TextureMaster, m_Player, Utils::m_Scale);
@@ -144,6 +145,13 @@ void Update()
 				if (m_Player != nullptr)
 				{
 					m_Player->PollMovement(m_Event);
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+					{
+						if (!m_GUI->bPlayerIsMovingItem(m_Player))
+						{
+							m_Player->TogglebInventoryOpen();
+						}
+					}
 				}
 			}
 			if (m_Event.type == sf::Event::MouseButtonPressed)
@@ -157,7 +165,14 @@ void Update()
 					m_GUI->HotBarScrolling(m_Event, m_Player);
 				}
 			}
+			if (m_Player != nullptr)
+			{
+				
+				m_GUI->ItemClicked(m_Event, m_Player);
 
+				m_GUI->ItemDroppedInInventory(m_RenderWindow, m_UIView, m_View, m_Event, m_Player);
+				
+			}
 		}
 
 
@@ -193,7 +208,7 @@ void Update()
 
 			if (m_DeathTimer.getElapsedTime().asSeconds() >= m_PlayerRespawnTime)
 			{
-				m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager);
+				m_Player = new Player(m_RenderWindow, m_World, Utils::m_Scale, m_AudioManager, m_TextureMaster);
 				m_Player->Start();
 				m_GUI->InitHotBarScrolling(m_Event, m_Player);
 				m_WorldManager = new WorldManager(m_RenderWindow, m_World, m_TextureMaster, m_Player, Utils::m_Scale);

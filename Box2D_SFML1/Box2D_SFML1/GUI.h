@@ -26,11 +26,21 @@ public:
 	int FindFirstEmptyInventorySlot(Player* _player);
 	void HotBarScrolling(sf::Event& _event, Player* _player);
 	void InitHotBarScrolling(sf::Event& _event, Player* _player);
-	
+	void ItemClicked(sf::Event& _event, Player* _player);
+	void ItemDroppedInInventory(sf::RenderWindow* _renderwindow, sf::View& _uiview, sf::View& _worldview, sf::Event& _event, Player* _player);
+	void HoldItemInInventory(Player* _player);
+	bool bPlayerIsMovingItem(Player* _player, int _it);
+	bool bPlayerIsMovingItem(Player* _player);
+	// CheckCraftItems ??
+	void CraftItems();
+	int bGetPositionOfMovingItem(Player* _player);
+
 	sf::Font m_Font;
 
 private:
 
+
+	
 
 	std::map<int, sf::Text> m_InventoryStackCounters;
 	sf::Clock m_FirstEmptySlotTimer;
@@ -40,7 +50,7 @@ private:
 	sf::Clock m_Timer;
 	sf::Text m_DisplayText;
 
-
+	sf::Sprite m_MousePointer;
 
 	sf::Texture m_ManaTexture;
 	sf::Texture m_ManaBorderTexture;
@@ -51,8 +61,6 @@ private:
 	sf::Texture m_HealthBorderTexture;
 	sf::Sprite m_HealthSprite;
 	sf::Sprite m_HealthBorderSprite;
-
-	sf::Texture m_Texture;
 
 	sf::Sprite m_Shape;
 };

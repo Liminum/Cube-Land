@@ -17,7 +17,7 @@
 class Player
 {
 public:
-	Player(sf::RenderWindow* _renderWindow, b2World& _world, const float& _scale, AudioManager* _audiomanager);
+	Player(sf::RenderWindow* _renderWindow, b2World& _world, const float& _scale, AudioManager* _audiomanager, TextureMaster* _texturemaster);
 	~Player();
 
 	void Start();
@@ -33,6 +33,8 @@ public:
 	void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);
 	void DestroyBody();
 	b2Body* GetBody();
+
+	void TogglebInventoryOpen();
 	void SetCurrentMana(float _mana);
 	float GetCurrentMana();
 	void TakeDamage(float _damage);
@@ -41,15 +43,17 @@ public:
 	void Attack(Projectile::PROJECTILETYPE _type);
 	sf::Sprite GetShape();
 
-	std::map<int, Item> m_Inventory;
+	std::map<int, Item> m_InventoryMap;
 	float m_iMovementSpeed = 50;
 	std::list<Projectile> m_Projectiles;
 	std::map<int, int> m_InventoryStackValues;
 	int m_CurrentItemIndex = 0;
+	bool m_bInventoryOpen = false;
 
 private:
 	
 	sf::RenderWindow* m_RenderWindow;
+	TextureMaster* m_TextureMaster;
 	sf::Clock m_DamageTakenTimer;
 	sf::Clock m_ManaRegen;
 	float m_ManaRegenFrequency = 1.f;

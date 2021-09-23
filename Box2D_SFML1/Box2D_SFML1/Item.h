@@ -39,6 +39,7 @@ public:
 	int m_PositionInInventory = 0;
 	sf::Texture* m_Texture;
 	bool m_bIsItemSelected = false;
+	bool m_bItemIsMovingInInventory = false;
 
 protected:
 
