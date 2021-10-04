@@ -35,9 +35,9 @@ void Enemy::Update()
 
 }
 
-void Enemy::Render()
+void Enemy::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_Shape);
+	m_RenderWindow->draw(m_Shape, _defaultshader);
 }
 
 void Enemy::Movement()

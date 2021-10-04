@@ -32,9 +32,10 @@ void Portal::Update()
 	m_Shape.setOrigin(m_Shape.getGlobalBounds().width / 2, m_Shape.getGlobalBounds().height / 2);
 }
 
-void Portal::Render()
+void Portal::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_Shape);
+	m_RenderWindow->draw(m_Shape, _defaultshader);
+	_defaultshader = nullptr;
 }
 
 void Portal::CreateBody(float _posX, float _posY, b2BodyType _type, bool _collision, bool _sensor)

@@ -106,7 +106,7 @@ void Spawner::Update()
 }
 
 
-void Spawner::Render()
+void Spawner::Render(sf::Shader* _defaultshader)
 {
     switch (m_Type)
     {
@@ -116,14 +116,13 @@ void Spawner::Render()
     {
         for (Slime& slime : m_Slimes)
         {
-            slime.Render();
+            slime.Render(_defaultshader);
         }
         break;
     }
     default:
         break;
     }
-
 }
 
 void Spawner::LosePlayer()

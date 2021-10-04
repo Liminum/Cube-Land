@@ -22,7 +22,7 @@ public:
 
 	void Start();
 	void Update(sf::Vector2f _mousepos);
-	void Render();
+	void Render(sf::Shader* _defaultshader = NULL);
 	void PollMovement(sf::Event& _event);
 	void Movement();
 	void AddItemToInventory(Item* _item, bool _bCanStack = true);

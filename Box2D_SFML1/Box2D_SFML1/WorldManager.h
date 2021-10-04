@@ -33,7 +33,7 @@ public:
 
 	void Start();
 	void Update();
-	void Render();
+	void Render(sf::Shader* _defaultshader = NULL);
 	void SetPlayer(Player* _player);
 	void LosePlayer();
 	void InitBackground(sf::Texture& _texture);

@@ -43,9 +43,10 @@ void Staff::Update()
 	Item::Update();
 }
 
-void Staff::Render()
+void Staff::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_StaffSprite);
+	m_RenderWindow->draw(m_StaffSprite, _defaultshader);
+	_defaultshader = nullptr;
 }
 
 void Staff::FlipSprite(sf::Vector2f _playerpos, sf::Sprite& _playersprite)

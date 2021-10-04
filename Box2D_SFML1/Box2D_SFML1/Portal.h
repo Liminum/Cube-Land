@@ -15,7 +15,7 @@ public:
 
 	void Start(float _posX, float _posY);
 	void Update();
-	void Render();
+	void Render(sf::Shader* _defaultshader = NULL);
 
 	void CreateBody(float _posX, float _posY, b2BodyType _type, bool _collision = false, bool _sensor = false);
 

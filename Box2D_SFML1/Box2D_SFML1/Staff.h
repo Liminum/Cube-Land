@@ -13,7 +13,7 @@ public:
 
 	void Start();
 	void Update();
-	void Render();
+	void Render(sf::Shader* _defaultshader = NULL);
 	void FlipSprite(sf::Vector2f _playerpos, sf::Sprite& _playersprite);
 
 

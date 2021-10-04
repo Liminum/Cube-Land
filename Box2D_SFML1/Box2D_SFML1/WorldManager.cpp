@@ -128,9 +128,9 @@ void WorldManager::Update()
 	m_World->Step(1 / 60.f, 60, 60);
 }
 
-void WorldManager::Render()
+void WorldManager::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(*m_background);
+	m_RenderWindow->draw(*m_background, _defaultshader);
 	// Blocks
 	std::list<Tile>::iterator it;
 	for (it = m_Tiles.begin(); it != m_Tiles.end(); it++)
@@ -138,20 +138,20 @@ void WorldManager::Render()
 		float Mag1 = sqrt(((it->GetShape().getPosition().x - m_Player->GetShape().getPosition().x) * (it->GetShape().getPosition().x - m_Player->GetShape().getPosition().x)) + ((it->GetShape().getPosition().y - m_Player->GetShape().getPosition().y) * (it->GetShape().getPosition().y - m_Player->GetShape().getPosition().y)));
 		if (Mag1 < 1920 * 2.8f)
 		{
-			m_RenderWindow->draw(it->GetShape());
+			m_RenderWindow->draw(it->GetShape(), _defaultshader);
 		}
 	}
 	if (m_Portal != nullptr)
 	{
-		m_Portal->Render();
+		m_Portal->Render(_defaultshader);
 	}
 	for (LumberPile& LumberPile : m_LumberPiles)
 	{
-		LumberPile.Render();
+		LumberPile.Render(_defaultshader);
 	}
 	for (StonePile& StonePile : m_StonePiles)
 	{
-		StonePile.Render();
+		StonePile.Render(_defaultshader);
 	}
 }
 

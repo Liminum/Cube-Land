@@ -46,9 +46,10 @@ void Item::Update()
 	}
 }
 
-void Item::Render()
+void Item::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_Shape);
+	m_RenderWindow->draw(m_Shape, _defaultshader);
+	_defaultshader = nullptr;
 }
 
 b2Body* Item::GetBody()

@@ -109,11 +109,6 @@ void Slime::Update()
     contact = nullptr;
 }
 
-void Slime::Render()
-{
-    m_RenderWindow->draw(m_Shape);
-}
-
 void Slime::Movement()
 {
     b2Vec2 worldposition = { m_Shape.getPosition().x, m_Shape.getPosition().y };

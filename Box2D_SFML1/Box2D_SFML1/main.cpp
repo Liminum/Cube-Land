@@ -17,7 +17,7 @@ namespace Utils
 // Forward Declaration
 void Start();
 void Update();
-void Render();
+void Render(sf::Shader* _defaultshader = NULL);
 
 void InitUIView();
 void InitView();
@@ -55,7 +55,6 @@ sf::RectangleShape m_FadeScreen;
 sf::Text m_GameOverText;
 sf::Font m_Font;
 
-
 sf::Event m_Event;
 
 int main()
@@ -85,7 +84,6 @@ int main()
 	m_WorldManager = nullptr;
 	delete m_AudioManager;
 	m_AudioManager = nullptr;
-
 
 	// Render Window is always last
 	delete m_RenderWindow;
@@ -230,29 +228,29 @@ void Update()
 	}
 }
 
-void Render()
+void Render(sf::Shader* _defaultshader)
 {
 	m_RenderWindow->clear();
 	m_RenderWindow->setView(m_View);
 
 	if (m_WorldManager != nullptr)
 	{
-		m_WorldManager->Render();
+		m_WorldManager->Render(_defaultshader);
 	}
 	if (m_Player != nullptr)
 	{
-		m_SlimeSpawner->Render();
-		m_Player->Render();
+		m_SlimeSpawner->Render(_defaultshader);
+		m_Player->Render(_defaultshader);
 
 		m_RenderWindow->setView(m_UIView);
 		m_GUI->InventoryUI(m_RenderWindow, m_UIView, m_Player);
 		m_GUI->TimerUI();
 		m_GUI->HealthAndManaUI(m_RenderWindow, m_UIView, m_Player);
-		m_GUI->Render(m_Player);
+		m_GUI->Render(m_Player, _defaultshader);
 	}
 
-	m_RenderWindow->draw(m_FadeScreen);
-	m_RenderWindow->draw(m_GameOverText);
+	m_RenderWindow->draw(m_FadeScreen, _defaultshader);
+	m_RenderWindow->draw(m_GameOverText, _defaultshader);
 
 	m_RenderWindow->display();
 }

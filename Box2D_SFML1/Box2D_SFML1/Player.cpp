@@ -162,21 +162,22 @@ void Player::Update(sf::Vector2f _mousepos)
 	}
 }
 
-void Player::Render()
+void Player::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_Shape);
+	m_RenderWindow->draw(m_Shape, _defaultshader);
 	
 	for (Projectile& projectile : m_Projectiles)
 	{
-		m_RenderWindow->draw(projectile.m_Shape);
+		m_RenderWindow->draw(projectile.m_Shape, _defaultshader);
 	}
 	
 	if (m_Staff != nullptr)
 	{
-		m_Staff->Render();
+		m_Staff->Render(_defaultshader);
 	}
 
-	m_RenderWindow->draw(*m_ParticleSystem);
+	m_RenderWindow->draw(*m_ParticleSystem, _defaultshader);
+	_defaultshader = nullptr;
 }
 
 void Player::PollMovement(sf::Event& _event)

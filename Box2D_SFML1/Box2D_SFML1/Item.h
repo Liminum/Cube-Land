@@ -27,7 +27,7 @@ public:
 
 	virtual void Start();
 	virtual void Update();
-	virtual void Render();
+	virtual void Render(sf::Shader* _defaultshader = NULL);
 	
 	b2Body* GetBody();
 	void CreateBody(float _posX, float _posY, b2Vec2(_position),b2BodyType _type, bool _sensor);

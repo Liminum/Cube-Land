@@ -20,7 +20,6 @@ public:
 
 	virtual void Start();
 	virtual void Update();
-	virtual void Render();
 	virtual void Movement();
 	virtual void Attack();
 	virtual void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);

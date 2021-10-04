@@ -29,19 +29,19 @@ void GUI::Update()
 	
 }
 
-void GUI::Render(Player* _player)
+void GUI::Render(Player* _player, sf::Shader* _defaultshader)
 {
 	for (int i = 0; i < m_InventorySlotMap.size(); i++)
 	{
-		m_RenderWindow->draw(m_InventorySlotMap[i]);
-		m_RenderWindow->draw(_player->m_InventoryMap[i].GetShape());
-		m_RenderWindow->draw(m_InventoryStackCounters[i]);
+		m_RenderWindow->draw(m_InventorySlotMap[i], _defaultshader);
+		m_RenderWindow->draw(_player->m_InventoryMap[i].GetShape(), _defaultshader);
+		m_RenderWindow->draw(m_InventoryStackCounters[i], _defaultshader);
 	}
 	
-	m_RenderWindow->draw(m_HealthBorderSprite);
-	m_RenderWindow->draw(m_HealthSprite);
-	m_RenderWindow->draw(m_ManaBorderSprite);
-	m_RenderWindow->draw(m_ManaSprite);
+	m_RenderWindow->draw(m_HealthBorderSprite, _defaultshader);
+	m_RenderWindow->draw(m_HealthSprite, _defaultshader);
+	m_RenderWindow->draw(m_ManaBorderSprite, _defaultshader);
+	m_RenderWindow->draw(m_ManaSprite, _defaultshader);
 	
 	
 	
@@ -50,11 +50,12 @@ void GUI::Render(Player* _player)
 		// Render Moving Item On Top Always
 		if (bPlayerIsMovingItem(_player))
 		{
-			m_RenderWindow->draw(_player->m_InventoryMap[bGetPositionOfMovingItem(_player)].GetShape());
-			m_RenderWindow->draw(m_InventoryStackCounters[bGetPositionOfMovingItem(_player)]);
+			m_RenderWindow->draw(_player->m_InventoryMap[bGetPositionOfMovingItem(_player)].GetShape(), _defaultshader);
+			m_RenderWindow->draw(m_InventoryStackCounters[bGetPositionOfMovingItem(_player)], _defaultshader);
 		}
-		m_RenderWindow->draw(m_MousePointer);
+		m_RenderWindow->draw(m_MousePointer, _defaultshader);
 	}
+	_defaultshader = nullptr;
 }
 
 void GUI::InitInventoryUI(Player* _player)
@@ -158,9 +159,8 @@ void GUI::InventoryUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player
 		{
 			_renderWindow->mapCoordsToPixel(_player->m_InventoryMap[i].GetPosition(), _uiView);
 			_player->m_InventoryMap[i].SetPosition(m_InventorySlotMap[i].getPosition().x, m_InventorySlotMap[i].getPosition().y);
+			m_InventoryStackCounters[i].setPosition(m_InventorySlotMap[i].getPosition().x + 16, m_InventorySlotMap[i].getPosition().y + 10);
 		}
-
-		m_InventoryStackCounters[i].setPosition(m_InventorySlotMap[i].getPosition().x + 16, m_InventorySlotMap[i].getPosition().y + 10);
 		
 		m_InventorySlotMap[i].setTexture(*m_TextureMaster->m_ItemSlot);
 		if (_player->m_InventoryStackValues[i] <= 1)
@@ -176,7 +176,6 @@ void GUI::InventoryUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player
 	
 	// m_CIITexture is the texture for the Current Item Index
 	m_InventorySlotMap[_player->m_CurrentItemIndex].setTexture(*m_TextureMaster->m_CIITexture);
-
 }
 
 int GUI::FindFirstEmptyInventorySlot(Player* _player)
@@ -367,7 +366,7 @@ void GUI::ItemDroppedInInventory(sf::RenderWindow* _renderwindow, sf::View& _uiv
 
 void GUI::HoldItemInInventory(Player* _player)
 {
-	for (int i = 0; i < _player->m_InventoryMap.size(); i++)
+	for (int i = 0; i < m_InventorySlotMap.size(); i++)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && _player->m_bInventoryOpen && bPlayerIsMovingItem(_player, i))
 		{
@@ -405,11 +404,6 @@ bool GUI::bPlayerIsMovingItem(Player* _player)
 		}
 	}
 	return false;
-}
-
-void GUI::CraftItems()
-{
-
 }
 
 int GUI::bGetPositionOfMovingItem(Player* _player)

@@ -16,7 +16,7 @@ public:
 
 	void Start();
 	void Update();
-	void Render(Player* _player);
+	void Render(Player* _player, sf::Shader* _defaultshader);
 
 	void InitInventoryUI(Player* _player);
 	void InitHealthAndManaUI();
@@ -31,8 +31,6 @@ public:
 	void HoldItemInInventory(Player* _player);
 	bool bPlayerIsMovingItem(Player* _player, int _it);
 	bool bPlayerIsMovingItem(Player* _player);
-	// CheckCraftItems ??
-	void CraftItems();
 	int bGetPositionOfMovingItem(Player* _player);
 
 	sf::Font m_Font;

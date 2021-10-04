@@ -15,7 +15,7 @@ public:
 
 	void Start();
 	void Update();
-	void Render();
+	void Render(sf::Shader* _defaultshader = NULL);
 	void LosePlayer();
 	void SetPlayer(Player* _player);
 	void ToggleSpawning();
