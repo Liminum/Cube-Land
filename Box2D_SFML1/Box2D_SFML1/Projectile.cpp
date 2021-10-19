@@ -1,14 +1,10 @@
 #include "Projectile.h"
 
-Projectile::Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster, const float _scale)
+Projectile::Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster)
 {
-
 	m_World = &_world;
 	m_TextureMaster = _texturemaster;
-	m_Scale = _scale;
 	m_MousePos = _mousepos;
-
-	m_Body = nullptr;
 	
 	switch (_type)
 	{
@@ -72,6 +68,7 @@ void Projectile::Update()
 
 		if (a->GetBody() == m_Body || b->GetBody() == m_Body)
 		{
+			std::cout << "Projectile Hit!" << std::endl;
 			m_MARKASDESTROY = true;
 		}
 
@@ -79,9 +76,6 @@ void Projectile::Update()
 		b = nullptr;
 	}
 	contact = nullptr;
-
-
-
 }
 
 void Projectile::Render()
@@ -111,7 +105,7 @@ void Projectile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY
 	m_FixtureDef.density = 100.0f;
 	m_FixtureDef.shape = &m_b2pShape;
 	m_FixtureDef.filter.categoryBits = 0x0002;
-	m_FixtureDef.filter.maskBits = 0x0004;
+	m_FixtureDef.filter.groupIndex = -1;
 	m_Body->CreateFixture(&m_FixtureDef);
 
 	m_Shape.setPosition(m_Body->GetPosition().x * m_Scale, m_Body->GetPosition().y * m_Scale);

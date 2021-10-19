@@ -2,10 +2,9 @@
 
 LumberPile::LumberPile()
 {
-	m_Scale = 50.0f;
 	Item::m_Type = ITEMTYPE::LUMBERPILE;
 	m_Texture = new sf::Texture;
-	m_Texture->loadFromFile("Resources/Sprites/LumberPile.png");
+	m_Texture->loadFromFile("Resources/Images/LumberPile.png");
 	m_Shape.setTexture(*m_Texture, true);
 }
 
@@ -16,7 +15,7 @@ LumberPile::LumberPile(sf::RenderWindow* _renderwindow, b2World& _world, int _am
 	m_World = &_world;
 	m_Type = ITEMTYPE::LUMBERPILE;
 	m_Texture = new sf::Texture();
-	m_Texture->loadFromFile("Resources/Sprites/LumberPile.png");
+	m_Texture->loadFromFile("Resources/Images/LumberPile.png");
 	m_Shape.setTexture(*m_Texture, true);
 	CreateBody(_posX, _posY, b2Vec2(100,60), b2_dynamicBody, false);
 	m_Shape.setOrigin(m_Shape.getGlobalBounds().width / 2, m_Shape.getGlobalBounds().height / 2);
@@ -28,12 +27,10 @@ LumberPile::~LumberPile()
 {
 	DestroyBody();
 	delete m_Texture;
-
 }
 
 void LumberPile::Start()
 {
-
 }
 
 void LumberPile::Update()

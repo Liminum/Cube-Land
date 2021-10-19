@@ -1,10 +1,9 @@
 #include "Portal.h"
 
-Portal::Portal(sf::RenderWindow* _renderwindow, b2World& _world, const float& _scale, float _posX, float _posY)
+Portal::Portal(sf::RenderWindow* _renderwindow, b2World& _world, float _posX, float _posY)
 {
 	m_RenderWindow = _renderwindow;
 	m_World = &_world;
-	m_Scale = _scale;
 
 	Start(_posX, _posY);
 }
@@ -18,7 +17,7 @@ void Portal::Start(float _posX, float _posY)
 {
 	CreateBody(_posX, _posY, b2_staticBody);
 	m_Texture = new sf::Texture;
-	if (m_Texture->loadFromFile("Resources/Sprites/PortalClosed.png"))
+	if (m_Texture->loadFromFile("Resources/Images/PortalClosed.png"))
 	{
 		std::cout << "Portal Texture Loaded" << std::endl;
 	}

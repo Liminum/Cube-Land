@@ -32,10 +32,7 @@ void ParticleSystem::Update(sf::Time _elapsedTime)
             float ratio = p.m_Lifetime.asSeconds() / m_LifeTime.asSeconds();
             m_Vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
         }
-
-        
     }
-    
 }
 
 void ParticleSystem::SetEmitter(sf::Vector2f _position)

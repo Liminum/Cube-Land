@@ -1,17 +1,12 @@
 #include "WorldManager.h"
 
-WorldManager::WorldManager(sf::RenderWindow* _renderWindow, b2World &_world, TextureMaster* _texturemaster, Player* _player, const float _scale, LEVELTYPE _type)
+WorldManager::WorldManager(sf::RenderWindow* _renderWindow, b2World &_world, TextureMaster* _texturemaster, Player* _player, LEVELTYPE _type)
 {
 	m_RenderWindow = _renderWindow;
 	m_TextureMaster = _texturemaster;
 	m_World = &_world;
 	m_Player = _player;
 	m_Type = _type;
-	m_Tile = nullptr;
-	m_LumberPile = nullptr;
-	m_StonePile = nullptr;
-	m_Portal = nullptr;
-	m_Scale = _scale;
 }
 
 WorldManager::~WorldManager()
@@ -29,7 +24,6 @@ WorldManager::~WorldManager()
 	m_StonePiles.clear();
 	m_StonePile = nullptr;
 
-
 	delete m_background;
 	m_background = nullptr;
 	m_RenderWindow = nullptr;
@@ -39,7 +33,7 @@ WorldManager::~WorldManager()
 	m_Player = nullptr;
 }
 
-void WorldManager::Start()
+void WorldManager::Start(AudioManager* _audioManager)
 {
 	switch (m_Type)
 	{
@@ -51,17 +45,17 @@ void WorldManager::Start()
 		
 		for (int i = -20000; i < 20000; i += 100)
 		{
-			m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, m_Scale, sf::Vector2f(i, 0), sf::Vector2f(100, 100));
+			m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f(i, 0), sf::Vector2f(100, 100));
 			m_Tiles.push_back(*m_Tile);
 			m_Tile = nullptr;
 		}
 
-		m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, m_Scale, sf::Vector2f(250, -600), sf::Vector2f(100, 100));
+		m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f(250, -600), sf::Vector2f(100, 100));
 		m_Tiles.push_back(*m_Tile);
 		m_Tile = nullptr;
 
 		// Other Tile Creation
-		m_Portal = new Portal(m_RenderWindow, *m_World, m_Scale, - 1000.f, -225.f);
+		m_Portal = new Portal(m_RenderWindow, *m_World, - 1000.f, -225.f);
 
 		// Dropped Item Creation
 		m_LumberPile = new LumberPile(m_RenderWindow, *m_World, 5, 200, -100);
@@ -93,7 +87,7 @@ void WorldManager::Start()
 		
 	default:
 	{
-		m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, m_Scale, sf::Vector2f(0, 0), sf::Vector2f(100, 100));
+		m_Tile = new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f(0, 0), sf::Vector2f(100, 100));
 		m_Tiles.push_back(*m_Tile);
 		m_Tile = nullptr;
 		break;
@@ -120,9 +114,10 @@ void WorldManager::Update()
 		StonePile.Update();
 	}
 
-
-
-	PickupItemOnGround();
+	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+	{
+		PickupItemOnGround();
+	}
 
 	// World Step
 	m_World->Step(1 / 60.f, 60, 60);
@@ -135,7 +130,7 @@ void WorldManager::Render(sf::Shader* _defaultshader)
 	std::list<Tile>::iterator it;
 	for (it = m_Tiles.begin(); it != m_Tiles.end(); it++)
 	{
-		float Mag1 = sqrt(((it->GetShape().getPosition().x - m_Player->GetShape().getPosition().x) * (it->GetShape().getPosition().x - m_Player->GetShape().getPosition().x)) + ((it->GetShape().getPosition().y - m_Player->GetShape().getPosition().y) * (it->GetShape().getPosition().y - m_Player->GetShape().getPosition().y)));
+		float Mag1 = sqrt(((it->GetShape().getPosition().x - m_RenderWindow->getView().getCenter().x) * (it->GetShape().getPosition().x - m_RenderWindow->getView().getCenter().x)) + ((it->GetShape().getPosition().y - m_RenderWindow->getView().getCenter().y) * (it->GetShape().getPosition().y - m_RenderWindow->getView().getCenter().y)));
 		if (Mag1 < 1920 * 2.8f)
 		{
 			m_RenderWindow->draw(it->GetShape(), _defaultshader);

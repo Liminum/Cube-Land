@@ -1,23 +1,20 @@
 #pragma once
 #ifndef _GUI_H__
 #define _GUI_H__
-#include<SFML/Graphics.hpp>
-#include<fstream>
+
+// Local Includes
 #include "Player.h"
 
-
-class GUI
+class GUI : public MonoBehavior
 {
 public:
-
 	GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster, sf::Font &_font);
+	virtual ~GUI();
 
-	~GUI();
+	virtual void Start();
+	virtual void Render(Player* _player, sf::Shader* _defaultshader = NULL ,sf::Vector2f _mousePos = sf::Vector2f(0, 0));
 
-	void Start();
-	void Update();
-	void Render(Player* _player, sf::Shader* _defaultshader);
-
+	sf::Vector2f UIMousePointer(sf::View& _uiview);
 	void InitInventoryUI(Player* _player);
 	void InitHealthAndManaUI();
 	void HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player* _player);
@@ -36,15 +33,11 @@ public:
 	sf::Font m_Font;
 
 private:
-
-
-	
-
 	std::map<int, sf::Text> m_InventoryStackCounters;
 	sf::Clock m_FirstEmptySlotTimer;
 	std::map<int, sf::Sprite> m_InventorySlotMap;
-	sf::RenderWindow* m_RenderWindow;
-	TextureMaster* m_TextureMaster;
+	sf::RenderWindow* m_RenderWindow = nullptr;
+	TextureMaster* m_TextureMaster = nullptr;
 	sf::Clock m_Timer;
 	sf::Text m_DisplayText;
 
@@ -62,5 +55,4 @@ private:
 
 	sf::Sprite m_Shape;
 };
-
 #endif

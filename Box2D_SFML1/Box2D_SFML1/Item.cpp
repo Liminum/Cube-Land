@@ -2,18 +2,10 @@
 
 Item::Item()
 {
-	m_RenderWindow = nullptr;
-	m_World = nullptr;
-	m_Body = nullptr;
-	m_Texture = nullptr;
 }
 
 Item::Item(sf::Texture* _texture, ITEMTYPE _type)
 {
-	m_RenderWindow = nullptr;
-	m_World = nullptr;
-	m_Body = nullptr;
-
 	m_Texture = _texture;
 	m_Type = _type;
 	m_Shape.setTexture(*_texture,true);
@@ -57,7 +49,7 @@ b2Body* Item::GetBody()
 	return m_Body;
 }
 
-void Item::CreateBody(float _posX, float _posY, b2Vec2(_size), b2BodyType _type, bool _sensor)
+void Item::CreateBody(float _posX, float _posY, b2Vec2 _size, b2BodyType _type, bool _sensor)
 {
 	//ground physics
 	m_BodyDef.type = _type;

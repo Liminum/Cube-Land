@@ -1,0 +1,270 @@
+#include "CGameScene.h"
+
+CGameScene::CGameScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event)
+{
+	m_RenderWindow = _renderWindow;
+	m_TextureMaster = _textureMaster;
+	m_Event = &_event;
+	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
+}
+
+CGameScene::~CGameScene()
+{
+	CleanupAllPointers();
+}
+
+void CGameScene::Start()
+{
+	CreateAudioManager();
+	CreateB2World();
+	CreatePlayer();
+	CreateGUI();
+	CreateWorldManager();
+
+	PlayMusic();
+	InitUIView();
+	InitView();
+	m_Player->Start();
+	m_WorldManager->Start(m_AudioManager);
+	m_GUI->Start();
+	m_GUI->InitInventoryUI(m_Player);
+	m_GUI->InitHotBarScrolling(*m_Event, m_Player);
+
+	m_ContactListener = new CContactListener();
+	if (m_World != nullptr)
+	{
+		m_World->SetContactListener(m_ContactListener);
+	}
+}
+
+void CGameScene::Update()
+{
+	m_MousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow), m_View);
+	if (m_WorldManager != nullptr)
+	{
+		m_WorldManager->Update();
+	}
+	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+	{
+		CenterViewTo(m_Player->GetShape());
+
+		m_Player->Update(m_MousePos);
+	}
+	else if (m_Player == nullptr)
+	{
+		GameOverScreen();
+	}
+
+	////Check contacts
+	//std::vector<MyContact>::iterator it = m_ContactListener->m_Contacts.begin();
+	//for (it ; it != m_ContactListener->m_Contacts.end() ; it++)
+	//{
+	//	MyContact contact = *it;
+	//}
+}
+
+void CGameScene::PolledUpdate()
+{
+	while (m_RenderWindow->pollEvent(*m_Event))
+	{
+		if (m_Event->type == sf::Event::Closed)
+		{
+			m_RenderWindow->close();
+			break;
+		}
+		if (m_Event->type == sf::Event::KeyPressed)
+		{
+			if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+			{
+				m_Player->PollMovement(*m_Event);
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+				{
+					if (!m_GUI->bPlayerIsMovingItem(m_Player))
+					{
+						m_Player->TogglebInventoryOpen();
+						break;
+					}
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+				{
+					m_Player->m_MARKASDESTROY = true;
+					break;
+				}
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && m_Player == nullptr)
+			{
+				CreatePlayer();
+				m_Player->Start();
+				if (m_WorldManager != nullptr)
+				{
+					m_WorldManager->SetPlayer(m_Player);
+				}
+				break;
+			}
+		}
+		if (m_Event->type == sf::Event::MouseButtonPressed)
+		{
+
+		}
+		if (m_Event->type == sf::Event::MouseWheelScrolled)
+		{
+			if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+			{
+				m_GUI->HotBarScrolling(*m_Event, m_Player);
+				break;
+			}
+		}
+		if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+		{
+			m_GUI->ItemClicked(*m_Event, m_Player);
+
+			m_GUI->ItemDroppedInInventory(m_RenderWindow, m_UIView, m_View, *m_Event, m_Player);
+			break;
+		}
+	}
+}
+
+void CGameScene::Render()
+{
+	m_RenderWindow->setView(m_View);
+
+	sf::Shader* defaultShader = NULL;
+
+	if (m_WorldManager != nullptr)
+	{
+		m_WorldManager->Render(defaultShader);
+	}
+	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+	{
+		m_Player->Render();
+
+		// UI
+		//
+		m_RenderWindow->setView(m_UIView);
+
+		m_GUI->InventoryUI(m_RenderWindow, m_UIView, m_Player);
+		m_GUI->TimerUI();
+		m_GUI->HealthAndManaUI(m_RenderWindow, m_UIView, m_Player);
+		m_GUI->Render(m_Player);
+		//
+	}
+
+	m_RenderWindow->draw(m_FadeScreen, defaultShader);
+	m_RenderWindow->draw(m_GameOverText, defaultShader);
+}
+
+void CGameScene::CheckForPlayerMARKASDESTROY()
+{
+	if (m_Player != nullptr)
+	{
+		if (m_Player->m_MARKASDESTROY)
+		{
+			delete m_Player;
+			m_Player = nullptr;
+			m_WorldManager->LosePlayer();
+		}
+	}
+}
+
+void CGameScene::CreateB2World()
+{
+	MonoBehavior::DeletePointer(m_WorldManager);
+	m_WorldManager = nullptr;
+	MonoBehavior::DeletePointer(m_World);
+	m_World = nullptr;
+	m_World = new b2World(m_Gravity);
+}
+
+void CGameScene::CreateWorldManager()
+{
+	MonoBehavior::DeletePointer(m_WorldManager);
+	m_WorldManager = nullptr;
+	m_WorldManager = new WorldManager(m_RenderWindow,*m_World, m_TextureMaster, m_Player, WorldManager::LEVELTYPE::DEFAULT);
+}
+
+void CGameScene::CreatePlayer()
+{
+	MonoBehavior::DeletePointer(m_Player);
+	m_Player = nullptr;
+	m_Player = new Player(m_RenderWindow, *m_World, m_AudioManager, m_TextureMaster);
+}
+
+void CGameScene::CreateAudioManager()
+{
+	MonoBehavior::DeletePointer(m_AudioManager);
+	m_AudioManager = nullptr;
+	m_AudioManager = new AudioManager;
+}
+
+void CGameScene::CreateGUI()
+{
+	MonoBehavior::DeletePointer(m_GUI);
+	m_GUI = nullptr;
+	m_GUI = new GUI(m_RenderWindow, m_TextureMaster, m_Font);
+}
+
+void CGameScene::PlayMusic()
+{
+	m_AudioManager->PlayMusic();
+}
+
+void CGameScene::InitGameOver()
+{
+	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
+	m_FadeScreen.setSize(sf::Vector2f(30000, 30000));
+	m_FadeScreen.setOrigin(sf::Vector2f(15000, 15000));
+	m_FadeScreen.setFillColor(sf::Color::Transparent);
+	m_GameOverText.setCharacterSize(1000);
+	m_GameOverText.setString("Game Over");
+	m_GameOverText.setFont(m_Font);
+	m_GameOverText.setOrigin(m_GameOverText.getGlobalBounds().width / 2, m_GameOverText.getGlobalBounds().height / 2);
+	m_GameOverText.setFillColor(sf::Color::Transparent);
+	m_GameOverText.setOutlineColor(sf::Color::Transparent);
+}
+
+void CGameScene::GameOverScreen()
+{
+	float elapsedtime = m_FadeTimer.getElapsedTime().asSeconds() / m_PlayerRespawnTime;
+
+	if (m_DeathTimer.getElapsedTime().asSeconds() >= m_PlayerRespawnTime)
+	{
+		m_FadeScreen.setFillColor(sf::Color::Transparent);
+		m_GameOverText.setFillColor(sf::Color::Transparent);
+	}
+	else
+	{
+		m_FadeScreen.setFillColor(sf::Color(0, 0, 0, elapsedtime * 255));
+		m_GameOverText.setFillColor(sf::Color(255, 0, 0, elapsedtime * 255));
+	}
+}
+
+void CGameScene::CenterViewTo(sf::Sprite _object)
+{
+	m_View.setCenter(_object.getPosition());
+	m_RenderWindow->setView(m_View);
+}
+
+void CGameScene::InitUIView()
+{
+	m_UIView = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_RenderWindow->getSize().x, m_RenderWindow->getSize().y));
+}
+
+void CGameScene::CleanupAllPointers()
+{
+	m_RenderWindow = nullptr;
+	MonoBehavior::DeletePointer(m_WorldManager);
+	m_WorldManager = nullptr;
+	MonoBehavior::DeletePointer(m_GUI);
+	m_GUI = nullptr;
+	MonoBehavior::DeletePointer(m_AudioManager);
+	m_AudioManager = nullptr;
+	m_TextureMaster = nullptr;
+	MonoBehavior::DeletePointer(m_ContactListener);
+	m_ContactListener = nullptr;
+}
+
+void CGameScene::InitView()
+{
+	m_View = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_RenderWindow->getSize().x, m_RenderWindow->getSize().y));
+	m_View.zoom(4.0f);
+}

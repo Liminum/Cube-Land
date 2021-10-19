@@ -2,7 +2,9 @@
 #ifndef _WORLDMANAGER_H__
 #define _WORLDMANAGER_H__
 
-#include <list>
+#include "MonoBehavior.h"
+
+// Local Includes
 #include "TextureMaster.h"
 #include "Player.h"
 #include "Tile.h"
@@ -10,12 +12,9 @@
 #include "StonePile.h"
 #include "Portal.h"
 
-
-class WorldManager
+class WorldManager : public MonoBehavior
 {
-
 public:
-
 	enum class LEVELTYPE
 	{
 		DEFAULT = 0,
@@ -24,40 +23,37 @@ public:
 
 	};
 
-
-	WorldManager(sf::RenderWindow* _renderWindow, b2World& _world, TextureMaster* _texturemaster, Player* _player, const float _scale, LEVELTYPE _type = LEVELTYPE::DEFAULT);
-	~WorldManager();
+	WorldManager(sf::RenderWindow* _renderWindow, b2World& _world, TextureMaster* _texturemaster, Player* _player, LEVELTYPE _type = LEVELTYPE::DEFAULT);
+	virtual ~WorldManager();
 
 	template <typename T> 
 	bool IsItemListBody(std::list<T>& _itemlist, b2Fixture* _bodyfixture);
 
-	void Start();
-	void Update();
-	void Render(sf::Shader* _defaultshader = NULL);
+	virtual void Start(AudioManager* _audioManager);
+	virtual void Update();
+	virtual void Render(sf::Shader* _defaultshader = NULL);
+
 	void SetPlayer(Player* _player);
 	void LosePlayer();
 	void InitBackground(sf::Texture& _texture);
 	bool PickupItemOnGround();  
 
-private:
-
-	LEVELTYPE m_Type;
-
-	LumberPile* m_LumberPile;
-	StonePile* m_StonePile;
-	Portal* m_Portal;
-	TextureMaster* m_TextureMaster;
-
 	std::list<Tile> m_Tiles = {}; // Tiles includes all Tile instances, including tile sub classes
-
 	std::list<LumberPile> m_LumberPiles = {};
 	std::list<StonePile> m_StonePiles = {};
+private:
+	LEVELTYPE m_Type;
 
-	sf::RenderWindow* m_RenderWindow;
-	Tile* m_Tile;
-	sf::Sprite* m_background;
-	b2World* m_World;
-	Player* m_Player;
+	LumberPile* m_LumberPile = nullptr;
+	StonePile* m_StonePile = nullptr;
+	Portal* m_Portal = nullptr;
+	TextureMaster* m_TextureMaster = nullptr;
+
+	sf::RenderWindow* m_RenderWindow = nullptr;
+	Tile* m_Tile = nullptr;
+	sf::Sprite* m_background = nullptr;
+	b2World* m_World = nullptr;
+	Player* m_Player = nullptr;
 	float m_Scale;
 };
 #endif

@@ -1,14 +1,12 @@
 #pragma once
 #ifndef _ITEM_H__
 #define _ITEM_H__
-#include<SFML/Graphics.hpp>
-#include<box2d/box2d.h>
-#include<iostream>
-class Item
+
+#include "MonoBehavior.h"
+
+class Item : public MonoBehavior
 {
-
 public:
-
 	enum ITEMTYPE
 	{
 		DEFAULT,
@@ -20,9 +18,7 @@ public:
 	ITEMTYPE m_Type = ITEMTYPE::DEFAULT;
 
 	Item();
-
 	Item(sf::Texture* _texture, ITEMTYPE _type);
-
 	virtual ~Item();
 
 	virtual void Start();
@@ -30,7 +26,7 @@ public:
 	virtual void Render(sf::Shader* _defaultshader = NULL);
 	
 	b2Body* GetBody();
-	void CreateBody(float _posX, float _posY, b2Vec2(_position),b2BodyType _type, bool _sensor);
+	void CreateBody(float _posX, float _posY, b2Vec2 _position,b2BodyType _type, bool _sensor);
 	void DestroyBody();
 
 	void SetPosition(float _x, float _y);
@@ -42,13 +38,10 @@ public:
 	bool m_bItemIsMovingInInventory = false;
 
 protected:
-
-	
-	float m_Scale = 50;
-	b2World* m_World;
+	b2World* m_World = nullptr;
 	sf::Sprite m_Shape;
-	sf::RenderWindow* m_RenderWindow;
-	b2Body* m_Body;
+	sf::RenderWindow* m_RenderWindow = nullptr;
+	b2Body* m_Body = nullptr;
 	b2BodyDef m_BodyDef;
 	b2PolygonShape m_b2pShape;
 	b2FixtureDef m_FixtureDef;

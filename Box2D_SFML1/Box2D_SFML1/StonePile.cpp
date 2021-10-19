@@ -2,11 +2,10 @@
 
 StonePile::StonePile()
 {
-	m_Scale = 50.0f;
 	m_Body = nullptr;
 	Item::m_Type = ITEMTYPE::STONEPILE;
 	m_Texture = new sf::Texture;
-	m_Texture->loadFromFile("Resources/Sprites/StonePile.png");
+	m_Texture->loadFromFile("Resources/Images/StonePile.png");
 	m_Shape.setTexture(*m_Texture, true);
 }
 
@@ -17,7 +16,7 @@ StonePile::StonePile(sf::RenderWindow* _renderwindow, b2World& _world, int _amou
 	m_World = &_world;
 	m_Type = ITEMTYPE::STONEPILE;
 	m_Texture = new sf::Texture();
-	m_Texture->loadFromFile("Resources/Sprites/StonePile.png");
+	m_Texture->loadFromFile("Resources/Images/StonePile.png");
 	m_Shape.setTexture(*m_Texture, true);
 	CreateBody(_posX, _posY, b2Vec2(100, 60), b2_dynamicBody, false);
 	m_Shape.setOrigin(m_Shape.getGlobalBounds().width / 2, m_Shape.getGlobalBounds().height / 2);
@@ -29,10 +28,6 @@ StonePile::~StonePile()
 {
 	DestroyBody();
 	delete m_Texture;
-}
-
-void StonePile::Start()
-{
 }
 
 void StonePile::Update()

@@ -1,21 +1,15 @@
 #include "Player.h"
 
-Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, const float& _scale, AudioManager* _audiomanager, TextureMaster* _texturemaster)
+Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, AudioManager* _audiomanager, TextureMaster* _texturemaster)
 {
 	m_RenderWindow = _renderWindow;
-	m_Scale = _scale;
 	m_World = &_world;
 	m_AudioManager = _audiomanager;
 	m_TextureMaster = _texturemaster;
 
-	m_Projectile = nullptr;
-	m_Staff = nullptr;
-
 	m_ParticleSystem = new ParticleSystem(200, sf::seconds(.4f), sf::Color(126, 232, 228, 255));
 
-	//falling object
-	
-	m_PlayerTexture.loadFromFile("Resources/Sprites/Player.png");
+	m_PlayerTexture.loadFromFile("Resources/Images/Player.png");
 	m_Shape.setTexture(m_PlayerTexture, true);
 	m_Shape.setOrigin(m_Shape.getGlobalBounds().width / 2, m_Shape.getGlobalBounds().height / 2);
 
@@ -30,16 +24,11 @@ Player::~Player()
 	m_RenderWindow = nullptr;
 	m_World = nullptr;
 	m_Projectile = nullptr;
-
 	if (m_Staff != nullptr)
 	{
 		delete m_Staff;
 	}
 	m_Staff = nullptr;
-	if (m_ParticleSystem != nullptr)
-	{
-		delete m_ParticleSystem;
-	}
 	m_ParticleSystem = nullptr;
 	m_TextureMaster = nullptr;
 }
@@ -66,8 +55,7 @@ void Player::Start()
 		m_InventoryMap[i];
 	}
 
-	
-
+	// Debug Add Staff
 	m_Staff = new Staff();
 	AddItemToInventory(m_Staff, false);
 	m_Staff = nullptr;
@@ -78,9 +66,8 @@ void Player::Update(sf::Vector2f _mousepos)
 	m_MousePos = _mousepos;
 
 	Movement();
-	// Set SFML Shape Transform To Box 2D Body Transform
-	m_Shape.setPosition(m_Body->GetPosition().x * m_Scale, m_Body->GetPosition().y * m_Scale);
-	m_Shape.setRotation(m_Body->GetAngle() * 180 / b2_pi);
+
+	SetShapeToB2Body();
 
 	if (m_Staff != nullptr)
 	{
@@ -88,15 +75,20 @@ void Player::Update(sf::Vector2f _mousepos)
 		m_Staff->Update();
 		m_Staff->FlipSprite(m_Shape.getPosition(), m_Shape);
 	}
+	else
+	{
+		delete m_Staff;
+		m_Staff = nullptr;
+	}
 
 	// Items
 	for (std::map<int, Item>::iterator iit = m_InventoryMap.begin(); iit != m_InventoryMap.end(); iit++)
 	{
 		// Player Selects Bow
-		if (iit->second.m_bIsItemSelected == true && iit->second.m_Type == Item::ITEMTYPE::STAFF)
+		if (iit->first == m_CurrentItemIndex && iit->second.m_Type == Item::ITEMTYPE::STAFF && m_Staff == nullptr)
 		{
 			std::cout << "New Bow Created!" << std::endl;
-			m_Staff = new Staff(m_RenderWindow, m_Scale, m_Shape.getPosition().x, m_Shape.getPosition().y);
+			m_Staff = new Staff(m_RenderWindow, m_Shape.getPosition().x, m_Shape.getPosition().y);
 			iit->second.m_bIsItemSelected = false;
 		}
 
@@ -106,7 +98,6 @@ void Player::Update(sf::Vector2f _mousepos)
 			delete m_Staff;
 			m_Staff = nullptr;
 		}
-
 	}
 
 	for (b2Contact* contact = m_World->GetContactList(); contact; contact = contact->GetNext())
@@ -158,7 +149,6 @@ void Player::Update(sf::Vector2f _mousepos)
 			SetCurrentMana(GetCurrentMana() + 1);
 			m_ManaRegen.restart();
 		}
-
 	}
 }
 
@@ -177,7 +167,6 @@ void Player::Render(sf::Shader* _defaultshader)
 	}
 
 	m_RenderWindow->draw(*m_ParticleSystem, _defaultshader);
-	_defaultshader = nullptr;
 }
 
 void Player::PollMovement(sf::Event& _event)
@@ -215,14 +204,13 @@ void Player::Attack(Projectile::PROJECTILETYPE _type)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_AttackTimer.getElapsedTime().asSeconds() >= 0.5f)
 	{
-		
 		switch (_type)
 		{
 		case Projectile::PROJECTILETYPE::PLAYERBASICATTACK:
 		{
 			if (GetCurrentMana() >= 4.f)
 			{
-				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos, m_TextureMaster, m_Scale);
+				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos, m_TextureMaster);
 				SetCurrentMana(GetCurrentMana() - m_Projectile->m_ManaCost);
 				m_Projectiles.push_back(*m_Projectile);
 				m_Projectile = nullptr;
@@ -241,20 +229,14 @@ void Player::Attack(Projectile::PROJECTILETYPE _type)
 					m_ParticleSystem->SetEmitter(sf::Vector2f(m_Shape.getPosition().x + 85, m_Shape.getPosition().y - 10));
 				}
 			}
+
 			break;
 		}
-
-		
-		
-		
-		
 		default:
 		{
 			break;
 		}
-			
 		}
-
 	}
 }
 
@@ -264,12 +246,10 @@ void Player::AddItemToInventory(Item* _item, bool _bCanStack)
 	{
 		if (IsItemInInventory(_item))
 		{
-
 		}
 		else
 		{
 			// Reading From File??
-			//
 			std::string line;
 			std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
 			myfile.is_open();
@@ -296,7 +276,6 @@ void Player::AddItemToInventory(Item* _item, bool _bCanStack)
 	else
 	{
 		// Reading From File??
-
 		std::string line;
 		std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
 		myfile.is_open();
@@ -317,11 +296,8 @@ void Player::AddItemToInventory(Item* _item, bool _bCanStack)
 			std::cout << "Inventory Full! : " << m_InventorySize << std::endl;
 		}
 		myfile.close();
-
-		
 	}
 	_item = nullptr;
-
 }
 
 void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
@@ -330,12 +306,10 @@ void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
 	{
 		if (IsItemInInventory(_item, _amount))
 		{
-			
 		}
 		else
 		{
 			// Reading From File??
-			//
 			std::string line;
 			std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
 			myfile.is_open();
@@ -365,7 +339,6 @@ void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
 	else
 	{
 		// Reading From File??
-
 		std::string line;
 		std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
 		myfile.is_open();
@@ -406,12 +379,9 @@ bool Player::IsItemInInventory(Item* _item)
 			delete _item;
 			_item = nullptr;
 			return true;
-
 		}
 	}
-	
 	return false;
-
 }
 
 bool Player::IsItemInInventory(Item* _item, int _amount)
@@ -426,13 +396,10 @@ bool Player::IsItemInInventory(Item* _item, int _amount)
 			{
 				++m_InventoryStackValues[it->first];
 			}
-			delete _item;
-			_item = nullptr;
+			MonoBehavior::DeletePointer(_item);
 			return true;
-
 		}
 	}
-
 	return false;
 }
 
@@ -450,38 +417,6 @@ void Player::RemoveItemFromInventory(int _pos)
 			return;
 		}
 		it++;
-	}
-}
-
-void Player::CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor)
-{
-
-	//falling object physics
-	m_BodyDef.position = b2Vec2(_posX / m_Scale, _posY / m_Scale);
-	m_BodyDef.type = _type;
-	m_BodyDef.fixedRotation = 1;
-	m_BodyDef.linearDamping = 0.4f;
-	m_BodyDef.gravityScale = 10;
-	m_Body = m_World->CreateBody(&m_BodyDef);
-	m_b2pShape.SetAsBox((100.f / 2) / m_Scale, (100.f / 2) / m_Scale);
-	if (_sensor)
-	{
-		m_FixtureDef.isSensor = true;
-	}
-	m_FixtureDef.density = 2.0f;
-	m_FixtureDef.friction = 1.0f;
-	m_FixtureDef.restitution = 0.2f;
-	m_FixtureDef.shape = &m_b2pShape;
-	m_FixtureDef.filter.categoryBits = 0x0002;
-	m_Body->CreateFixture(&m_FixtureDef);
-}
-
-void Player::DestroyBody()
-{
-	if (m_World != nullptr && m_Body != nullptr)
-	{
-		m_World->DestroyBody(m_Body);
-		m_Body = nullptr;
 	}
 }
 
@@ -530,4 +465,9 @@ float Player::GetCurrentHealth()
 sf::Sprite Player::GetShape()
 {
 	return m_Shape;
+}
+
+Staff* Player::GetStaff()
+{
+	return m_Staff;
 }

@@ -24,13 +24,10 @@ void GUI::Start()
 	InitHealthAndManaUI();
 }
 
-void GUI::Update()
+void GUI::Render(Player* _player, sf::Shader* _defaultshader, sf::Vector2f _mousePos)
 {
-	
-}
+	sf::Vector2f mousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow));
 
-void GUI::Render(Player* _player, sf::Shader* _defaultshader)
-{
 	for (int i = 0; i < m_InventorySlotMap.size(); i++)
 	{
 		m_RenderWindow->draw(m_InventorySlotMap[i], _defaultshader);
@@ -43,8 +40,6 @@ void GUI::Render(Player* _player, sf::Shader* _defaultshader)
 	m_RenderWindow->draw(m_ManaBorderSprite, _defaultshader);
 	m_RenderWindow->draw(m_ManaSprite, _defaultshader);
 	
-	
-	
 	if (_player->m_bInventoryOpen)
 	{
 		// Render Moving Item On Top Always
@@ -53,14 +48,29 @@ void GUI::Render(Player* _player, sf::Shader* _defaultshader)
 			m_RenderWindow->draw(_player->m_InventoryMap[bGetPositionOfMovingItem(_player)].GetShape(), _defaultshader);
 			m_RenderWindow->draw(m_InventoryStackCounters[bGetPositionOfMovingItem(_player)], _defaultshader);
 		}
+		
+		m_MousePointer.setPosition(mousePos);
+		m_RenderWindow->draw(m_MousePointer, _defaultshader);
+	}
+	else if (_player->GetStaff() != nullptr)
+	{
+		m_MousePointer.setPosition(mousePos);
 		m_RenderWindow->draw(m_MousePointer, _defaultshader);
 	}
 	_defaultshader = nullptr;
 }
 
+sf::Vector2f GUI::UIMousePointer(sf::View& _uiview)
+{
+	sf::Shader* defaultShader = NULL;
+	sf::Vector2f mousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow), _uiview);
+	return mousePos;
+}
+
 void GUI::InitInventoryUI(Player* _player)
 {
 	m_MousePointer.setTexture(*m_TextureMaster->m_MousePosTex, true);
+	m_MousePointer.setScale(2, 2);
 	m_MousePointer.setOrigin(m_MousePointer.getGlobalBounds().width / 2 , m_MousePointer.getGlobalBounds().height / 2);
 
 	for (int i = 0 ; i < 9 ; i++)
@@ -88,16 +98,16 @@ void GUI::InitInventoryUI(Player* _player)
 
 void GUI::InitHealthAndManaUI()
 {
-	m_ManaTexture.loadFromFile("Resources/Sprites/ManaBar.png");
-	m_ManaBorderTexture.loadFromFile("Resources/Sprites/ManaBarBorder.png");
+	m_ManaTexture.loadFromFile("Resources/Images/ManaBar.png");
+	m_ManaBorderTexture.loadFromFile("Resources/Images/ManaBarBorder.png");
 	m_ManaSprite.setTexture(m_ManaTexture, true);
 	m_ManaBorderSprite.setTexture(m_ManaBorderTexture, true);
 	m_ManaSprite.setOrigin(-3, -3);
 	m_ManaSprite.scale(1.51, 1.5);
 	m_ManaBorderSprite.scale(1.5, 1.5);
 
-	m_HealthTexture.loadFromFile("Resources/Sprites/HealthBar.png");
-	m_HealthBorderTexture.loadFromFile("Resources/Sprites/HealthBarBorder.png");
+	m_HealthTexture.loadFromFile("Resources/Images/HealthBar.png");
+	m_HealthBorderTexture.loadFromFile("Resources/Images/HealthBarBorder.png");
 	m_HealthSprite.setTexture(m_HealthTexture, true);
 	m_HealthBorderSprite.setTexture(m_HealthBorderTexture, true);
 	m_HealthSprite.setOrigin(-3, -3);
@@ -137,8 +147,8 @@ void GUI::HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Pl
 void GUI::InventoryUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player* _player)
 {
 	_renderWindow->setView(_uiView);
-	sf::Vector2f MousePos = _renderWindow->mapPixelToCoords((sf::Mouse::getPosition(*_renderWindow)), _uiView);
-	m_MousePointer.setPosition(MousePos);
+
+	UIMousePointer(_uiView);
 
 	if (m_FirstEmptySlotTimer.getElapsedTime().asSeconds() >= 0.01f)
 	{
@@ -221,7 +231,6 @@ void GUI::TimerUI()
 	m_RenderWindow->mapCoordsToPixel(m_DisplayText.getPosition());
 	m_DisplayText.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 110, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 15);
 	m_RenderWindow->draw(m_DisplayText);
-	
 }
 
 void GUI::HotBarScrolling(sf::Event& _event, Player* _player)
@@ -241,8 +250,6 @@ void GUI::HotBarScrolling(sf::Event& _event, Player* _player)
 				_player->m_CurrentItemIndex = 8;
 			}
 			std::cout << "zoom In" << std::endl;
-
-
 		}
 		else if (_event.mouseWheelScroll.delta <= -1)
 		{
@@ -288,7 +295,7 @@ void GUI::ItemClicked(sf::Event& _event, Player* _player)
 	{
 		for (int i = 0; i < _player->m_InventoryMap.size(); i++)
 		{
-			if (_player->m_bInventoryOpen && _player->m_InventoryMap[i].GetShape().getGlobalBounds().contains(m_MousePointer.getPosition()))
+			if (_player->m_bInventoryOpen && _player->m_InventoryMap[i].GetShape().getGlobalBounds().intersects(m_MousePointer.getGlobalBounds()))
 			{
 				_player->m_InventoryMap[i].m_bItemIsMovingInInventory = true;
 				break;
@@ -359,19 +366,18 @@ void GUI::ItemDroppedInInventory(sf::RenderWindow* _renderwindow, sf::View& _uiv
 			}
 		}
 	}
-
 	_renderwindow->setView(_worldview);
-	
 }
 
 void GUI::HoldItemInInventory(Player* _player)
 {
+	int itemOffset = -25;
 	for (int i = 0; i < m_InventorySlotMap.size(); i++)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && _player->m_bInventoryOpen && bPlayerIsMovingItem(_player, i))
 		{
-			_player->m_InventoryMap[i].GetShape().setPosition(m_MousePointer.getPosition());
-			m_InventoryStackCounters[i].setPosition(m_MousePointer.getPosition().x + 16, m_MousePointer.getPosition().y + 10);
+			_player->m_InventoryMap[i].GetShape().setPosition(m_MousePointer.getPosition() + sf::Vector2f(itemOffset, itemOffset));
+			m_InventoryStackCounters[i].setPosition(m_MousePointer.getPosition().x + 16 + itemOffset, m_MousePointer.getPosition().y + 10 + itemOffset);
 		}
 		else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && _player->m_bInventoryOpen && !bPlayerIsMovingItem(_player, i))
 		{

@@ -1,15 +1,12 @@
 #pragma once
 #ifndef _PROJECTILE_H__
 #define _PROJECTILE_H__
-#include <SFML/Graphics.hpp>
-#include <box2d/box2d.h>
+
 #include "TextureMaster.h"
 
-class Projectile
+class Projectile : public MonoBehavior
 {
-
 public:
-
 	enum class PROJECTILETYPE
 	{
 		DEFAULT = 0,
@@ -19,15 +16,13 @@ public:
 
 	};
 
+	Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster);
+	virtual ~Projectile();
 
-	Projectile(Projectile::PROJECTILETYPE _type, sf::Vector2f _position, b2World &_world, sf::Vector2f _mousepos, TextureMaster* _texturemaster, const float _scale);
+	virtual void Start();
+	virtual void Update();
+	virtual void Render();
 
-	~Projectile();
-
-
-	void Start();
-	void Update();
-	void Render();
 	void CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _bullet = true ,bool _sensor = false);
 	void DestroyBody();
 	b2Body* GetBody();
@@ -36,17 +31,14 @@ public:
 	PROJECTILETYPE m_Type;
 	float m_ManaCost = 0;
 
-
 protected:
-
-	b2World* m_World;
-	float m_Scale = 50.0f;
+	b2World* m_World = nullptr;
 	
-	TextureMaster* m_TextureMaster;
+	TextureMaster* m_TextureMaster = nullptr;
 	b2BodyDef m_BodyDef;
 	b2PolygonShape m_b2pShape;
 	b2FixtureDef m_FixtureDef;
-	b2Body* m_Body;
+	b2Body* m_Body = nullptr;
 	sf::Vector2f m_MousePos;
 };
 

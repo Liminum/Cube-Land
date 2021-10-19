@@ -96,6 +96,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>box2d-d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,8 +137,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="CButtons.cpp" />
+    <ClCompile Include="CContactListener.cpp" />
+    <ClCompile Include="CEntity.cpp" />
+    <ClCompile Include="CInputField.cpp" />
+    <ClCompile Include="CMainMenu.cpp" />
+    <ClCompile Include="CGameScene.cpp" />
+    <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="IScene.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LumberPile.cpp" />
@@ -145,8 +153,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="Slime.cpp" />
-    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Staff.cpp" />
     <ClCompile Include="StonePile.cpp" />
     <ClCompile Include="TextureMaster.cpp" />
@@ -155,16 +161,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="CButtons.h" />
+    <ClInclude Include="CContactListener.h" />
+    <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CInputField.h" />
+    <ClInclude Include="CMainMenu.h" />
+    <ClInclude Include="CGameScene.h" />
+    <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="IScene.h" />
+    <ClInclude Include="MonoBehavior.h" />
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LumberPile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Projectile.h" />
-    <ClInclude Include="Slime.h" />
-    <ClInclude Include="Spawner.h" />
     <ClInclude Include="Staff.h" />
     <ClInclude Include="StonePile.h" />
     <ClInclude Include="TextureMaster.h" />
