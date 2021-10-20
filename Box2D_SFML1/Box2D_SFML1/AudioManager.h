@@ -1,15 +1,15 @@
 #pragma once
 #ifndef _AUDIOMANAGER_H__
 #define _AUDIOMANAGER_H__
-#include <sfml/audio.hpp>
-class AudioManager
+
+#include "NumptyBehavior.h"
+
+class AudioManager : public NumptyBehavior
 {
 public:
 
 	AudioManager();
-
-
-	~AudioManager();
+	virtual ~AudioManager();
 
 	void PlayerDeath();
 	void FireBow();
@@ -17,25 +17,23 @@ public:
 	void SlimeDamage(float _volume);
 	void PlayMusic();
 
-	sf::Music m_Music;
-
 private:
+	void CreatePointers();
+	void CleanupPointers();
 
-	
-	sf::SoundBuffer m_SlimeDeathBuffer;
-	sf::SoundBuffer m_SlimeHurt1;
-	sf::SoundBuffer m_SlimeHurt2;
-	sf::SoundBuffer SlimeHurtBuffers[2];
-	sf::Sound m_SlimeDeathSound;
-	sf::Sound m_SlimeDamageSound;
+	sf::Music* m_Music = nullptr;
+	sf::SoundBuffer* m_SlimeDeathBuffer = nullptr;
+	sf::SoundBuffer* m_SlimeHurt1 = nullptr;
+	sf::SoundBuffer* m_SlimeHurt2 = nullptr;
+	sf::SoundBuffer* SlimeHurtBuffers = nullptr;
+	sf::Sound* m_SlimeDeathSound = nullptr;
+	sf::Sound* m_SlimeDamageSound = nullptr;
 
-	sf::SoundBuffer m_PlayerDeathBuffer;
-	sf::Sound m_PlayerDeathSound;
-
-
-	sf::SoundBuffer m_BowBuffer;
-	sf::Sound m_BowShotSound;
+	sf::SoundBuffer* m_PlayerDeathBuffer = nullptr;
+	sf::Sound* m_PlayerDeathSound = nullptr;
 
 
+	sf::SoundBuffer* m_BowBuffer = nullptr;
+	sf::Sound* m_BowShotSound = nullptr;
 };
 #endif

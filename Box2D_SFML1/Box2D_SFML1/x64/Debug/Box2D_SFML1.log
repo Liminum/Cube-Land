@@ -1,5 +1,49 @@
-﻿  main.cpp
-C:\Users\trand\source\repos\Box2D_SFML1\Box2D_SFML1\main.cpp(131,112): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+﻿  AudioManager.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\AudioManager.cpp(5,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  CButtons.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(46,26): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(47,28): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(200,28): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(322,28): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(331,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(340,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  CContactListener.cpp
+  CDebugWindow.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(106,11): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(107,11): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(358,10): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(359,10): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  CGameScene.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(227,60): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(228,64): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(240,115): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=unsigned int
@@ -8,7 +52,7 @@ C:\Users\trand\source\repos\Box2D_SFML1\Box2D_SFML1\main.cpp(131,112): warning C
           [
               T=float
           ]
-C:\Users\trand\source\repos\Box2D_SFML1\Box2D_SFML1\main.cpp(131,83): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(240,86): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=unsigned int
@@ -17,49 +61,65 @@ C:\Users\trand\source\repos\Box2D_SFML1\Box2D_SFML1\main.cpp(131,83): warning C4
           [
               T=float
           ]
-  CExample.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(261,113): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(261,84): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  CInputField.cpp
+  CMainMenu.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CMainMenu.cpp(134,106): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  CSceneManager.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  CThallic.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  GUI.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(49,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(57,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(70,76): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(83,72): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+  ICubemon.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  IEntity.cpp
+  IScene.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  ParticleSystem.cpp
+  Player.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  TextureMaster.cpp
+  Tile.cpp
+  WorldManager.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\WorldManager.cpp(109,102): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  main.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\ICubemon.h(35,64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Generating Code...
-box2d-d.lib(b2_broad_phase.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_broad_phase.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_chain_shape.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_chain_shape.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_collide_circle.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_collide_circle.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_collide_edge.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_collide_edge.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_collide_polygon.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_collide_polygon.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_collision.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_collision.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_distance.obj) : warning LNK4099: PDB '' was not found with 'box2d-d.lib(b2_distance.obj)' or at ''; linking object as if no debug info
-box2d-d.lib(b2_dynamic_tree.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_dynamic_tree.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_edge_shape.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_edge_shape.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_polygon_shape.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_polygon_shape.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_time_of_impact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_time_of_impact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_block_allocator.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_block_allocator.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_draw.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_draw.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_math.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_math.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_settings.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_settings.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_stack_allocator.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_stack_allocator.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_timer.obj) : warning LNK4099: PDB '' was not found with 'box2d-d.lib(b2_timer.obj)' or at ''; linking object as if no debug info
-box2d-d.lib(b2_body.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_body.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_chain_circle_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_chain_circle_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_chain_polygon_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_chain_polygon_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_circle_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_circle_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_contact.obj) : warning LNK4099: PDB '' was not found with 'box2d-d.lib(b2_contact.obj)' or at ''; linking object as if no debug info
-box2d-d.lib(b2_contact_manager.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_contact_manager.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_contact_solver.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_contact_solver.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_distance_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_distance_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_edge_circle_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_edge_circle_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_edge_polygon_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_edge_polygon_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_fixture.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_fixture.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_friction_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_friction_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_gear_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_gear_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_island.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_island.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_motor_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_motor_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_mouse_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_mouse_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_polygon_circle_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_polygon_circle_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_polygon_contact.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_polygon_contact.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_prismatic_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_prismatic_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_pulley_joint.obj) : warning LNK4099: PDB '' was not found with 'box2d-d.lib(b2_pulley_joint.obj)' or at ''; linking object as if no debug info
-box2d-d.lib(b2_revolute_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_revolute_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_weld_joint.obj) : warning LNK4099: PDB '' was not found with 'box2d-d.lib(b2_weld_joint.obj)' or at ''; linking object as if no debug info
-box2d-d.lib(b2_wheel_joint.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_wheel_joint.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_world.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_world.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-box2d-d.lib(b2_world_callbacks.obj) : warning LNK4099: PDB 'box2d.pdb' was not found with 'box2d-d.lib(b2_world_callbacks.obj)' or at 'C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\box2d.pdb'; linking object as if no debug info
-  Box2D_SFML1.vcxproj -> C:\Users\trand\source\repos\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe
+  Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

@@ -1,6 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-class ParticleSystem : public sf::Drawable, public sf::Transformable
+
+#include "NumptyBehavior.h"
+
+class ParticleSystem : public sf::Drawable, public sf::Transformable, NumptyBehavior
 {
 public:
 	ParticleSystem(int _count, sf::Time _lifeTime, sf::Color _color) : 
