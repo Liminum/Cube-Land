@@ -16,9 +16,9 @@
 #ifndef _BUTTONS_H__
 #define _BUTTONS_H__
 
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
-class CButtons : public MonoBehavior
+class CButtons : public NumptyBehavior
 {
 public:
 	enum STATE

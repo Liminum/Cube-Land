@@ -6,59 +6,29 @@ Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, AudioManager* _
 	m_World = &_world;
 	m_AudioManager = _audiomanager;
 	m_TextureMaster = _texturemaster;
-
-	m_ParticleSystem = new ParticleSystem(200, sf::seconds(.4f), sf::Color(126, 232, 228, 255));
-
-	m_PlayerTexture.loadFromFile("Resources/Images/Player.png");
-	m_Shape.setTexture(m_PlayerTexture, true);
-	m_Shape.setOrigin(m_Shape.getGlobalBounds().width / 2, m_Shape.getGlobalBounds().height / 2);
-
-	CreateBody(0, -100, b2_dynamicBody);
 }
 
 Player::~Player()
 {
-	m_Projectiles.clear();
+	CleanupCubemon();
+	DestoryShape();
 	DestroyBody();
+	DeletePointer(m_ParticleSystem);
+	m_ParticleSystem = nullptr;
 	m_AudioManager = nullptr;
 	m_RenderWindow = nullptr;
 	m_World = nullptr;
-	m_Projectile = nullptr;
-	if (m_Staff != nullptr)
-	{
-		delete m_Staff;
-	}
-	m_Staff = nullptr;
-	m_ParticleSystem = nullptr;
-	m_TextureMaster = nullptr;
+	m_TextureMaster = nullptr; 
 }
 
 void Player::Start()
 {
-	// Resetting output txt doc
-	std::ofstream out_file;
-	out_file.open("Resources/Output/FirstEmptyInventorySlot.txt");
+	CreateShape();
+	LoadSpriteTexture(LoadTexture(&m_PlayerTexture, "Player.png", false), m_Shape);
 
-	if (out_file.is_open())
-	{
-		out_file.clear();
-		out_file << 0 << std::endl;
-		out_file.close();
-	}
-	else
-	{
-		std::cout << "OutPut File Not Open!" << std::endl;
-	}
+	CreateBody(0, -100, b2_dynamicBody);
 
-	for (int i = 0; i < 9; i++)
-	{
-		m_InventoryMap[i];
-	}
-
-	// Debug Add Staff
-	m_Staff = new Staff();
-	AddItemToInventory(m_Staff, false);
-	m_Staff = nullptr;
+	AddCubemon(new CThallic(m_RenderWindow, m_World, sf::Vector2f(0, -400)));
 }
 
 void Player::Update(sf::Vector2f _mousepos)
@@ -68,37 +38,6 @@ void Player::Update(sf::Vector2f _mousepos)
 	Movement();
 
 	SetShapeToB2Body();
-
-	if (m_Staff != nullptr)
-	{
-		Attack(Projectile::PROJECTILETYPE::PLAYERBASICATTACK);
-		m_Staff->Update();
-		m_Staff->FlipSprite(m_Shape.getPosition(), m_Shape);
-	}
-	else
-	{
-		delete m_Staff;
-		m_Staff = nullptr;
-	}
-
-	// Items
-	for (std::map<int, Item>::iterator iit = m_InventoryMap.begin(); iit != m_InventoryMap.end(); iit++)
-	{
-		// Player Selects Bow
-		if (iit->first == m_CurrentItemIndex && iit->second.m_Type == Item::ITEMTYPE::STAFF && m_Staff == nullptr)
-		{
-			std::cout << "New Bow Created!" << std::endl;
-			m_Staff = new Staff(m_RenderWindow, m_Shape.getPosition().x, m_Shape.getPosition().y);
-			iit->second.m_bIsItemSelected = false;
-		}
-
-		// Player Unselects Bow
-		else if ((m_Staff != nullptr && m_CurrentItemIndex != iit->first && iit->second.m_Type == Item::ITEMTYPE::STAFF))
-		{
-			delete m_Staff;
-			m_Staff = nullptr;
-		}
-	}
 
 	for (b2Contact* contact = m_World->GetContactList(); contact; contact = contact->GetNext())
 	{
@@ -122,26 +61,6 @@ void Player::Update(sf::Vector2f _mousepos)
 		b = nullptr;
 	}
 
-	for (Projectile& projectile : m_Projectiles)
-	{
-		projectile.Update();
-	}
-
-	std::list<Projectile>::iterator pit = m_Projectiles.begin();
-	while (pit != m_Projectiles.end())
-	{
-		if (pit->m_MARKASDESTROY)
-		{
-			pit->m_MARKASDESTROY = false;
-			pit = m_Projectiles.erase(pit);
-			break;
-		}
-		pit++;
-	}
-
-	sf::Time elapsedtime = m_ParticleClock.getElapsedTime();
-	m_ParticleSystem->Update(elapsedtime);
-
 	if (m_ManaRegen.getElapsedTime().asSeconds() >= m_ManaRegenFrequency)
 	{
 		if (GetCurrentMana() < m_MaxMana)
@@ -150,23 +69,15 @@ void Player::Update(sf::Vector2f _mousepos)
 			m_ManaRegen.restart();
 		}
 	}
+
+	UpdateCubemon();
 }
 
 void Player::Render(sf::Shader* _defaultshader)
 {
-	m_RenderWindow->draw(m_Shape, _defaultshader);
-	
-	for (Projectile& projectile : m_Projectiles)
-	{
-		m_RenderWindow->draw(projectile.m_Shape, _defaultshader);
-	}
-	
-	if (m_Staff != nullptr)
-	{
-		m_Staff->Render(_defaultshader);
-	}
+	RenderCubemon();
 
-	m_RenderWindow->draw(*m_ParticleSystem, _defaultshader);
+	RenderSpritePointer(m_RenderWindow, m_Shape);
 }
 
 void Player::PollMovement(sf::Event& _event)
@@ -182,253 +93,28 @@ void Player::Movement()
 	float x = 0.f;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
-		m_Shape.setScale(-1, 1);
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
 		x = -1.f;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		m_Shape.setScale(1, 1);
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(1, 1);
+		}
 		x = 1.f;
 	}
 	m_Velocity = b2Vec2(x, 0);
 	m_Body->ApplyLinearImpulseToCenter(m_iMovementSpeed/2 * m_Velocity, true);
-	b2Vec2 worldposition = { m_Shape.getPosition().x, m_Shape.getPosition().y };
+	b2Vec2 worldposition = { m_Shape->getPosition().x, m_Shape->getPosition().y };
 	float Mag = sqrt((m_Body->GetLinearVelocityFromWorldPoint(worldposition).x * m_Body->GetLinearVelocityFromWorldPoint(worldposition).x));
 	if(Mag > m_iMovementSpeed)
 	{
 		m_Body->ApplyLinearImpulseToCenter(-1 *(m_iMovementSpeed * m_Velocity), true);
 	}
-}
-
-void Player::Attack(Projectile::PROJECTILETYPE _type)
-{
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_AttackTimer.getElapsedTime().asSeconds() >= 0.5f)
-	{
-		switch (_type)
-		{
-		case Projectile::PROJECTILETYPE::PLAYERBASICATTACK:
-		{
-			if (GetCurrentMana() >= 4.f)
-			{
-				m_Projectile = new Projectile(Projectile::PROJECTILETYPE::PLAYERBASICATTACK, sf::Vector2f(m_Shape.getPosition().x, m_Shape.getPosition().y - 50), *m_World, m_MousePos, m_TextureMaster);
-				SetCurrentMana(GetCurrentMana() - m_Projectile->m_ManaCost);
-				m_Projectiles.push_back(*m_Projectile);
-				m_Projectile = nullptr;
-				m_AttackTimer.restart();
-				m_ParticleClock.restart();
-				m_AudioManager->FireBow();
-
-				// if player is facing left then create the particle emitter on the left
-				if (m_Shape.getScale().x < 0)
-				{
-					m_ParticleSystem->SetEmitter(sf::Vector2f(m_Shape.getPosition().x - 85, m_Shape.getPosition().y - 10));
-				}
-				// else the player is facing right so create the particle emitter on the right
-				else
-				{
-					m_ParticleSystem->SetEmitter(sf::Vector2f(m_Shape.getPosition().x + 85, m_Shape.getPosition().y - 10));
-				}
-			}
-
-			break;
-		}
-		default:
-		{
-			break;
-		}
-		}
-	}
-}
-
-void Player::AddItemToInventory(Item* _item, bool _bCanStack)
-{
-	if (_bCanStack)
-	{
-		if (IsItemInInventory(_item))
-		{
-		}
-		else
-		{
-			// Reading From File??
-			std::string line;
-			std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
-			myfile.is_open();
-			int firstEmpty;
-			myfile >> firstEmpty;
-
-			m_RenderWindow->mapCoordsToPixel(_item->GetShape().getPosition());
-			if (m_InventorySize < 9)
-			{
-				m_InventorySize++;
-				// increase number of that type
-				m_InventoryStackValues[firstEmpty]++;
-				_item->m_PositionInInventory = firstEmpty;
-				m_InventoryMap.insert_or_assign(firstEmpty, *_item);
-			}
-			else
-			{
-				std::cout << "Inventory Full! : " << m_InventorySize << std::endl;
-			}
-
-			myfile.close();
-		}
-	}
-	else
-	{
-		// Reading From File??
-		std::string line;
-		std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
-		myfile.is_open();
-		int firstEmpty;
-		myfile >> firstEmpty;
-
-		m_RenderWindow->mapCoordsToPixel(_item->GetShape().getPosition());
-		if (m_InventorySize < 9)
-		{
-			m_InventorySize++;
-			// increase number of that type
-			m_InventoryStackValues[firstEmpty]++;
-			_item->m_PositionInInventory = firstEmpty;
-			m_InventoryMap.insert_or_assign(firstEmpty, *_item);
-		}
-		else
-		{
-			std::cout << "Inventory Full! : " << m_InventorySize << std::endl;
-		}
-		myfile.close();
-	}
-	_item = nullptr;
-}
-
-void Player::AddItemToInventory(Item* _item, int _amount, bool _bCanStack)
-{
-	if (_bCanStack)
-	{
-		if (IsItemInInventory(_item, _amount))
-		{
-		}
-		else
-		{
-			// Reading From File??
-			std::string line;
-			std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
-			myfile.is_open();
-			int firstEmpty;
-			myfile >> firstEmpty;
-
-			m_RenderWindow->mapCoordsToPixel(_item->GetShape().getPosition());
-			
-			if (m_InventorySize < 9)
-			{
-				m_InventorySize++;
-				// increase number of that type
-				for (int i = 0; i < _amount; i++)
-				{
-					++m_InventoryStackValues[firstEmpty];
-				}
-				_item->m_PositionInInventory = firstEmpty;
-				m_InventoryMap.insert_or_assign(firstEmpty, *_item);
-			}
-			else
-			{
-				std::cout << "Inventory Full! : " << m_InventorySize << std::endl;
-			}
-			myfile.close();
-		}
-	}
-	else
-	{
-		// Reading From File??
-		std::string line;
-		std::ifstream myfile("Resources/Output/FirstEmptyInventorySlot.txt");
-		myfile.is_open();
-		int firstEmpty;
-		myfile >> firstEmpty;
-
-		m_RenderWindow->mapCoordsToPixel(_item->GetShape().getPosition());
-		for (int i = 0; i < _amount; i++)
-		{
-			if (m_InventorySize < 9)
-			{
-				m_InventorySize++;
-				// increase number of that type
-				m_InventoryStackValues[firstEmpty + i]++;
-				_item->m_PositionInInventory = firstEmpty + i;
-				m_InventoryMap.insert_or_assign(firstEmpty + i, *_item);
-			}
-			else
-			{
-				std::cout << "Inventory Full! : " << m_InventorySize << std::endl;
-			}
-
-		}
-		myfile.close();
-	}
-	_item = nullptr;
-}
-
-bool Player::IsItemInInventory(Item* _item)
-{
-	std::map<int, Item>::iterator it;
-	for (it = m_InventoryMap.begin(); it != m_InventoryMap.end(); it++)
-	{
-		if (it->second.m_Type == _item->m_Type)
-		{
-			// increase number of that type
-			m_InventoryStackValues[it->first]++;
-			delete _item;
-			_item = nullptr;
-			return true;
-		}
-	}
-	return false;
-}
-
-bool Player::IsItemInInventory(Item* _item, int _amount)
-{
-	std::map<int, Item>::iterator it;
-	for (it = m_InventoryMap.begin(); it != m_InventoryMap.end(); it++)
-	{
-		if (it->second.m_Type == _item->m_Type)
-		{
-			// increase number of that type
-			for (int i = 0; i < _amount; i++)
-			{
-				++m_InventoryStackValues[it->first];
-			}
-			MonoBehavior::DeletePointer(_item);
-			return true;
-		}
-	}
-	return false;
-}
-
-void Player::RemoveItemFromInventory(int _pos)
-{
-	std::map<int, Item>::iterator it = m_InventoryMap.begin();
-
-	while (it != m_InventoryMap.end())
-	{
-		if (it->first == _pos)
-		{
-			it->second.m_PositionInInventory = -1;
-			it = m_InventoryMap.erase(it);
-
-			return;
-		}
-		it++;
-	}
-}
-
-b2Body* Player::GetBody()
-{
-	return m_Body;
-}
-
-void Player::TogglebInventoryOpen()
-{
-	m_bInventoryOpen = !m_bInventoryOpen;
-	std::cout << m_bInventoryOpen << std::endl;
 }
 
 void Player::SetCurrentMana(float _mana)
@@ -445,8 +131,40 @@ void Player::TakeDamage(float _damage)
 {
 	if (m_DamageTakenTimer.getElapsedTime().asSeconds() >= 0.3f)
 	{
-		SetCurrentHealth(GetCurrentHealth() - _damage);
+		for (int i = 0; i < _damage; i++)
+		{
+			if (m_CurrentHealth > 1)
+			{
+				m_CurrentHealth--;
+			}
+			else
+			{
+				m_MARKASDESTROY = true;
+				break;
+			}
+		}
 		std::cout << "Damage Taken : " << _damage << std::endl;
+		std::cout << "Current Health : " << GetCurrentHealth() << std::endl;
+		m_DamageTakenTimer.restart();
+	}
+}
+
+void Player::Heal(float _amount)
+{
+	if (m_DamageTakenTimer.getElapsedTime().asSeconds() >= 0.3f)
+	{
+		for (int i = 0; i < _amount; i++)
+		{
+			if (m_CurrentHealth < m_MaxHealth && m_CurrentHealth > 0)
+			{
+				m_CurrentHealth++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		std::cout << "Player Healed!" << std::endl;
 		std::cout << "Current Health : " << GetCurrentHealth() << std::endl;
 		m_DamageTakenTimer.restart();
 	}
@@ -462,12 +180,34 @@ float Player::GetCurrentHealth()
 	return m_CurrentHealth;
 }
 
-sf::Sprite Player::GetShape()
+void Player::AddCubemon(ICubemon* _cubeMon)
 {
-	return m_Shape;
+	m_CubemonVector.push_back(_cubeMon);
+	_cubeMon = nullptr;
 }
 
-Staff* Player::GetStaff()
+void Player::UpdateCubemon()
 {
-	return m_Staff;
+	for (auto& cubemon : m_CubemonVector)
+	{
+		cubemon->Update();
+	}
+}
+
+void Player::RenderCubemon()
+{
+	for (auto& cubemon : m_CubemonVector)
+	{
+		cubemon->Render();
+	}
+}
+
+void Player::CleanupCubemon()
+{
+	for (auto& pointer : m_CubemonVector)
+	{
+		DeletePointer(pointer);
+		pointer = nullptr;
+	}
+	m_CubemonVector.erase(std::remove(m_CubemonVector.begin(), m_CubemonVector.end(), nullptr), m_CubemonVector.end());
 }

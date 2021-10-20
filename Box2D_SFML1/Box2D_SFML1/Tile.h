@@ -2,34 +2,34 @@
 #ifndef _TILE_H__
 #define _TILE_H__
 
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
-class Tile : public MonoBehavior
+class Tile : public NumptyBehavior
 {
 public:
-	Tile();
 	Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _texture, sf::Vector2f _position, sf::Vector2f _size);
 	virtual ~Tile();
 
 	virtual void Update();
 	virtual void Render();
 
-	virtual void CreateBody(float _posX, float _posY, b2BodyType _type, bool _collision, bool _sensor = false);
+	void CreateShape();
+	void DestroyShape();
 	virtual void CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _sensor = false);
 	void DestroyBody();
 
-	sf::Sprite GetShape();
+	sf::Sprite* GetShape();
 
 protected:
-	
-	bool m_bHasCollision = false;
+	void SetShapeToB2Body();
+
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	
 	sf::Texture* m_Texture = nullptr;
-	sf::Sprite m_Shape;
-	b2BodyDef m_BodyDef;
-	b2PolygonShape m_b2pShape;
-	b2FixtureDef m_FixtureDef;
+	sf::Sprite* m_Shape = nullptr;
+	b2BodyDef* m_BodyDef = nullptr;
+	b2PolygonShape* m_b2pShape = nullptr;
+	b2FixtureDef* m_FixtureDef = nullptr;
 	b2Body* m_Body = nullptr;
 	b2World* m_World = nullptr;
 };

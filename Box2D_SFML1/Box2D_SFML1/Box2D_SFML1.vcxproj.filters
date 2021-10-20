@@ -19,9 +19,6 @@
     <Filter Include="Header Files\Handlers">
       <UniqueIdentifier>{d7534fe6-69e6-48aa-9b65-c3d3c1ffae0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Items">
-      <UniqueIdentifier>{ee5c413b-37fb-44dc-bbd9-8d151d6c5ec1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{b58d8604-03a7-4f16-8da9-5751cacadf55}</UniqueIdentifier>
     </Filter>
@@ -37,11 +34,32 @@
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{d4ae2fb9-1635-49a9-81a7-9f66324d13b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Items">
-      <UniqueIdentifier>{7c9d797f-fdc5-4336-8a38-1bc2d5f6edc6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{0d769953-cc7b-4b1c-9153-be25d8f908f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{0ad656ad-7400-4d73-9ca8-8b6d8b43a677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{de194c76-a580-4da8-8f39-9bfc71c9005b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\Abstract">
+      <UniqueIdentifier>{aeaff36a-4610-4e89-9fce-3b03edebad0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\Abstract">
+      <UniqueIdentifier>{285deab1-3504-4244-b881-84f2e16a852f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Cubemon">
+      <UniqueIdentifier>{82533de2-36e9-48ef-877d-1664a6b0706c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Cubermon">
+      <UniqueIdentifier>{546bdb8b-8101-49fc-8d4c-e12da9d53c28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Enemies">
+      <UniqueIdentifier>{ce40b45e-7432-4f0e-b38c-ba54a68e13a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Enemies">
+      <UniqueIdentifier>{7aff03b9-9853-4450-9b3c-0f67310d6065}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,21 +78,6 @@
     <ClCompile Include="TextureMaster.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="LumberPile.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Staff.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="StonePile.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
@@ -82,9 +85,6 @@
       <Filter>Source Files\World</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
     <ClCompile Include="CMainMenu.cpp">
@@ -96,20 +96,29 @@
     <ClCompile Include="CInputField.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="IScene.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="CGameScene.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneManager.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="CEntity.cpp">
+    <ClCompile Include="IEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="CContactListener.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CDebugWindow.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.cpp">
+      <Filter>Source Files\Scenes\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="ICubemon.cpp">
+      <Filter>Source Files\Entities\Cubermon</Filter>
+    </ClCompile>
+    <ClCompile Include="CThallic.cpp">
+      <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +126,6 @@
       <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
@@ -130,21 +136,6 @@
     </ClInclude>
     <ClInclude Include="AudioManager.h">
       <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="StonePile.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Staff.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="LumberPile.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\GUI</Filter>
@@ -161,23 +152,35 @@
     <ClInclude Include="CInputField.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="IScene.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameScene.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneManager.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="MonoBehavior.h">
+    <ClInclude Include="NumptyBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CEntity.h">
+    <ClInclude Include="IEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="CContactListener.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CDebugWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>Header Files\Scenes\Abstract</Filter>
+    </ClInclude>
+    <ClInclude Include="ICubemon.h">
+      <Filter>Header Files\Entities\Cubemon</Filter>
+    </ClInclude>
+    <ClInclude Include="CINIParser.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CThallic.h">
+      <Filter>Header Files\Entities\Cubemon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

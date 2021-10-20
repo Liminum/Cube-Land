@@ -2,9 +2,9 @@
 #ifndef _AUDIOMANAGER_H__
 #define _AUDIOMANAGER_H__
 
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
-class AudioManager : public MonoBehavior
+class AudioManager : public NumptyBehavior
 {
 public:
 

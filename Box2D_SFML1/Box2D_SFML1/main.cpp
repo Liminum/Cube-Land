@@ -4,8 +4,7 @@
 // Forward Declaration
 void Start();
 void Update();
-
-void Render(sf::Shader* _defaultshader = NULL);
+void Render();
 
 void CreateRenderWindow(sf::Uint32 _style);
 void CleanupAllPointers();
@@ -57,12 +56,14 @@ void Update()
 	}
 }
 
-void Render(sf::Shader* _defaultshader)
+void Render()
 {
 	m_RenderWindow->clear();
-	
+	//
+
 	m_SceneManager->Render();
 
+	//
 	m_RenderWindow->display();
 }
 
@@ -78,18 +79,18 @@ void CreateRenderWindow(sf::Uint32 _style)
 	m_Settings.antialiasingLevel = 8;
 
 	m_RenderWindow->create(sf::VideoMode(1920, 1080), "Cube Land", _style, m_Settings);
-	m_RenderWindow->setVerticalSyncEnabled(false);
 	m_RenderWindow->setFramerateLimit(60);
+	m_RenderWindow->setVerticalSyncEnabled(true);
 	m_RenderWindow->setKeyRepeatEnabled(false);
-	m_RenderWindow->setMouseCursorVisible(false);
+	m_RenderWindow->setMouseCursorVisible(true);
 }
 
 void CleanupAllPointers()
 {
-	MonoBehavior::DeletePointer(m_SceneManager);
+	NumptyBehavior::DeletePointer(m_SceneManager);
 	m_SceneManager = nullptr;
-	MonoBehavior::DeletePointer(m_TextureMaster);
+	NumptyBehavior::DeletePointer(m_TextureMaster);
 	m_TextureMaster = nullptr;
-	MonoBehavior::DeletePointer(m_RenderWindow);
+	NumptyBehavior::DeletePointer(m_RenderWindow);
 	m_RenderWindow = nullptr;
 }

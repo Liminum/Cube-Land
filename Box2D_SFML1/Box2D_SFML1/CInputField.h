@@ -16,9 +16,9 @@
 #ifndef _INPUTFIELD_H__
 #define _INPUTFIELD_H__
 
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
-class CInputField : public MonoBehavior
+class CInputField : public NumptyBehavior
 {
 public:
 	std::string m_Label; // Button Label

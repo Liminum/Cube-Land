@@ -2,20 +2,21 @@
 
 #include "CGameScene.h"
 
-class CSceneManager
+class CSceneManager : NumptyBehavior
 {
 public:
 	CSceneManager(sf::RenderWindow* _renderWindow, sf::Event& _event, TextureMaster* _textureMaster);
-	~CSceneManager();
+	virtual ~CSceneManager();
 
-	void Start();
-	void Update();
-	void PolledUpdate();
-	void Render();
+	virtual void Start();
+	virtual void Update();
+	virtual void PolledUpdate();
+	virtual void Render();
 
 	void CheckForPlayerMARKASDESTROY();
 
 private:
+	std::queue<CGameScene> m_Scenes = {};
 	CGameScene* m_Scene = nullptr;
 
 	sf::RenderWindow* m_RenderWindow = nullptr;

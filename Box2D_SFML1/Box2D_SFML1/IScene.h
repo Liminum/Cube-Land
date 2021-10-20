@@ -3,16 +3,12 @@
 #include "WorldManager.h"
 #include "GUI.h"
 
-class IScene : public MonoBehavior
+class IScene : public NumptyBehavior
 {
 public:
-	virtual void Start() = 0;
-	virtual void Update() = 0;
-	virtual void PolledUpdate() = 0;
+	virtual ~IScene() {}
 
 protected:
-	virtual void Render() = 0;
-
 	virtual void CleanupAllPointers();
 
 	sf::RenderWindow* m_RenderWindow = nullptr;

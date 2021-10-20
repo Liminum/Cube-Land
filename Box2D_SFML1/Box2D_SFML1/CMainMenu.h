@@ -19,7 +19,7 @@
 // Local Includes
 #include "CButtons.h"
 
-class CMainMenu : public sf::Drawable, sf::Transformable, MonoBehavior
+class CMainMenu : public sf::Drawable, sf::Transformable, NumptyBehavior
 {
 public:
 	CMainMenu(sf::RenderWindow* _renderWindow, sf::Font& _font, std::string _bgPath);

@@ -32,9 +32,9 @@ CMainMenu::CMainMenu(sf::RenderWindow* _renderWindow, sf::Font& _font, std::stri
 /// </summary>
 CMainMenu::~CMainMenu()
 {
-    delete m_Play;
-    delete m_Options;
-    delete m_Exit;
+    DeletePointer(m_Play);
+    DeletePointer(m_Options);
+    DeletePointer(m_Exit);
     m_Play = nullptr;
     m_Options = nullptr;
     m_Exit = nullptr;

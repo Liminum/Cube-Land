@@ -1,5 +1,5 @@
 #pragma once
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
 struct MyContact 
 {
@@ -11,7 +11,7 @@ struct MyContact
     }
 };
 
-class CContactListener : MonoBehavior, public b2ContactListener
+class CContactListener : NumptyBehavior, public b2ContactListener
 {
 public:
     CContactListener();

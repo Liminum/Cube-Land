@@ -3,7 +3,7 @@
 #include "IScene.h"
 #include "CContactListener.h";
 
-class CGameScene : IScene
+class CGameScene : public IScene
 {
 public:
 	CGameScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event);
@@ -28,13 +28,11 @@ private:
 	void InitGameOver();
 	void GameOverScreen();
 
-	void CenterViewTo(sf::Sprite _object);
+	void CenterViewTo(sf::Sprite* _object);
 	void InitUIView();
 	void InitView();
 
 	virtual void CleanupAllPointers();
-
-	void HandleContacts();
 
 	b2World* m_World = nullptr;
 	Player* m_Player = nullptr;

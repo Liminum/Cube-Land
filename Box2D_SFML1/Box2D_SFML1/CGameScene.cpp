@@ -27,8 +27,6 @@ void CGameScene::Start()
 	m_Player->Start();
 	m_WorldManager->Start(m_AudioManager);
 	m_GUI->Start();
-	m_GUI->InitInventoryUI(m_Player);
-	m_GUI->InitHotBarScrolling(*m_Event, m_Player);
 
 	m_ContactListener = new CContactListener();
 	if (m_World != nullptr)
@@ -79,15 +77,20 @@ void CGameScene::PolledUpdate()
 				m_Player->PollMovement(*m_Event);
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
 				{
-					if (!m_GUI->bPlayerIsMovingItem(m_Player))
-					{
-						m_Player->TogglebInventoryOpen();
-						break;
-					}
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 				{
 					m_Player->m_MARKASDESTROY = true;
+					break;
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
+				{
+					m_Player->TakeDamage(25.0f);
+					break;
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageDown))
+				{
+					m_Player->Heal(25.0f);
 					break;
 				}
 			}
@@ -95,31 +98,22 @@ void CGameScene::PolledUpdate()
 			{
 				CreatePlayer();
 				m_Player->Start();
-				if (m_WorldManager != nullptr)
-				{
-					m_WorldManager->SetPlayer(m_Player);
-				}
 				break;
 			}
-		}
-		if (m_Event->type == sf::Event::MouseButtonPressed)
-		{
 
+			if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::N)
+			{
+				m_WorldManager->CleanupBlocks();
+				break;
+			}
+			else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::M)
+			{
+				m_WorldManager->CreateBasicBlocks();
+				break;
+			}
 		}
 		if (m_Event->type == sf::Event::MouseWheelScrolled)
 		{
-			if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
-			{
-				m_GUI->HotBarScrolling(*m_Event, m_Player);
-				break;
-			}
-		}
-		if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
-		{
-			m_GUI->ItemClicked(*m_Event, m_Player);
-
-			m_GUI->ItemDroppedInInventory(m_RenderWindow, m_UIView, m_View, *m_Event, m_Player);
-			break;
 		}
 	}
 }
@@ -132,17 +126,15 @@ void CGameScene::Render()
 
 	if (m_WorldManager != nullptr)
 	{
-		m_WorldManager->Render(defaultShader);
+		m_WorldManager->Render();
 	}
 	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
 	{
 		m_Player->Render();
 
 		// UI
-		//
 		m_RenderWindow->setView(m_UIView);
-
-		m_GUI->InventoryUI(m_RenderWindow, m_UIView, m_Player);
+		//
 		m_GUI->TimerUI();
 		m_GUI->HealthAndManaUI(m_RenderWindow, m_UIView, m_Player);
 		m_GUI->Render(m_Player);
@@ -159,46 +151,45 @@ void CGameScene::CheckForPlayerMARKASDESTROY()
 	{
 		if (m_Player->m_MARKASDESTROY)
 		{
-			delete m_Player;
+			NumptyBehavior::DeletePointer(m_Player);
 			m_Player = nullptr;
-			m_WorldManager->LosePlayer();
 		}
 	}
 }
 
 void CGameScene::CreateB2World()
 {
-	MonoBehavior::DeletePointer(m_WorldManager);
+	NumptyBehavior::DeletePointer(m_WorldManager);
 	m_WorldManager = nullptr;
-	MonoBehavior::DeletePointer(m_World);
+	NumptyBehavior::DeletePointer(m_World);
 	m_World = nullptr;
 	m_World = new b2World(m_Gravity);
 }
 
 void CGameScene::CreateWorldManager()
 {
-	MonoBehavior::DeletePointer(m_WorldManager);
+	NumptyBehavior::DeletePointer(m_WorldManager);
 	m_WorldManager = nullptr;
-	m_WorldManager = new WorldManager(m_RenderWindow,*m_World, m_TextureMaster, m_Player, WorldManager::LEVELTYPE::DEFAULT);
+	m_WorldManager = new WorldManager(m_RenderWindow,*m_World, m_TextureMaster, WorldManager::LEVELTYPE::DEFAULT);
 }
 
 void CGameScene::CreatePlayer()
 {
-	MonoBehavior::DeletePointer(m_Player);
+	DeletePointer(m_Player);
 	m_Player = nullptr;
 	m_Player = new Player(m_RenderWindow, *m_World, m_AudioManager, m_TextureMaster);
 }
 
 void CGameScene::CreateAudioManager()
 {
-	MonoBehavior::DeletePointer(m_AudioManager);
+	NumptyBehavior::DeletePointer(m_AudioManager);
 	m_AudioManager = nullptr;
 	m_AudioManager = new AudioManager;
 }
 
 void CGameScene::CreateGUI()
 {
-	MonoBehavior::DeletePointer(m_GUI);
+	NumptyBehavior::DeletePointer(m_GUI);
 	m_GUI = nullptr;
 	m_GUI = new GUI(m_RenderWindow, m_TextureMaster, m_Font);
 }
@@ -238,9 +229,9 @@ void CGameScene::GameOverScreen()
 	}
 }
 
-void CGameScene::CenterViewTo(sf::Sprite _object)
+void CGameScene::CenterViewTo(sf::Sprite* _object)
 {
-	m_View.setCenter(_object.getPosition());
+	m_View.setCenter(_object->getPosition());
 	m_RenderWindow->setView(m_View);
 }
 
@@ -251,15 +242,17 @@ void CGameScene::InitUIView()
 
 void CGameScene::CleanupAllPointers()
 {
+	NumptyBehavior::DeletePointer(m_Player);
+	m_Player = nullptr;
 	m_RenderWindow = nullptr;
-	MonoBehavior::DeletePointer(m_WorldManager);
+	NumptyBehavior::DeletePointer(m_WorldManager);
 	m_WorldManager = nullptr;
-	MonoBehavior::DeletePointer(m_GUI);
+	NumptyBehavior::DeletePointer(m_GUI);
 	m_GUI = nullptr;
-	MonoBehavior::DeletePointer(m_AudioManager);
+	NumptyBehavior::DeletePointer(m_AudioManager);
 	m_AudioManager = nullptr;
 	m_TextureMaster = nullptr;
-	MonoBehavior::DeletePointer(m_ContactListener);
+	NumptyBehavior::DeletePointer(m_ContactListener);
 	m_ContactListener = nullptr;
 }
 

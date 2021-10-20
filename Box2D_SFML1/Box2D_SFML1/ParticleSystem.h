@@ -1,8 +1,8 @@
 #pragma once
 
-#include "MonoBehavior.h"
+#include "NumptyBehavior.h"
 
-class ParticleSystem : public sf::Drawable, public sf::Transformable, MonoBehavior
+class ParticleSystem : public sf::Drawable, public sf::Transformable, NumptyBehavior
 {
 public:
 	ParticleSystem(int _count, sf::Time _lifeTime, sf::Color _color) : 
