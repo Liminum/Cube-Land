@@ -67,7 +67,7 @@ void GUI::HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Pl
 	
 	if (_player->GetCurrentHealth() > 0)
 	{
-		m_HealthSprite.setTextureRect(sf::IntRect(0, 0, _player->GetCurrentHealth(), m_HealthTexture.getSize().y));
+		m_HealthSprite.setTextureRect(sf::IntRect(0, 0, (int) _player->GetCurrentHealth(), m_HealthTexture.getSize().y));
 	}
 	else
 	{

@@ -56,7 +56,7 @@ public:
 	sf::Vector2f GetPosition();
 
 	void SetLabel(std::string _newLabel);
-	void SetLabel(std::string _newLabel, float _fontSize);
+	void SetLabel(std::string _newLabel, unsigned int _fontSize);
 	 
 	void SetState(std::string type);
 
@@ -66,7 +66,7 @@ public:
 	void SetIdleTex(sf::Texture _newTexture);
 	void SetClickTex(sf::Texture _newTexture);
 
-	void SetFontSize(float _size);
+	void SetFontSize(unsigned int _size);
 
 	inline sf::Texture GetHoverText()
 	{

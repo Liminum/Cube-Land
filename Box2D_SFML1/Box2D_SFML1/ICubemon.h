@@ -31,10 +31,10 @@ public:
 	virtual void Movement() = 0;
 	virtual void Attack() = 0;
 
-	virtual int TakeDamage(int _amount);
-	inline void SetCurrentHealth(int _amount) { m_CurrentHealth = _amount; }
+	virtual int TakeDamage(float _amount);
+	inline void SetCurrentHealth(float _amount) { m_CurrentHealth = _amount; }
 	inline float GetCurrentHealth() { return m_CurrentHealth; }
-	virtual int Heal(int _amount);
+	virtual int Heal(float _amount);
 
 	CUBEMONTYPE m_CubeType = CUBEMONTYPE::UNASSIGNED;
 

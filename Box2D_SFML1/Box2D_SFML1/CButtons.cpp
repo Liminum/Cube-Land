@@ -43,8 +43,8 @@ CButtons::CButtons(sf::RenderWindow* _renderWindow)
 	
 	// Set Button Texture To Idle
 	Sprite.setTexture(m_IdleTexture, true);
-	Sprite.setScale(0.3, 0.3);
-	m_tLabel.setScale(0.3, 0.3);
+	Sprite.setScale(0.3f, 0.3f);
+	m_tLabel.setScale(0.3f, 0.3f);
 
 	// Set Origin's
 	m_tLabel.setOrigin(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2);
@@ -175,7 +175,7 @@ void CButtons::SetLabel(std::string _newLabel)
 	Sprite.setOrigin(sf::Vector2f(Sprite.getGlobalBounds().width / 2, Sprite.getGlobalBounds().height / 2));
 }
 
-void CButtons::SetLabel(std::string _newLabel, float _fontSize)
+void CButtons::SetLabel(std::string _newLabel, unsigned int _fontSize)
 {
 	// Temp Creation
 	std::string oldLabel = m_Label;
@@ -317,7 +317,7 @@ void CButtons::SetClickTex(sf::Texture _newTexture)
 	m_ClickTexture = _newTexture;
 }
 
-void CButtons::SetFontSize(float _size)
+void CButtons::SetFontSize(unsigned int _size)
 {
 	m_tLabel.setCharacterSize(_size);
 }

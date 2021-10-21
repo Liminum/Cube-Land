@@ -2,7 +2,7 @@
 
 AudioManager::AudioManager()
 {
-    srand(time(NULL));
+    srand((unsigned) time(NULL));
 
     CreatePointers();
 

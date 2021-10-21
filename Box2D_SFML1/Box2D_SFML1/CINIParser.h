@@ -15,7 +15,7 @@ class CINIParser : NumptyBehavior
 			while (std::getline(file, currentLine))
 			{
 				// Settings Header
-				if (currentLine == "[Settings]")
+				if (currentLine.find("[Settings]"))
 				{
 					
 				}

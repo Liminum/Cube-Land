@@ -145,10 +145,19 @@ void CGameScene::Render()
 	m_RenderWindow->draw(m_GameOverText, defaultShader);
 }
 
-void CGameScene::CheckForPlayerMARKASDESTROY()
+void CGameScene::CheckForMARKASDESTROY()
 {
 	if (m_Player != nullptr)
 	{
+		for (auto& pointer : m_Player->GetCubemonVector())
+		{
+			if (pointer->m_MARKASDESTROY)
+			{
+				NumptyBehavior::DeletePointer(pointer);
+				pointer = nullptr;
+			}
+		}
+
 		if (m_Player->m_MARKASDESTROY)
 		{
 			NumptyBehavior::DeletePointer(m_Player);
@@ -224,8 +233,8 @@ void CGameScene::GameOverScreen()
 	}
 	else
 	{
-		m_FadeScreen.setFillColor(sf::Color(0, 0, 0, elapsedtime * 255));
-		m_GameOverText.setFillColor(sf::Color(255, 0, 0, elapsedtime * 255));
+		m_FadeScreen.setFillColor(sf::Color(0, 0, 0, (sf::Uint8) elapsedtime * 255));
+		m_GameOverText.setFillColor(sf::Color(255, 0, 0, (sf::Uint8) elapsedtime * 255));
 	}
 }
 
@@ -252,6 +261,7 @@ void CGameScene::CleanupAllPointers()
 	NumptyBehavior::DeletePointer(m_AudioManager);
 	m_AudioManager = nullptr;
 	m_TextureMaster = nullptr;
+	m_Event = nullptr;
 	NumptyBehavior::DeletePointer(m_ContactListener);
 	m_ContactListener = nullptr;
 }

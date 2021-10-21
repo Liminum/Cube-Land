@@ -8,6 +8,13 @@ class IScene : public NumptyBehavior
 public:
 	virtual ~IScene() {}
 
+	virtual void Start() {}
+	virtual void Update() {}
+	virtual void PolledUpdate() {}
+	virtual void Render() {}
+
+	virtual void CheckForMARKASDESTROY() {}
+
 protected:
 	virtual void CleanupAllPointers();
 

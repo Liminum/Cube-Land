@@ -25,9 +25,10 @@ public:
 	CMainMenu(sf::RenderWindow* _renderWindow, sf::Font& _font, std::string _bgPath);
 	virtual ~CMainMenu();
 
-	virtual void Start() = 0;
-	virtual void Update(sf::Event& _event, int* _gameState);
-	virtual void Render() = 0;
+	virtual void Start() {}
+	virtual void Update();
+	virtual void PolledUpdate(sf::Event& _event);
+	virtual void Render() {}
 
 	CButtons* m_Play;
 	CButtons* m_Options;
@@ -38,8 +39,6 @@ private:
 
 	virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states) const;
 
-	void LoadImageOntoSprite(sf::Sprite& _sprite, sf::Texture& _texture, std::string _filePath);
-
 	void CreateBackGroundImage(std::string _bgPath);
 	void CreateTitle();
 
@@ -48,7 +47,7 @@ private:
 
 	void CreateButtons();
 
-	void ButtonUpdates(int* _gameState);
+	void ButtonUpdates();
 
 	void RenderButtons(sf::RenderTarget& _target, sf::RenderStates _states) const;
 

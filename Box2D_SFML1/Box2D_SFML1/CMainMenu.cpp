@@ -55,19 +55,29 @@ void CMainMenu::Start(std::string _bgPath)
 /// CMainMenu Update
 /// </summary>
 /// <param name="_event"></param>
-void CMainMenu::Update(sf::Event& _event, int* _gameState)
+void CMainMenu::Update()
 {
     if (!m_bClose)
     {
         m_MousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow));
-
         RainbowTitle();
         ParralaxBackground();
-        ButtonUpdates(_gameState);
+        ButtonUpdates();
     }
     else if (m_bClose)
     {
         m_RenderWindow->close();
+    }
+}
+
+void CMainMenu::PolledUpdate(sf::Event& _event)
+{
+    while (m_RenderWindow->pollEvent(_event))
+    {
+        if (_event.type == sf::Event::Closed)
+        {
+            m_RenderWindow->close();
+        }
     }
 }
 
@@ -93,26 +103,11 @@ void CMainMenu::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 }
 
 /// <summary>
-/// Loads An image from the given file path onto the passed in texture. that texture is then passed
-/// into _sprite
-/// </summary>
-/// <param name="_sprite"></param>
-/// <param name="_texture"></param>
-/// <param name="_filePath"></param>
-void CMainMenu::LoadImageOntoSprite(sf::Sprite& _sprite, sf::Texture& _texture, std::string _filePath)
-{
-    _texture.loadFromFile(std::string("Resources/Images/") + _filePath);
-    _sprite.setTexture(_texture, true);
-    _texture.setRepeated(true);
-    _sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
-}
-
-/// <summary>
 /// Creates the background image
 /// </summary>
 void CMainMenu::CreateBackGroundImage(std::string _bgPath)
 {
-    LoadImageOntoSprite(m_MainMenuImage, m_MainMenuTexture, _bgPath);
+    LoadSpriteTexture(LoadTexture(&m_MainMenuTexture, _bgPath), &m_MainMenuImage);
     m_MainMenuImage.setPosition(m_RenderWindow->getView().getCenter());
     m_MainMenuImage.setScale(1.1f, 1.1f);
     m_MainMenuImage.setTextureRect(sf::IntRect(0, 0, m_MainMenuImage.getTexture()->getSize().x * 1000, m_MainMenuImage.getTexture()->getSize().y));
@@ -209,7 +204,7 @@ void CMainMenu::CreateButtons()
 /// <summary>
 /// Updates all buttons
 /// </summary>
-void CMainMenu::ButtonUpdates(int* _gameState)
+void CMainMenu::ButtonUpdates()
 {
     m_Play->Update();
     m_Options->Update();
@@ -219,7 +214,7 @@ void CMainMenu::ButtonUpdates(int* _gameState)
     {
         if (m_Play->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
         {
-            *_gameState = 1;
+
         }
         else if (m_Exit->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
         {

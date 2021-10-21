@@ -5,18 +5,17 @@ CSceneManager::CSceneManager(sf::RenderWindow* _renderWindow, sf::Event& _event,
 	m_RenderWindow = _renderWindow;
 	m_Event = &_event;
 	m_TextureMaster = _textureMaster;
+	m_ChangeScenes = false;
+
+	m_GameSceneQueue.push(*new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
+
+	//m_MainMenuSceneQueue.push(*new CMainMenuScene(m_RenderWindow, *m_Event));
 }
 
 CSceneManager::~CSceneManager()
 {
-	while (m_Scenes.size() > 0)
-	{
-		m_Scenes.pop();
-	}
-	std::queue<CGameScene>().swap(m_Scenes);
-
-	NumptyBehavior::DeletePointer(m_Scene);
-	m_Scene = nullptr;
+	CleanupGameScenes();
+	CleanupMainMenuScenes();
 
 	m_RenderWindow = nullptr;
 	m_TextureMaster = nullptr;
@@ -25,29 +24,91 @@ CSceneManager::~CSceneManager()
 
 void CSceneManager::Start()
 {
-	m_Scene = new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event);
-	m_Scenes.push(*m_Scene);
-	m_Scenes.front().Start();
+	if (m_MainMenuSceneQueue.size() > 0)
+	{
+		m_MainMenuSceneQueue.front().Start();
+	}
+	else
+	{
+		m_GameSceneQueue.front().Start();
+	}
 }
 
 void CSceneManager::Update()
 {
-	m_Scenes.front().Update();
+	if (m_MainMenuSceneQueue.size() > 0)
+	{
+		m_MainMenuSceneQueue.front().Update();
+	}
+	else
+	{
+		m_GameSceneQueue.front().Update();
+	}
 }
 
 void CSceneManager::PolledUpdate()
 {
-	m_Scenes.front().PolledUpdate();
+	if (m_MainMenuSceneQueue.size() > 0)
+	{
+		m_MainMenuSceneQueue.front().PolledUpdate();
+	}
+	else
+	{
+		m_GameSceneQueue.front().PolledUpdate();
+	}
 }
 
 void CSceneManager::Render()
 {
-	m_Scenes.front().Render();
+	if (m_MainMenuSceneQueue.size() > 0)
+	{
+		m_MainMenuSceneQueue.front().Render();
+	}
+	else
+	{
+		m_GameSceneQueue.front().Render();
+	}
 }
 
-void CSceneManager::CheckForPlayerMARKASDESTROY()
+void CSceneManager::ChangeScenes()
 {
+	if (m_ChangeScenes)
+	{
+		m_ChangeScenes = false;
 
-	m_Scenes.front().CheckForPlayerMARKASDESTROY();
+		if (m_MainMenuSceneQueue.size() > 0)
+		{
+			m_MainMenuSceneQueue.pop();
+			m_MainMenuSceneQueue.front().Start();
+		}
+		else
+		{
+			m_GameSceneQueue.pop();
+			m_GameSceneQueue.front().Start();
+		}
+	}
+}
 
+void CSceneManager::CheckForMARKASDESTROY()
+{
+	m_MainMenuSceneQueue.front().CheckForMARKASDESTROY();
+	m_GameSceneQueue.front().CheckForMARKASDESTROY();
+}
+
+void CSceneManager::CleanupGameScenes()
+{
+	while (m_GameSceneQueue.size() > 0)
+	{
+		m_GameSceneQueue.pop();
+	}
+	std::queue<CGameScene>().swap(m_GameSceneQueue);
+}
+
+void CSceneManager::CleanupMainMenuScenes()
+{
+	while (m_MainMenuSceneQueue.size() > 0)
+	{
+		m_MainMenuSceneQueue.pop();
+	}
+	std::queue<CMainMenuScene>().swap(m_MainMenuSceneQueue);
 }

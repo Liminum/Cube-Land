@@ -120,6 +120,9 @@
     <ClCompile Include="CThallic.cpp">
       <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
+    <ClCompile Include="CMainMenuScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WorldManager.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="CThallic.h">
       <Filter>Header Files\Entities\Cubemon</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

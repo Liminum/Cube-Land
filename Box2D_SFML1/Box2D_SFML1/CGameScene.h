@@ -9,12 +9,12 @@ public:
 	CGameScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event);
 	virtual ~CGameScene();
 
-	virtual void Start();
-	virtual void Update();
-	virtual void PolledUpdate();
-	virtual void Render();
+	void Start() override;
+	void Update() override;
+	void PolledUpdate() override;
+	void Render() override;
 
-	void CheckForPlayerMARKASDESTROY();
+	virtual void CheckForMARKASDESTROY();
 
 private:
 	void CreateB2World();

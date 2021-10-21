@@ -1,6 +1,6 @@
 #include "ICubemon.h"
 
-int ICubemon::TakeDamage(int _amount)
+int ICubemon::TakeDamage(float _amount)
 {
 	if (m_DamageTimer.getElapsedTime().asSeconds() >= 0.1f)
 	{
@@ -26,7 +26,7 @@ int ICubemon::TakeDamage(int _amount)
 	}
 }
 
-int ICubemon::Heal(int _amount)
+int ICubemon::Heal(float _amount)
 {
 	if (m_DamageTimer.getElapsedTime().asSeconds() >= 0.1f)
 	{

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CGameScene.h"
+#include "CMainMenuScene.h"
 
 class CSceneManager : NumptyBehavior
 {
@@ -13,14 +14,21 @@ public:
 	virtual void PolledUpdate();
 	virtual void Render();
 
-	void CheckForPlayerMARKASDESTROY();
+	void ChangeScenes();
 
+	void CheckForMARKASDESTROY();
+
+	void CleanupGameScenes();
+	void CleanupMainMenuScenes();
 private:
-	std::queue<CGameScene> m_Scenes = {};
-	CGameScene* m_Scene = nullptr;
+
+	std::queue<CGameScene> m_GameSceneQueue = {};
+	std::queue<CMainMenuScene> m_MainMenuSceneQueue = {};
 
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	TextureMaster* m_TextureMaster = nullptr;
 	sf::Event* m_Event = nullptr;
+
+	bool m_ChangeScenes;
 };
 

@@ -140,6 +140,7 @@
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CContactListener.cpp" />
     <ClCompile Include="CDebugWindow.cpp" />
+    <ClCompile Include="CMainMenuScene.cpp" />
     <ClCompile Include="CThallic.cpp" />
     <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="CInputField.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
     <ClInclude Include="CDebugWindow.h" />
+    <ClInclude Include="CMainMenuScene.h" />
     <ClInclude Include="CThallic.h" />
     <ClInclude Include="IEntity.h" />
     <ClInclude Include="CINIParser.h" />

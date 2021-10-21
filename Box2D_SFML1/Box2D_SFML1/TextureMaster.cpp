@@ -10,7 +10,7 @@ TextureMaster::TextureMaster()
 	m_GrassTexture = new sf::Texture();
 	m_GrassTexture->setRepeated(true);
 
-	if (m_BackgroundTexture->loadFromFile("Resources/Images/OriBG.jpg"))
+	if (m_BackgroundTexture->loadFromFile("Resources/Images/Backgrounds/OriBG.jpg"))
 	{
 		std::cout << "Background Texture Loaded!" << std::endl;
 	}

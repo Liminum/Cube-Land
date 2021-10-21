@@ -52,7 +52,7 @@ void Update()
 		Render();
 
 		m_SceneManager->PolledUpdate();
-		m_SceneManager->CheckForPlayerMARKASDESTROY();
+		m_SceneManager->CheckForMARKASDESTROY();
 	}
 }
 
