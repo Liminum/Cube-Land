@@ -7,7 +7,7 @@
 class Tile : public NumptyBehavior
 {
 public:
-	Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _texture, sf::Vector2f _position, sf::Vector2f _size);
+	Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _texture, sf::Vector2f _position, sf::Vector2f _size, std::string _tileType = "Wall");
 	virtual ~Tile();
 
 	virtual void Update();

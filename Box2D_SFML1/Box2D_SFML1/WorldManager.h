@@ -2,6 +2,8 @@
 #ifndef _WORLDMANAGER_H__
 #define _WORLDMANAGER_H__
 
+#define INISIZE 40
+
 #include "NumptyBehavior.h"
 
 // Local Includes
@@ -12,18 +14,8 @@
 class WorldManager : public NumptyBehavior
 {
 public:
-	enum class LEVELTYPE
-	{
-		DEFAULT = 0,
-		FOREST,
-		SNOW,
-	};
-
-	WorldManager(sf::RenderWindow* _renderWindow, b2World& _world, TextureMaster* _texturemaster, LEVELTYPE _type = LEVELTYPE::DEFAULT);
+	WorldManager(sf::RenderWindow* _renderWindow, b2World& _world, TextureMaster* _texturemaste);
 	virtual ~WorldManager();
-
-	template <typename T> 
-	bool IsItemListBody(std::vector<T*>& _itemlist, b2Fixture* _bodyfixture);
 
 	virtual void Start(AudioManager* _audioManager);
 	virtual void Update();
@@ -31,32 +23,19 @@ public:
 
 	void InitBackground(sf::Texture& _texture); 
 
-	void CleanupBlocks();
-	void CreateBasicBlocks();
+	void ImportWorldFromINI();
+	void CleanupTiles();
 
-	std::vector<Tile*> m_Tiles = {}; // Tiles includes all Tile instances, including tile sub classes
 private:
-	LEVELTYPE m_Type;
-	TextureMaster* m_TextureMaster = nullptr;
+	void GrabTileTypes(std::vector<char>& _tileTypes);
+	void ProcessTileTypes(std::vector<char>& _tileTypes);
 
-	sf::RenderWindow* m_RenderWindow = nullptr;
+	std::vector<Tile*> m_Tiles = {};
 	Tile* m_Tile = nullptr;
+
+	TextureMaster* m_TextureMaster = nullptr;
+	sf::RenderWindow* m_RenderWindow = nullptr;
 	sf::Sprite* m_background = nullptr;
 	b2World* m_World = nullptr;
 };
 #endif
-
-template<typename T>
-inline bool WorldManager::IsItemListBody(std::vector<T*>& _itemlist, b2Fixture* _bodyfixture)
-{
-	typename std::vector<T*>::iterator it;
-	for (it = _itemlist.begin(); it != _itemlist.end(); it++)
-	{
-		if ((*it)->GetBody() == _bodyfixture->GetBody())
-		{
-			return true;
-		}
-
-	}
-	return false;
-}

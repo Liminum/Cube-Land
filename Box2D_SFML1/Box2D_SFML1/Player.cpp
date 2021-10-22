@@ -24,7 +24,8 @@ Player::~Player()
 void Player::Start()
 {
 	CreateShape();
-	LoadSpriteTexture(LoadTexture(&m_PlayerTexture, "Player.png", false), m_Shape);
+	LoadSpriteTexture(LoadTexture(&m_SpriteSheet, "Player/Player_SpriteSheett.png", false), m_Shape, true, false);
+	m_Shape->setScale(10, 10);
 
 	CreateBody(0, -100, b2_dynamicBody);
 
@@ -82,15 +83,24 @@ void Player::Render(sf::Shader* _defaultshader)
 
 void Player::PollMovement(sf::Event& _event)
 {
-	if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Key::W && m_bCanJump)
+	/*if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Key::W && m_bCanJump)
 	{
 		m_Body->ApplyLinearImpulseToCenter(b2Vec2(0,-m_JumpForce), true);
-	}
+	}*/
 }
 
 void Player::Movement()
 {
 	float x = 0.f;
+	float y = 0.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
+		y = -1.f;
+	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
 		if (m_Shape != nullptr)
@@ -98,6 +108,14 @@ void Player::Movement()
 			m_Shape->setScale(-1, 1);
 		}
 		x = -1.f;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
+		y = 1.f;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
@@ -107,14 +125,11 @@ void Player::Movement()
 		}
 		x = 1.f;
 	}
-	m_Velocity = b2Vec2(x, 0);
-	m_Body->ApplyLinearImpulseToCenter(m_iMovementSpeed/2 * m_Velocity, true);
-	b2Vec2 worldposition = { m_Shape->getPosition().x, m_Shape->getPosition().y };
-	float Mag = sqrt((m_Body->GetLinearVelocityFromWorldPoint(worldposition).x * m_Body->GetLinearVelocityFromWorldPoint(worldposition).x));
-	if(Mag > m_iMovementSpeed)
-	{
-		m_Body->ApplyLinearImpulseToCenter(-1 *(m_iMovementSpeed * m_Velocity), true);
-	}
+	m_Velocity = b2Vec2(x , y);
+
+	m_Body->SetLinearVelocity((float)m_iMovementSpeed * m_Velocity);
+
+	Animation(m_Velocity);
 }
 
 void Player::SetCurrentMana(float _mana)
@@ -202,6 +217,91 @@ void Player::RenderCubemon()
 	}
 }
 
+void Player::Animation(b2Vec2 _movementVector)
+{
+	bool _ignoreScale = false;
+	if (_movementVector.x > 0.1f)
+	{
+		if (m_Shape->getTextureRect().left != 0 && m_Shape->getTextureRect().left != 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+	}
+	else if (_movementVector.x < -0.1f)
+	{
+		_ignoreScale = true;
+		m_Shape->setScale(-m_SheetScale, m_SheetScale);
+		if (m_Shape->getTextureRect().left != 0 && m_Shape->getTextureRect().left != 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 14)
+		{
+			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+	}
+	else if (_movementVector.y < -0.1f)
+	{
+		if (m_Shape->getTextureRect().left != 28 && m_Shape->getTextureRect().left != 42)
+		{
+			m_Shape->setTextureRect(sf::IntRect(28, 0, 14, 16));
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 42)
+		{
+			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 42)
+		{
+			m_Shape->setTextureRect(sf::IntRect(28, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+	}
+	else if (_movementVector.y > 0.1f)
+	{
+		if (m_Shape->getTextureRect().left != 56 && m_Shape->getTextureRect().left != 70)
+		{
+			m_Shape->setTextureRect(sf::IntRect(56, 0, 14, 16));
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 70)
+		{
+			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 70)
+		{
+			m_Shape->setTextureRect(sf::IntRect(56, 0, 14, 16));
+			m_AnimationClock.restart();
+		}
+	}
+	else
+	{
+		m_Shape->setTextureRect(sf::IntRect(84, 0, 14, 16));
+	}
+
+	if (!_ignoreScale)
+	{
+		m_Shape->setOrigin(7, 8);
+		m_Shape->setScale(m_SheetScale, m_SheetScale);
+	}
+}
+
 void Player::CleanupCubemon()
 {
 	for (auto& pointer : m_CubemonVector)
@@ -210,4 +310,5 @@ void Player::CleanupCubemon()
 		pointer = nullptr;
 	}
 	m_CubemonVector.erase(std::remove(m_CubemonVector.begin(), m_CubemonVector.end(), nullptr), m_CubemonVector.end());
+
 }

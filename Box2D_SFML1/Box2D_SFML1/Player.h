@@ -35,6 +35,8 @@ public:
 	void RenderCubemon();
 
 private:
+	void Animation(b2Vec2 _movementVector);
+
 	void CleanupCubemon();
 	std::vector<ICubemon*> m_CubemonVector;
 
@@ -45,13 +47,17 @@ private:
 	float m_MaxMana = 100.0f;
 	float m_CurrentHealth = 100.0f;
 	float m_MaxHealth = 100.0f;
-	float m_iMovementSpeed = 50.0f;
+	float m_iMovementSpeed = 15.0f;
 	float m_JumpForce = 500.0f;
 	bool m_bCanJump = false;
 	sf::Clock m_ParticleClock;
 	b2Vec2 m_Velocity;
-	sf::Texture m_PlayerTexture;
 	sf::Vector2f m_MousePos;
+
+	sf::Texture m_SpriteSheet;
+	float m_SheetScale = 8;
+
+	sf::Clock m_AnimationClock;
 };
 
 #endif

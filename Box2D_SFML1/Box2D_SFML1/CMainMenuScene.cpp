@@ -34,6 +34,8 @@ void CMainMenuScene::Render()
 
 void CMainMenuScene::CleanupAllPointers()
 {
+	NumptyBehavior::DeletePointer(m_MainMenu);
+	m_MainMenu = nullptr;
 	m_RenderWindow = nullptr;
 	NumptyBehavior::DeletePointer(m_WorldManager);
 	m_WorldManager = nullptr;

@@ -103,12 +103,12 @@ void CGameScene::PolledUpdate()
 
 			if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::N)
 			{
-				m_WorldManager->CleanupBlocks();
+				m_WorldManager->CleanupTiles();
 				break;
 			}
 			else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::M)
 			{
-				m_WorldManager->CreateBasicBlocks();
+				m_WorldManager->ImportWorldFromINI();
 				break;
 			}
 		}
@@ -179,7 +179,7 @@ void CGameScene::CreateWorldManager()
 {
 	NumptyBehavior::DeletePointer(m_WorldManager);
 	m_WorldManager = nullptr;
-	m_WorldManager = new WorldManager(m_RenderWindow,*m_World, m_TextureMaster, WorldManager::LEVELTYPE::DEFAULT);
+	m_WorldManager = new WorldManager(m_RenderWindow,*m_World, m_TextureMaster);
 }
 
 void CGameScene::CreatePlayer()
@@ -269,5 +269,5 @@ void CGameScene::CleanupAllPointers()
 void CGameScene::InitView()
 {
 	m_View = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_RenderWindow->getSize().x, m_RenderWindow->getSize().y));
-	m_View.zoom(4.0f);
+	m_View.zoom(1.6f);
 }

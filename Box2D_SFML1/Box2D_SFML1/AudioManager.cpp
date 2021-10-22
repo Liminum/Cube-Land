@@ -53,7 +53,7 @@ void AudioManager::SlimeDamage(float _volume)
 
 void AudioManager::PlayMusic()
 {
-	m_Music->openFromFile("Resources/Audio/BackgroundMusic.wav");
+	m_Music->openFromFile("Resources/Audio/PokemonVillage.wav");
 	m_Music->setLoop(true);
 	m_Music->setVolume(10.0f);
 	m_Music->play();

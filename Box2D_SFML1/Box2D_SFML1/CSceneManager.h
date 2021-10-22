@@ -22,13 +22,16 @@ public:
 	void CleanupMainMenuScenes();
 private:
 
-	std::queue<CGameScene> m_GameSceneQueue = {};
-	std::queue<CMainMenuScene> m_MainMenuSceneQueue = {};
+	std::vector<CGameScene*> m_GameSceneVector = {};
+	std::vector<CMainMenuScene*> m_MainMenuSceneVector = {};
 
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	TextureMaster* m_TextureMaster = nullptr;
 	sf::Event* m_Event = nullptr;
 
-	bool m_ChangeScenes;
+	sf::Clock m_SceneTimer;
+	float m_SceneChangeDelay = 1.0f;
+
+	bool m_GameScene;
 };
 

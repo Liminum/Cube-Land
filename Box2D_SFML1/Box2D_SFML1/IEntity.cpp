@@ -28,8 +28,8 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 	m_BodyDef->position = b2Vec2(_posX / m_Scale, _posY / m_Scale);
 	m_BodyDef->type = _type;
 	m_BodyDef->fixedRotation = 1;
-	m_BodyDef->linearDamping = 0.4f;
-	m_BodyDef->gravityScale = 10;
+	m_BodyDef->linearDamping = 1.0f;
+	m_BodyDef->gravityScale = 0;
 	m_Body = m_World->CreateBody(m_BodyDef);
 
 	// Shape
@@ -43,7 +43,7 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 		m_FixtureDef->isSensor = true;
 	}
 	m_FixtureDef->density = 2.0f;
-	m_FixtureDef->friction = 1.0f;
+	m_FixtureDef->friction = 0.1f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
 	m_Body->CreateFixture(m_FixtureDef);

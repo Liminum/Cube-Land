@@ -5,11 +5,9 @@ CSceneManager::CSceneManager(sf::RenderWindow* _renderWindow, sf::Event& _event,
 	m_RenderWindow = _renderWindow;
 	m_Event = &_event;
 	m_TextureMaster = _textureMaster;
-	m_ChangeScenes = false;
+	m_GameScene = false;
 
-	m_GameSceneQueue.push(*new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
-
-	//m_MainMenuSceneQueue.push(*new CMainMenuScene(m_RenderWindow, *m_Event));
+	m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 }
 
 CSceneManager::~CSceneManager()
@@ -24,91 +22,108 @@ CSceneManager::~CSceneManager()
 
 void CSceneManager::Start()
 {
-	if (m_MainMenuSceneQueue.size() > 0)
+	if (!m_GameScene)
 	{
-		m_MainMenuSceneQueue.front().Start();
+		m_MainMenuSceneVector.back()->Start();
 	}
 	else
 	{
-		m_GameSceneQueue.front().Start();
+		m_GameSceneVector.back()->Start();
 	}
 }
 
 void CSceneManager::Update()
 {
-	if (m_MainMenuSceneQueue.size() > 0)
+	if (!m_GameScene)
 	{
-		m_MainMenuSceneQueue.front().Update();
+		m_MainMenuSceneVector.back()->Update();
 	}
 	else
 	{
-		m_GameSceneQueue.front().Update();
+		m_GameSceneVector.back()->Update();
 	}
 }
 
 void CSceneManager::PolledUpdate()
 {
-	if (m_MainMenuSceneQueue.size() > 0)
+	if (!m_GameScene)
 	{
-		m_MainMenuSceneQueue.front().PolledUpdate();
+		m_MainMenuSceneVector.back()->PolledUpdate();
 	}
 	else
 	{
-		m_GameSceneQueue.front().PolledUpdate();
+		m_GameSceneVector.back()->PolledUpdate();
 	}
+
+	ChangeScenes();
 }
 
 void CSceneManager::Render()
 {
-	if (m_MainMenuSceneQueue.size() > 0)
+	if (!m_GameScene)
 	{
-		m_MainMenuSceneQueue.front().Render();
+		m_MainMenuSceneVector.back()->Render();
 	}
 	else
 	{
-		m_GameSceneQueue.front().Render();
+		m_GameSceneVector.back()->Render();
 	}
 }
 
 void CSceneManager::ChangeScenes()
 {
-	if (m_ChangeScenes)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
 	{
-		m_ChangeScenes = false;
+		m_GameScene = !m_GameScene;
 
-		if (m_MainMenuSceneQueue.size() > 0)
+		if (m_GameScene == true)
 		{
-			m_MainMenuSceneQueue.pop();
-			m_MainMenuSceneQueue.front().Start();
+			CleanupMainMenuScenes();
+			m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
 		}
-		else
+		else if (m_GameScene == false)
 		{
-			m_GameSceneQueue.pop();
-			m_GameSceneQueue.front().Start();
+			CleanupGameScenes();
+			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 		}
+
+
+		Start();
+
+		m_SceneTimer.restart();
 	}
 }
 
 void CSceneManager::CheckForMARKASDESTROY()
 {
-	m_MainMenuSceneQueue.front().CheckForMARKASDESTROY();
-	m_GameSceneQueue.front().CheckForMARKASDESTROY();
+	if (m_GameScene == true)
+	{
+		m_GameSceneVector.back()->CheckForMARKASDESTROY();
+	}
+	else if (m_GameScene == false)
+	{
+		m_MainMenuSceneVector.back()->CheckForMARKASDESTROY();
+	}
 }
 
 void CSceneManager::CleanupGameScenes()
 {
-	while (m_GameSceneQueue.size() > 0)
+	for (auto& pointer : m_GameSceneVector)
 	{
-		m_GameSceneQueue.pop();
+		DeletePointer(pointer);
+		pointer = nullptr;
 	}
-	std::queue<CGameScene>().swap(m_GameSceneQueue);
+	m_GameSceneVector.erase(std::remove(m_GameSceneVector.begin(), m_GameSceneVector.end(), nullptr), m_GameSceneVector.end());
+
 }
 
 void CSceneManager::CleanupMainMenuScenes()
 {
-	while (m_MainMenuSceneQueue.size() > 0)
+	for (auto& pointer : m_MainMenuSceneVector)
 	{
-		m_MainMenuSceneQueue.pop();
+		DeletePointer(pointer);
+		pointer = nullptr;
 	}
-	std::queue<CMainMenuScene>().swap(m_MainMenuSceneQueue);
+	m_MainMenuSceneVector.erase(std::remove(m_MainMenuSceneVector.begin(), m_MainMenuSceneVector.end(), nullptr), m_MainMenuSceneVector.end());
+
 }

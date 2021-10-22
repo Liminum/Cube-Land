@@ -1,6 +1,2 @@
-﻿  CSceneManager.cpp
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  main.cpp
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Generating Code...
+﻿  AudioManager.cpp
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

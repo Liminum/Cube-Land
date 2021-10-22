@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _texture, sf::Vector2f _position, sf::Vector2f _size)
+Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _texture, sf::Vector2f _position, sf::Vector2f _size, std::string _tileType)
 {
 	m_World = &_world;
 	m_RenderWindow = _renderWindow;
@@ -9,7 +9,22 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 	CreateShape();
 	LoadSpriteTexture(_texture, m_Shape);
 
-	CreateBody(_size.x,_size.y,_position.x,_position.y,b2_staticBody);
+	if (_tileType == "Wall")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody);
+	}
+	else if (_tileType == "Floor")
+	{
+	}
+	else if (_tileType == "Event")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
+	}
+
+	if (m_Shape != nullptr)
+	{
+		m_Shape->setPosition(_position);
+	}
 }
 
 Tile::~Tile()
@@ -80,7 +95,7 @@ sf::Sprite* Tile::GetShape()
 void Tile::SetShapeToB2Body()
 {
 	// Set SFML Shape Transform To Box 2D Body Transform
-	if (m_Shape != nullptr)
+	if (m_Shape != nullptr && m_Body != nullptr)
 	{
 		m_Shape->setOrigin(m_Shape->getGlobalBounds().width / 2, m_Shape->getGlobalBounds().height / 2);
 		m_Shape->setPosition(m_Body->GetPosition().x * m_Scale, m_Body->GetPosition().y * m_Scale);
