@@ -181,6 +181,7 @@
     <ClInclude Include="WorldManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Output\Level_Ash.ini" />
     <None Include="Resources\Output\World.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

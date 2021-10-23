@@ -7,18 +7,20 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 	m_Texture = _texture;
 
 	CreateShape();
-	LoadSpriteTexture(_texture, m_Shape);
 
 	if (_tileType == "Wall")
 	{
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody);
+		LoadSpriteTexture(_texture, m_Shape, false);
 	}
 	else if (_tileType == "Floor")
 	{
+		LoadSpriteTexture(_texture, m_Shape);
 	}
 	else if (_tileType == "Event")
 	{
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
+		LoadSpriteTexture(_texture, m_Shape);
 	}
 
 	if (m_Shape != nullptr)

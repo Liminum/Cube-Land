@@ -1,13 +1,14 @@
 #include "CThallic.h"
 
-CThallic::CThallic(sf::RenderWindow* _renderWindow, b2World* _world, sf::Vector2f _pos)
+CThallic::CThallic(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _playerBody)
 {
 	m_RenderWindow = _renderWindow;
 	m_World = _world;
+	m_PlayerBody = &_playerBody;
 
 	m_SpriteTexture = new sf::Texture();
 
-	CreateBody(_pos.x, _pos.y, b2_dynamicBody);
+	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody);
 
 	Start();
 }
@@ -18,6 +19,7 @@ CThallic::~CThallic()
 	DestroyBody();
 
 	DeletePointer(m_SpriteTexture);
+	m_PlayerBody = nullptr;
 	m_SpriteTexture = nullptr;
 	m_RenderWindow = nullptr;
 	m_TextureMaster = nullptr;
@@ -32,11 +34,16 @@ void CThallic::Start()
 {
 	CreateShape();
 	LoadSpriteTexture(LoadTexture(m_SpriteTexture, "Cubemon/Thallic.png", false), m_Shape);
+	m_Shape->setScale(0.5f, 0.5f);
+	SetOriginToCenter(*m_Shape);
 }
 
 void CThallic::Update()
 {
 	SetShapeToB2Body();
+
+	//m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x, m_PlayerBody->GetPosition().y + 200 / m_Scale), 0.0f);
+
 	Render();
 }
 

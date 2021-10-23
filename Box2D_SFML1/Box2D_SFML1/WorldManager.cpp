@@ -12,6 +12,8 @@ WorldManager::~WorldManager()
 	std::cout << "World Destroyed" << std::endl;
 
 	CleanupTiles();
+	CleanupTrees();
+	CleanupGrass();
 	DeletePointer(m_background);
 	DeletePointer(m_Tile);
 	DeletePointer(m_World);
@@ -44,14 +46,78 @@ void WorldManager::Render(sf::Shader* _defaultshader)
 {
 	m_RenderWindow->draw(*m_background, _defaultshader);
 
-	// Blocks
-	std::vector<Tile*>::iterator it;
-	for (it = m_Tiles.begin(); it != m_Tiles.end(); it++)
+	float Mag1 = 0;
+	float dx = 0;
+	float dy = 0;
+	
+	// Everything Else
+	for (int i = 0; i < m_Tiles.size(); i++)
 	{
-		float Mag1 = sqrt((((*it)->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x) * ((*it)->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x)) + (((*it)->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y) * ((*it)->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y)));
-		if (Mag1 < 1920 * 2.8f)
+		dx = m_Tiles[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_Tiles[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = sqrt((dx * dx) + (dy * dy));
+		if (Mag1 < 1200)
 		{
-			m_RenderWindow->draw(*(*it)->GetShape(), _defaultshader);
+			m_RenderWindow->draw(*m_Tiles[i]->GetShape(), _defaultshader);
+		}
+	}
+
+	// Grass
+	for (int i = 0; i < m_Grass.size(); i++)
+	{
+		dx = m_Grass[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_Grass[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = sqrt((dx * dx) + (dy * dy));
+
+		if (Mag1 < 1200)
+		{
+			m_RenderWindow->draw(*m_Grass[i]->GetShape(), _defaultshader);
+		}
+	}
+
+	// Trees
+	for (int i = 0; i < m_Trees.size(); i++)
+	{
+		dx = m_Trees[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_Trees[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = sqrt((dx * dx) + (dy * dy));
+
+		if (Mag1 < 1200)
+		{
+			m_RenderWindow->draw(*m_Trees[i]->GetShape(), _defaultshader);
+		}
+	}
+}
+
+void WorldManager::RenderOnTop()
+{
+	sf::Shader* _defaultshader = NULL;
+	float Mag1 = 0;
+	float dx = 0;
+	float dy = 0;
+	// Grass
+	for (int i = 0; i < m_Grass.size(); i++)
+	{
+		dx = m_Grass[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_Grass[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = sqrt((dx * dx) + (dy * dy));
+		
+		if (Mag1 < 1200 && dy >= 0)
+		{
+			m_RenderWindow->draw(*m_Grass[i]->GetShape(), _defaultshader);
+		}
+	}
+
+	// Trees
+	for (int i = 0; i < m_Trees.size(); i++)
+	{
+		dx = m_Trees[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_Trees[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = sqrt((dx * dx) + (dy * dy));
+
+		if (Mag1 < 1200 && dy >= 0)
+		{
+			m_RenderWindow->draw(*m_Trees[i]->GetShape(), _defaultshader);
 		}
 	}
 }
@@ -78,12 +144,32 @@ void WorldManager::CleanupTiles()
 	m_Tiles.erase(std::remove(m_Tiles.begin(), m_Tiles.end(), nullptr), m_Tiles.end());
 }
 
-void WorldManager::GrabTileTypes(std::vector<char>& _tileTypes)
+void WorldManager::CleanupTrees()
+{
+	for (auto& pointer : m_Trees)
+	{
+		DeletePointer(pointer);
+		pointer = nullptr;
+	}
+	m_Trees.erase(std::remove(m_Trees.begin(), m_Trees.end(), nullptr), m_Trees.end());
+}
+
+void WorldManager::CleanupGrass()
+{
+	for (auto& pointer : m_Grass)
+	{
+		DeletePointer(pointer);
+		pointer = nullptr;
+	}
+	m_Grass.erase(std::remove(m_Grass.begin(), m_Grass.end(), nullptr), m_Grass.end());
+}
+
+void WorldManager::GrabTileTypes(std::vector<char>& _tileTypes, std::string _path)
 {
 	char m_Type = 0;
 	std::ifstream file;
 	std::string currentLine;
-	file.open("Resources/Output/World.ini");
+	file.open("Resources/Output/" + _path);
 	if (file.is_open())
 	{
 		while (file.get(m_Type))
@@ -109,19 +195,39 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 	{
 		if (*it == '0')
 		{
-
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
 		}
-		else if (*it == 'o')
+		else if (*it == '~') // -- Water
 		{
-			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * 100.0f, (float)iteratorY * 100.0f), sf::Vector2f(100, 100), "Background"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Water, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
 		}
-		else if (*it == '1')
+		else if (*it == 'i') // -- Tree
 		{
-			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock, sf::Vector2f((float)iteratorX * 100.0f, (float)iteratorY * 100.0f), sf::Vector2f(100, 100), "Wall"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Trees.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Tree, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, 1), "Wall"));
 		}
-		else if (*it == '2')
+		else if (*it == 'o') // -- Grass
 		{
-			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * 100.0f, (float)iteratorY * 100.0f), sf::Vector2f(100, 100), "Event"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+		}
+		else if (*it == 'p') // -- Path
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+		}
+		else if (*it == '1') // -- Tree
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Trees.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Tree, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, 1), "Wall"));
+		}
+		else if (*it == '2') // -- Grass on Grass
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Event"));
+		}
+		else if (*it == '3') // -- Grass On Path
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Event"));
 		}
 
 		if (iteratorX == INISIZE)
@@ -143,7 +249,7 @@ void WorldManager::ImportWorldFromINI()
 	CleanupTiles();
 
 	std::vector<char> m_TileTypes;
-	GrabTileTypes(m_TileTypes);
+	GrabTileTypes(m_TileTypes, "Level_Ash.ini");
 
 	ProcessTileTypes(m_TileTypes);
 }

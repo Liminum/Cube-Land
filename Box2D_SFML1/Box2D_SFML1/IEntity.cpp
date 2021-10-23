@@ -46,20 +46,22 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 	m_FixtureDef->friction = 0.1f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
+	m_FixtureDef->filter.groupIndex = -1;
 	m_Body->CreateFixture(m_FixtureDef);
 }
 
 void IEntity::DestroyBody()
 {
-	if (m_Body != nullptr)
+	if (m_World != nullptr && m_Body != nullptr)
 	{
 		m_World->DestroyBody(m_Body);
-		DeletePointer(m_FixtureDef);
-		DeletePointer(m_b2pShape);
-		DeletePointer(m_BodyDef);
-		m_FixtureDef = nullptr;
-		m_b2pShape = nullptr;
-		m_BodyDef = nullptr;
 		m_Body = nullptr;
 	}
+
+	DeletePointer(m_FixtureDef);
+	DeletePointer(m_b2pShape);
+	DeletePointer(m_BodyDef);
+	m_FixtureDef = nullptr;
+	m_b2pShape = nullptr;
+	m_BodyDef = nullptr;
 }

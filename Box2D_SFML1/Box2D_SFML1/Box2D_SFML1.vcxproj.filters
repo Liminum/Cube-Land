@@ -193,5 +193,8 @@
     <None Include="Resources\Output\World.ini">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Resources\Output\Level_Ash.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -22,11 +22,11 @@ CSceneManager::~CSceneManager()
 
 void CSceneManager::Start()
 {
-	if (!m_GameScene)
+	if (!m_GameScene && m_MainMenuSceneVector.size() > 0)
 	{
 		m_MainMenuSceneVector.back()->Start();
 	}
-	else
+	else if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->Start();
 	}
@@ -34,11 +34,11 @@ void CSceneManager::Start()
 
 void CSceneManager::Update()
 {
-	if (!m_GameScene)
+	if (!m_GameScene && m_MainMenuSceneVector.size() > 0)
 	{
 		m_MainMenuSceneVector.back()->Update();
 	}
-	else
+	else if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->Update();
 	}
@@ -46,11 +46,11 @@ void CSceneManager::Update()
 
 void CSceneManager::PolledUpdate()
 {
-	if (!m_GameScene)
+	if (!m_GameScene && m_MainMenuSceneVector.size() > 0)
 	{
 		m_MainMenuSceneVector.back()->PolledUpdate();
 	}
-	else
+	else if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->PolledUpdate();
 	}
@@ -60,11 +60,11 @@ void CSceneManager::PolledUpdate()
 
 void CSceneManager::Render()
 {
-	if (!m_GameScene)
+	if (!m_GameScene && m_MainMenuSceneVector.size() > 0)
 	{
 		m_MainMenuSceneVector.back()->Render();
 	}
-	else
+	else if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->Render();
 	}
@@ -74,19 +74,28 @@ void CSceneManager::ChangeScenes()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
 	{
-		m_GameScene = !m_GameScene;
-
-		if (m_GameScene == true)
+		
+		if (ReturnSceneChange() == 1)
 		{
+			InterceptSceneChange(false);
+		}
+		else if (ReturnSceneChange() == 0)
+		{
+			InterceptSceneChange(true);
+		}
+
+		if (ReturnSceneChange() == 1)
+		{
+			CleanupGameScenes();
 			CleanupMainMenuScenes();
 			m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
 		}
-		else if (m_GameScene == false)
+		else if (ReturnSceneChange() == 0)
 		{
 			CleanupGameScenes();
+			CleanupMainMenuScenes();
 			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 		}
-
 
 		Start();
 
@@ -96,11 +105,11 @@ void CSceneManager::ChangeScenes()
 
 void CSceneManager::CheckForMARKASDESTROY()
 {
-	if (m_GameScene == true)
+	if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->CheckForMARKASDESTROY();
 	}
-	else if (m_GameScene == false)
+	if (m_MainMenuSceneVector.size() > 0)
 	{
 		m_MainMenuSceneVector.back()->CheckForMARKASDESTROY();
 	}

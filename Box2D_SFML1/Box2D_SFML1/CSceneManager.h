@@ -30,7 +30,7 @@ private:
 	sf::Event* m_Event = nullptr;
 
 	sf::Clock m_SceneTimer;
-	float m_SceneChangeDelay = 1.0f;
+	float m_SceneChangeDelay = 0.5f;
 
 	bool m_GameScene;
 };

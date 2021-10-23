@@ -16,6 +16,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include <utils-master/stringutils.h>
+#include <ctime>
+#include <cstdlib>
 
 class NumptyBehavior
 {
@@ -62,6 +64,46 @@ public:
 				_renderWindow->draw(*_sprite);
 			}
 		}
+	}
+
+	static inline void InterceptSceneChange(bool _change) 
+	{
+		std::ofstream file;
+
+		file.open("Resources/Output/SceneSettings.txt");
+		if (file.is_open())
+		{
+			file.clear();
+			if (_change == true)
+			{
+				file << 1;
+			}
+			else if (_change == false)
+			{
+				file << 0;
+			}
+			
+		}
+		file.close();
+	}
+
+	static inline int ReturnSceneChange()
+	{
+		std::ifstream filepart2;
+		int value = -1;
+		filepart2.open("Resources/Output/SceneSettings.txt");
+		if (filepart2.is_open())
+		{
+			filepart2 >> value;
+		}
+		filepart2.close();
+		return value;
+	}
+
+	static inline sf::Vector2f SetOriginToCenter(sf::Sprite& _sprite)
+	{
+		_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
+		return _sprite.getOrigin();
 	}
 
 protected:

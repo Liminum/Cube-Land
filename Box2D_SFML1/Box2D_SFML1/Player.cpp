@@ -29,7 +29,7 @@ void Player::Start()
 
 	CreateBody(0, -100, b2_dynamicBody);
 
-	AddCubemon(new CThallic(m_RenderWindow, m_World, sf::Vector2f(0, -400)));
+	AddCubemon(new CThallic(m_RenderWindow, m_World, *m_Body));
 }
 
 void Player::Update(sf::Vector2f _mousepos)
@@ -47,15 +47,31 @@ void Player::Update(sf::Vector2f _mousepos)
 		b2WorldManifold worldManifold;
 		contact->GetWorldManifold(&worldManifold);
 
-		b2Vec2 vel1 = m_Body->GetLinearVelocityFromWorldPoint(m_Body->GetPosition());
+		// Bush / Player To Sensor Action
+		if ((a->GetBody() == m_Body || b->GetBody() == m_Body) && (a->GetBody()->GetFixtureList()->IsSensor() || b->GetBody()->GetFixtureList()->IsSensor()))
+		{
+			if (m_EncounterClock.getElapsedTime().asSeconds() >= 5.0f)
+			{
+				srand((unsigned)time(0));
+				int bushEncounter = rand() % 12;
 
-		if ((vel1.y <= 1.f && vel1.y >= -1.f) && (a->GetBody() == m_Body || b->GetBody() == m_Body))
-		{
-			m_bCanJump = true;
-		}
-		else if(vel1.y < -2.0f || vel1.y > 2.0f)
-		{
-			m_bCanJump = false;
+				if (bushEncounter == 0)
+				{
+					std::cout << "https://www.youtube.com/watch?v=NrS523dOHU4&t=22s&ab_channel=pokemonmusicmaster" << std::endl;
+					m_EncounterClock.restart();
+					break;
+				}
+				else if (bushEncounter == 6)
+				{
+					std::cout << "https://www.youtube.com/watch?v=NrS523dOHU4&t=22s&ab_channel=pokemonmusicmaster" << std::endl;
+					m_EncounterClock.restart();
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		a = nullptr;
@@ -240,7 +256,7 @@ void Player::Animation(b2Vec2 _movementVector)
 	else if (_movementVector.x < -0.1f)
 	{
 		_ignoreScale = true;
-		m_Shape->setScale(-m_SheetScale, m_SheetScale);
+		m_Shape->setScale(-SPRITE_SHEET_SCALE, SPRITE_SHEET_SCALE);
 		if (m_Shape->getTextureRect().left != 0 && m_Shape->getTextureRect().left != 14)
 		{
 			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
@@ -298,7 +314,7 @@ void Player::Animation(b2Vec2 _movementVector)
 	if (!_ignoreScale)
 	{
 		m_Shape->setOrigin(7, 8);
-		m_Shape->setScale(m_SheetScale, m_SheetScale);
+		m_Shape->setScale(SPRITE_SHEET_SCALE, SPRITE_SHEET_SCALE);
 	}
 }
 

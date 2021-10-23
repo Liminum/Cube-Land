@@ -132,6 +132,11 @@ void CGameScene::Render()
 	{
 		m_Player->Render();
 
+		if (m_WorldManager != nullptr)
+		{
+			m_WorldManager->RenderOnTop();
+		}
+
 		// UI
 		m_RenderWindow->setView(m_UIView);
 		//
@@ -269,5 +274,5 @@ void CGameScene::CleanupAllPointers()
 void CGameScene::InitView()
 {
 	m_View = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_RenderWindow->getSize().x, m_RenderWindow->getSize().y));
-	m_View.zoom(1.6f);
+	m_View.zoom(ZOOM);
 }

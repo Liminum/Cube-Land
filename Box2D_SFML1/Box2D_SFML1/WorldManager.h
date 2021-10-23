@@ -3,6 +3,7 @@
 #define _WORLDMANAGER_H__
 
 #define INISIZE 40
+#define TILESIZE 100
 
 #include "NumptyBehavior.h"
 
@@ -20,17 +21,22 @@ public:
 	virtual void Start(AudioManager* _audioManager);
 	virtual void Update();
 	virtual void Render(sf::Shader* _defaultshader = NULL);
+	void RenderOnTop();
 
 	void InitBackground(sf::Texture& _texture); 
 
 	void ImportWorldFromINI();
 	void CleanupTiles();
+	void CleanupTrees();
+	void CleanupGrass();
 
 private:
-	void GrabTileTypes(std::vector<char>& _tileTypes);
+	void GrabTileTypes(std::vector<char>& _tileTypes, std::string _path);
 	void ProcessTileTypes(std::vector<char>& _tileTypes);
 
 	std::vector<Tile*> m_Tiles = {};
+	std::vector<Tile*> m_Trees = {};
+	std::vector<Tile*> m_Grass = {};
 	Tile* m_Tile = nullptr;
 
 	TextureMaster* m_TextureMaster = nullptr;

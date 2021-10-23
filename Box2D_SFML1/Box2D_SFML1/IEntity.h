@@ -4,6 +4,7 @@
 #include "TextureMaster.h"
 #include "AudioManager.h"
 #include "ParticleSystem.h"
+#include "CContactListener.h"
 
 class IEntity :	public NumptyBehavior
 {
@@ -17,7 +18,19 @@ public:
 		ENEMY = 3,
 	};
 
-	virtual ~IEntity(){}
+	virtual ~IEntity() 
+	{ 
+		DeletePointer(m_ParticleSystem); 
+		DeletePointer(m_ContactListener);
+		DestoryShape();
+		DestroyBody();
+		m_RenderWindow = nullptr;
+		m_TextureMaster = nullptr;
+		m_AudioManager = nullptr;
+		m_ParticleSystem = nullptr;
+		m_ContactListener = nullptr;
+		m_World = nullptr;
+	}
 
 	inline b2Body* GetBody() { return m_Body; }
 	inline sf::Sprite* GetShape() { return m_Shape; }
@@ -37,6 +50,7 @@ protected:
 	TextureMaster* m_TextureMaster = nullptr;
 	AudioManager* m_AudioManager = nullptr;
 	ParticleSystem* m_ParticleSystem = nullptr;
+	CContactListener* m_ContactListener = nullptr;
 
 	sf::Sprite* m_Shape = nullptr;
 	b2BodyDef* m_BodyDef = nullptr;

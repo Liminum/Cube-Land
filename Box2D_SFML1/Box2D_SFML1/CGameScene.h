@@ -1,5 +1,7 @@
 #pragma once
 
+#define ZOOM 1
+
 #include "IScene.h"
 #include "CContactListener.h";
 

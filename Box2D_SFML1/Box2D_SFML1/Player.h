@@ -2,6 +2,8 @@
 #ifndef _PLAYER_H__
 #define _PLAYER_H__
 
+#define SPRITE_SHEET_SCALE 5
+
 #include "IEntity.h"
 #include "AudioManager.h"
 #include "TextureMaster.h"
@@ -47,7 +49,7 @@ private:
 	float m_MaxMana = 100.0f;
 	float m_CurrentHealth = 100.0f;
 	float m_MaxHealth = 100.0f;
-	float m_iMovementSpeed = 15.0f;
+	float m_iMovementSpeed = 7.0f;
 	float m_JumpForce = 500.0f;
 	bool m_bCanJump = false;
 	sf::Clock m_ParticleClock;
@@ -55,9 +57,9 @@ private:
 	sf::Vector2f m_MousePos;
 
 	sf::Texture m_SpriteSheet;
-	float m_SheetScale = 8;
 
 	sf::Clock m_AnimationClock;
+	sf::Clock m_EncounterClock;
 };
 
 #endif

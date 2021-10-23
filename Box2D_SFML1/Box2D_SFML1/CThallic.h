@@ -4,7 +4,7 @@
 class CThallic : public ICubemon
 {
 public:
-	CThallic(sf::RenderWindow* _renderWindow, b2World* _world, sf::Vector2f _pos = sf::Vector2f(0, 0));
+	CThallic(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _playerBody);
 	virtual ~CThallic();
 
 	virtual void Start();
@@ -14,5 +14,7 @@ public:
 protected:
 	virtual void Movement();
 	virtual void Attack();
+
+	b2Body* m_PlayerBody = nullptr;
 };
 
