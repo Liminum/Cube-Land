@@ -10,6 +10,7 @@ Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, AudioManager* _
 
 Player::~Player()
 {
+	WritePlayerData();
 	CleanupCubemon();
 	DestoryShape();
 	DestroyBody();
@@ -27,7 +28,7 @@ void Player::Start()
 	LoadSpriteTexture(LoadTexture(&m_SpriteSheet, "Player/Player_SpriteSheett.png", false), m_Shape, true, false);
 	m_Shape->setScale(10, 10);
 
-	CreateBody(0, -100, b2_dynamicBody);
+	CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
 
 	AddCubemon(new CThallic(m_RenderWindow, m_World, *m_Body));
 }
@@ -92,8 +93,6 @@ void Player::Update(sf::Vector2f _mousepos)
 
 void Player::Render(sf::Shader* _defaultshader)
 {
-	RenderCubemon();
-
 	RenderSpritePointer(m_RenderWindow, m_Shape);
 }
 
@@ -117,7 +116,23 @@ void Player::Movement()
 		}
 		y = -1.f;
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
+		y = -1.f;
+	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
+		x = -1.f;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
 		if (m_Shape != nullptr)
 		{
@@ -133,6 +148,14 @@ void Player::Movement()
 		}
 		y = 1.f;
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(-1, 1);
+		}
+		y = 1.f;
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
 		if (m_Shape != nullptr)
@@ -141,8 +164,16 @@ void Player::Movement()
 		}
 		x = 1.f;
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+	{
+		if (m_Shape != nullptr)
+		{
+			m_Shape->setScale(1, 1);
+		}
+		x = 1.f;
+	}
 	m_Velocity = b2Vec2(x , y);
-
+	m_Velocity.Normalize();
 	m_Body->SetLinearVelocity((float)m_iMovementSpeed * m_Velocity);
 
 	Animation(m_Velocity);
@@ -227,9 +258,39 @@ void Player::UpdateCubemon()
 
 void Player::RenderCubemon()
 {
-	for (auto& cubemon : m_CubemonVector)
+	float Mag1 = 0;
+	float dx = 0;
+	float dy = 0;
+
+	// Everything Else
+	for (int i = 0; i < m_CubemonVector.size(); i++)
 	{
-		cubemon->Render();
+		dx = m_CubemonVector[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_CubemonVector[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = Mag(dx, dy);
+		if (Mag1 < 1200)
+		{
+			m_CubemonVector[i]->Render();
+		}
+	}
+}
+
+void Player::LateCubemonRender()
+{
+	float Mag1 = 0;
+	float dx = 0;
+	float dy = 0;
+
+	// Everything Else
+	for (int i = 0; i < m_CubemonVector.size(); i++)
+	{
+		dx = m_CubemonVector[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
+		dy = m_CubemonVector[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
+		Mag1 = Mag(dx, dy);
+		if (Mag1 < 1200 && dy >= 0)
+		{
+			m_CubemonVector[i]->Render();
+		}
 	}
 }
 
@@ -242,12 +303,12 @@ void Player::Animation(b2Vec2 _movementVector)
 		{
 			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 14)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left != 14)
 		{
 			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
 			m_AnimationClock.restart();
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 14)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left == 14)
 		{
 			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
 			m_AnimationClock.restart();
@@ -261,12 +322,12 @@ void Player::Animation(b2Vec2 _movementVector)
 		{
 			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 14)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left != 14)
 		{
 			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
 			m_AnimationClock.restart();
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 14)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left == 14)
 		{
 			m_Shape->setTextureRect(sf::IntRect(0, 0, 14, 16));
 			m_AnimationClock.restart();
@@ -278,12 +339,12 @@ void Player::Animation(b2Vec2 _movementVector)
 		{
 			m_Shape->setTextureRect(sf::IntRect(28, 0, 14, 16));
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 42)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left != 42)
 		{
 			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
 			m_AnimationClock.restart();
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 42)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left == 42)
 		{
 			m_Shape->setTextureRect(sf::IntRect(28, 0, 14, 16));
 			m_AnimationClock.restart();
@@ -295,12 +356,12 @@ void Player::Animation(b2Vec2 _movementVector)
 		{
 			m_Shape->setTextureRect(sf::IntRect(56, 0, 14, 16));
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left != 70)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left != 70)
 		{
 			m_Shape->setTextureRect(sf::IntRect(m_Shape->getTextureRect().left + 14, 0, 14, 16));
 			m_AnimationClock.restart();
 		}
-		else if (m_AnimationClock.getElapsedTime().asSeconds() > 0.5f && m_Shape->getTextureRect().left == 70)
+		else if (m_AnimationClock.getElapsedTime().asSeconds() > m_FrameDelay && m_Shape->getTextureRect().left == 70)
 		{
 			m_Shape->setTextureRect(sf::IntRect(56, 0, 14, 16));
 			m_AnimationClock.restart();
@@ -316,6 +377,67 @@ void Player::Animation(b2Vec2 _movementVector)
 		m_Shape->setOrigin(7, 8);
 		m_Shape->setScale(SPRITE_SHEET_SCALE, SPRITE_SHEET_SCALE);
 	}
+}
+
+sf::Vector2f Player::GrabPlayerData()
+{
+	std::ifstream file;
+	std::string currentLine;
+	float posX = 0;
+	float posY = 0;
+	int iterator = 0;
+	file.open("Resources/Output/PlayerData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			if (iterator == 0)
+			{
+				std::size_t pos = currentLine.find('=');
+				std::string value = currentLine.substr(pos + 1);
+
+				posX = std::stod(value);
+				iterator++;
+			}
+			else
+			{
+				std::size_t pos2 = currentLine.find('=');
+				std::string value2 = currentLine.substr(pos2 + 1);
+
+				posY = std::stod(value2);
+			}
+			
+		}
+	}
+	file.close();
+
+	return sf::Vector2f(posX, posY);
+}
+
+void Player::WritePlayerData()
+{
+	std::ofstream file;
+
+	file.open("Resources/Output/PlayerData.ini");
+	if (file.is_open())
+	{
+		file.clear();
+		file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y;
+	}
+	file.close();
+}
+
+void Player::ResetPlayerData()
+{
+	std::ofstream file;
+
+	file.open("Resources/Output/PlayerData.ini");
+	if (file.is_open())
+	{
+		file.clear();
+		file << "x =" << 0 << std::endl << "y =" << -100;
+	}
+	file.close();
 }
 
 void Player::CleanupCubemon()

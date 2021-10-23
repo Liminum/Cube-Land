@@ -35,9 +35,13 @@ public:
 
 	void UpdateCubemon();
 	void RenderCubemon();
+	void LateCubemonRender();
 
+	static void ResetPlayerData();
 private:
 	void Animation(b2Vec2 _movementVector);
+	sf::Vector2f GrabPlayerData();
+	void WritePlayerData();
 
 	void CleanupCubemon();
 	std::vector<ICubemon*> m_CubemonVector;
@@ -59,6 +63,7 @@ private:
 	sf::Texture m_SpriteSheet;
 
 	sf::Clock m_AnimationClock;
+	float m_FrameDelay = 0.3f;
 	sf::Clock m_EncounterClock;
 };
 

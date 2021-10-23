@@ -101,6 +101,10 @@ void CSceneManager::ChangeScenes()
 
 		m_SceneTimer.restart();
 	}
+	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::Numpad2)
+	{
+		Player::ResetPlayerData();
+	}
 }
 
 void CSceneManager::CheckForMARKASDESTROY()

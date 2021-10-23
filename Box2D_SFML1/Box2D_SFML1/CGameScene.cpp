@@ -130,6 +130,7 @@ void CGameScene::Render()
 	}
 	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
 	{
+		m_Player->RenderCubemon();
 		m_Player->Render();
 
 		if (m_WorldManager != nullptr)

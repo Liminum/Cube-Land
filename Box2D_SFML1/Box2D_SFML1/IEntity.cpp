@@ -34,7 +34,7 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 
 	// Shape
 	m_b2pShape = new b2PolygonShape;
-	m_b2pShape->SetAsBox((100.f / 2) / m_Scale, (100.f / 2) / m_Scale);
+	m_b2pShape->SetAsBox((50.0f / 2) / m_Scale, (50.0f / 2) / m_Scale);
 
 	// Fixture
 	m_FixtureDef = new b2FixtureDef;

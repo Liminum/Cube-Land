@@ -13,6 +13,7 @@ TextureMaster::TextureMaster()
 	m_DirtBlock_BG = new sf::Texture();
 
 	m_Grass = new sf::Texture();
+	m_Rock = new sf::Texture();
 	m_Tree = new sf::Texture();
 
 	m_Water = new sf::Texture();
@@ -42,6 +43,10 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "Water Texture Loaded!" << std::endl;
 	}
+	if (m_Rock->loadFromFile("Resources/Images/Rock.png"))
+	{
+		std::cout << "Rock Texture Loaded!" << std::endl;
+	}
 }
 
 TextureMaster::~TextureMaster()
@@ -58,4 +63,6 @@ TextureMaster::~TextureMaster()
 	m_Tree = nullptr;
 	DeletePointer(m_Water);
 	m_Water = nullptr;
+	DeletePointer(m_Rock);
+	m_Rock = nullptr;
 }

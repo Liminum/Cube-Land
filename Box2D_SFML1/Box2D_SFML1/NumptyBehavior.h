@@ -70,7 +70,7 @@ public:
 	{
 		std::ofstream file;
 
-		file.open("Resources/Output/SceneSettings.txt");
+		file.open("Resources/Output/SceneSettings.ini");
 		if (file.is_open())
 		{
 			file.clear();
@@ -91,7 +91,7 @@ public:
 	{
 		std::ifstream filepart2;
 		int value = -1;
-		filepart2.open("Resources/Output/SceneSettings.txt");
+		filepart2.open("Resources/Output/SceneSettings.ini");
 		if (filepart2.is_open())
 		{
 			filepart2 >> value;
@@ -104,6 +104,15 @@ public:
 	{
 		_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
 		return _sprite.getOrigin();
+	}
+
+	static inline float Mag(b2Vec2 _vector)
+	{
+		return sqrt((_vector.x * _vector.x) + (_vector.y * _vector.y));
+	}
+	static inline float Mag(float _dx, float _dy)
+	{
+		return sqrt((_dx * _dx) + (_dy * _dy));
 	}
 
 protected:

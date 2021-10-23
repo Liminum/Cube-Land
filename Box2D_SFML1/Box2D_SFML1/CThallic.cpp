@@ -42,7 +42,26 @@ void CThallic::Update()
 {
 	SetShapeToB2Body();
 
-	//m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x, m_PlayerBody->GetPosition().y + 200 / m_Scale), 0.0f);
+	if (m_PlayerBody->GetLinearVelocity().x < -0.1f)
+	{
+		m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x + 50 / m_Scale, m_PlayerBody->GetPosition().y), 0.0f);
+	}
+	else if (m_PlayerBody->GetLinearVelocity().x > 0.1f)
+	{
+		m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x - 50 / m_Scale, m_PlayerBody->GetPosition().y), 0.0f);
+	}
+	else if (m_PlayerBody->GetLinearVelocity().y < -0.1f)
+	{
+		m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x, m_PlayerBody->GetPosition().y + 50 / m_Scale), 0.0f);
+	}
+	else if (m_PlayerBody->GetLinearVelocity().y > 0.1f)
+	{
+		m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x, m_PlayerBody->GetPosition().y - 50 / m_Scale), 0.0f);
+	}
+	else
+	{
+		m_Body->SetTransform(b2Vec2(m_PlayerBody->GetPosition().x, m_PlayerBody->GetPosition().y - 50 / m_Scale), 0.0f);
+	}
 
 	Render();
 }

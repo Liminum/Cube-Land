@@ -16,6 +16,7 @@ public:
 	sf::Texture* m_Grass = nullptr;
 	sf::Texture* m_Tree = nullptr;
 	sf::Texture* m_Water = nullptr;
+	sf::Texture* m_Rock = nullptr;
 };
 
 #endif
