@@ -15,6 +15,7 @@ CMainMenuScene::~CMainMenuScene()
 void CMainMenuScene::Start()
 {
 	InterceptSceneChange(0);
+	Player::ResetPlayerData();
 	CreateMainMenu();
 }
 

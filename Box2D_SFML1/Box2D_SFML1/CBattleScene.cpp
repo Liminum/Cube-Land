@@ -24,6 +24,10 @@ void CBattleScene::Update()
 
 void CBattleScene::PolledUpdate()
 {
+	while (m_RenderWindow->pollEvent(*m_Event))
+	{
+
+	}
 }
 
 void CBattleScene::Render()
