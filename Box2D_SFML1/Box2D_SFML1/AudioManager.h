@@ -15,7 +15,7 @@ public:
 	void FireBow();
 	void SlimeDeath(float _volume);
 	void SlimeDamage(float _volume);
-	void PlayMusic();
+	void PlayMusic(int _track = 0);
 
 private:
 	void CreatePointers();

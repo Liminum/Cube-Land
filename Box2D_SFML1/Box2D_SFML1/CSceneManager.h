@@ -2,6 +2,7 @@
 
 #include "CGameScene.h"
 #include "CMainMenuScene.h"
+#include "CBattleScene.h"
 
 class CSceneManager : NumptyBehavior
 {
@@ -18,12 +19,14 @@ public:
 
 	void CheckForMARKASDESTROY();
 
+	void CleanupAllScenes();
 	void CleanupGameScenes();
 	void CleanupMainMenuScenes();
 private:
 
 	std::vector<CGameScene*> m_GameSceneVector = {};
 	std::vector<CMainMenuScene*> m_MainMenuSceneVector = {};
+	CBattleScene* m_BattleScene = nullptr;
 
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	TextureMaster* m_TextureMaster = nullptr;
@@ -33,5 +36,7 @@ private:
 	float m_SceneChangeDelay = 0.5f;
 
 	bool m_GameScene;
+
+	int m_LastFramesScene = 0;
 };
 

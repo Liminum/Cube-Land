@@ -15,6 +15,7 @@ TextureMaster::TextureMaster()
 	m_Grass = new sf::Texture();
 	m_Rock = new sf::Texture();
 	m_Tree = new sf::Texture();
+	m_CaveEntrance = new sf::Texture();
 
 	m_Water = new sf::Texture();
 	m_Water->setRepeated(true);
@@ -47,6 +48,10 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "Rock Texture Loaded!" << std::endl;
 	}
+	if (m_CaveEntrance->loadFromFile("Resources/Images/CaveEntrance.png"))
+	{
+		std::cout << "Cave Entrance Texture Loaded!" << std::endl;
+	}
 }
 
 TextureMaster::~TextureMaster()
@@ -65,4 +70,6 @@ TextureMaster::~TextureMaster()
 	m_Water = nullptr;
 	DeletePointer(m_Rock);
 	m_Rock = nullptr;
+	DeletePointer(m_CaveEntrance);
+	m_CaveEntrance = nullptr;
 }

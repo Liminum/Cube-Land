@@ -17,6 +17,7 @@ public:
 	sf::Texture* m_Tree = nullptr;
 	sf::Texture* m_Water = nullptr;
 	sf::Texture* m_Rock = nullptr;
+	sf::Texture* m_CaveEntrance = nullptr;
 };
 
 #endif

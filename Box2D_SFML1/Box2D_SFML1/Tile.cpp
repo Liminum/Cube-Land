@@ -22,6 +22,11 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
 		LoadSpriteTexture(_texture, m_Shape);
 	}
+	else if (_tileType == "Door")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
 
 	if (m_Shape != nullptr)
 	{
@@ -86,6 +91,7 @@ void Tile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2Bo
 	m_FixtureDef->friction = 1.0f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
+	m_FixtureDef->filter.categoryBits = 0x0004;
 	m_Body->CreateFixture(m_FixtureDef);
 }
 

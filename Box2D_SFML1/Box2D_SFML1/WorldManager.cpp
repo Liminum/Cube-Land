@@ -231,6 +231,10 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Rock, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
 		}
+		else if (*it == 'c') // -- Cave Entrance
+		{
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_CaveEntrance, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25) , sf::Vector2f(TILESIZE, TILESIZE), "Event"));
+		}
 
 		if (iteratorX == INISIZE)
 		{

@@ -43,6 +43,8 @@ private:
 	sf::Vector2f GrabPlayerData();
 	void WritePlayerData();
 
+	void BattleTransition();
+
 	void CleanupCubemon();
 	std::vector<ICubemon*> m_CubemonVector;
 
@@ -65,6 +67,9 @@ private:
 	sf::Clock m_AnimationClock;
 	float m_FrameDelay = 0.3f;
 	sf::Clock m_EncounterClock;
+
+	bool m_Encounter = false;
+	sf::Clock m_BattleTimer;
 };
 
 #endif

@@ -12,8 +12,7 @@ CSceneManager::CSceneManager(sf::RenderWindow* _renderWindow, sf::Event& _event,
 
 CSceneManager::~CSceneManager()
 {
-	CleanupGameScenes();
-	CleanupMainMenuScenes();
+	CleanupAllScenes();
 
 	m_RenderWindow = nullptr;
 	m_TextureMaster = nullptr;
@@ -30,6 +29,10 @@ void CSceneManager::Start()
 	{
 		m_GameSceneVector.back()->Start();
 	}
+	if (m_BattleScene != nullptr)
+	{
+		m_BattleScene->Start();
+	}
 }
 
 void CSceneManager::Update()
@@ -42,6 +45,10 @@ void CSceneManager::Update()
 	{
 		m_GameSceneVector.back()->Update();
 	}
+	if (m_BattleScene != nullptr)
+	{
+		m_BattleScene->Update();
+	}
 }
 
 void CSceneManager::PolledUpdate()
@@ -53,6 +60,10 @@ void CSceneManager::PolledUpdate()
 	else if (m_GameSceneVector.size() > 0)
 	{
 		m_GameSceneVector.back()->PolledUpdate();
+	}
+	if (m_BattleScene != nullptr)
+	{
+		m_BattleScene->PolledUpdate();
 	}
 
 	ChangeScenes();
@@ -68,38 +79,55 @@ void CSceneManager::Render()
 	{
 		m_GameSceneVector.back()->Render();
 	}
+	if (m_BattleScene != nullptr)
+	{
+		m_BattleScene->Render();
+	}
 }
 
 void CSceneManager::ChangeScenes()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
+	if (m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay && m_LastFramesScene != ReturnSceneChange())
 	{
-		
 		if (ReturnSceneChange() == 1)
 		{
-			InterceptSceneChange(false);
-		}
-		else if (ReturnSceneChange() == 0)
-		{
-			InterceptSceneChange(true);
-		}
-
-		if (ReturnSceneChange() == 1)
-		{
-			CleanupGameScenes();
-			CleanupMainMenuScenes();
+			CleanupAllScenes();
 			m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
 		}
+		else if (ReturnSceneChange() == -1)
+		{
+			CleanupAllScenes();
+			m_BattleScene = new CBattleScene(m_RenderWindow, m_TextureMaster, *m_Event);
+		}
+		else if (ReturnSceneChange() == 2)
+		{
+			CleanupAllScenes();
+			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
+		}
 		else if (ReturnSceneChange() == 0)
 		{
-			CleanupGameScenes();
-			CleanupMainMenuScenes();
+			CleanupAllScenes();
 			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 		}
 
 		Start();
 
 		m_SceneTimer.restart();
+	}
+
+	m_LastFramesScene = ReturnSceneChange();
+
+	if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F1)
+	{
+		InterceptSceneChange(0);
+	}
+	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F2)
+	{
+		InterceptSceneChange(1);
+	}
+	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F3)
+	{
+		InterceptSceneChange(-1);
 	}
 	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::Numpad2)
 	{
@@ -117,6 +145,18 @@ void CSceneManager::CheckForMARKASDESTROY()
 	{
 		m_MainMenuSceneVector.back()->CheckForMARKASDESTROY();
 	}
+	if (m_BattleScene != nullptr)
+	{
+		m_BattleScene->CheckForMARKASDESTROY();
+	}
+}
+
+void CSceneManager::CleanupAllScenes()
+{
+	DeletePointer(m_BattleScene);
+	m_BattleScene = nullptr;
+	CleanupGameScenes();
+	CleanupMainMenuScenes();
 }
 
 void CSceneManager::CleanupGameScenes()
@@ -127,7 +167,6 @@ void CSceneManager::CleanupGameScenes()
 		pointer = nullptr;
 	}
 	m_GameSceneVector.erase(std::remove(m_GameSceneVector.begin(), m_GameSceneVector.end(), nullptr), m_GameSceneVector.end());
-
 }
 
 void CSceneManager::CleanupMainMenuScenes()
@@ -138,5 +177,4 @@ void CSceneManager::CleanupMainMenuScenes()
 		pointer = nullptr;
 	}
 	m_MainMenuSceneVector.erase(std::remove(m_MainMenuSceneVector.begin(), m_MainMenuSceneVector.end(), nullptr), m_MainMenuSceneVector.end());
-
 }

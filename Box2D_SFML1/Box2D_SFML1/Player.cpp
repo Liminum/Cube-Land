@@ -58,13 +58,13 @@ void Player::Update(sf::Vector2f _mousepos)
 
 				if (bushEncounter == 0)
 				{
-					std::cout << "https://www.youtube.com/watch?v=NrS523dOHU4&t=22s&ab_channel=pokemonmusicmaster" << std::endl;
+					m_Encounter = true;
 					m_EncounterClock.restart();
 					break;
 				}
 				else if (bushEncounter == 6)
 				{
-					std::cout << "https://www.youtube.com/watch?v=NrS523dOHU4&t=22s&ab_channel=pokemonmusicmaster" << std::endl;
+					m_Encounter = true;
 					m_EncounterClock.restart();
 					break;
 				}
@@ -89,6 +89,8 @@ void Player::Update(sf::Vector2f _mousepos)
 	}
 
 	UpdateCubemon();
+
+	BattleTransition();
 }
 
 void Player::Render(sf::Shader* _defaultshader)
@@ -98,85 +100,84 @@ void Player::Render(sf::Shader* _defaultshader)
 
 void Player::PollMovement(sf::Event& _event)
 {
-	/*if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Key::W && m_bCanJump)
-	{
-		m_Body->ApplyLinearImpulseToCenter(b2Vec2(0,-m_JumpForce), true);
-	}*/
 }
 
 void Player::Movement()
 {
-	float x = 0.f;
-	float y = 0.f;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+	if (m_Encounter == false)
 	{
-		if (m_Shape != nullptr)
+		float x = 0.f;
+		float y = 0.f;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			y = -1.f;
 		}
-		y = -1.f;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-	{
-		if (m_Shape != nullptr)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			y = -1.f;
 		}
-		y = -1.f;
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-	{
-		if (m_Shape != nullptr)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			x = -1.f;
 		}
-		x = -1.f;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-	{
-		if (m_Shape != nullptr)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			x = -1.f;
 		}
-		x = -1.f;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-	{
-		if (m_Shape != nullptr)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			y = 1.f;
 		}
-		y = 1.f;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-	{
-		if (m_Shape != nullptr)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
 		{
-			m_Shape->setScale(-1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(-1, 1);
+			}
+			y = 1.f;
 		}
-		y = 1.f;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-	{
-		if (m_Shape != nullptr)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 		{
-			m_Shape->setScale(1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(1, 1);
+			}
+			x = 1.f;
 		}
-		x = 1.f;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-	{
-		if (m_Shape != nullptr)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 		{
-			m_Shape->setScale(1, 1);
+			if (m_Shape != nullptr)
+			{
+				m_Shape->setScale(1, 1);
+			}
+			x = 1.f;
 		}
-		x = 1.f;
-	}
-	m_Velocity = b2Vec2(x , y);
-	m_Velocity.Normalize();
-	m_Body->SetLinearVelocity((float)m_iMovementSpeed * m_Velocity);
+		m_Velocity = b2Vec2(x, y);
+		m_Velocity.Normalize();
+		m_Body->SetLinearVelocity((float)m_iMovementSpeed * m_Velocity);
 
-	Animation(m_Velocity);
+		Animation(m_Velocity);
+	}
 }
 
 void Player::SetCurrentMana(float _mana)
@@ -425,6 +426,16 @@ void Player::WritePlayerData()
 		file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y;
 	}
 	file.close();
+}
+
+void Player::BattleTransition()
+{
+	if (m_BattleTimer.getElapsedTime().asSeconds() >= 2.0f && m_Encounter == true)
+	{
+		m_Encounter = false;
+		m_BattleTimer.restart();
+		InterceptSceneChange(-1);
+	}
 }
 
 void Player::ResetPlayerData()

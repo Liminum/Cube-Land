@@ -51,12 +51,24 @@ void AudioManager::SlimeDamage(float _volume)
     m_SlimeDamageSound->play();
 }
 
-void AudioManager::PlayMusic()
+void AudioManager::PlayMusic(int _track)
 {
-	m_Music->openFromFile("Resources/Audio/PokemonVillage.wav");
-	m_Music->setLoop(true);
-	m_Music->setVolume(10.0f);
-	m_Music->play();
+    if (_track == 0)
+    {
+        m_Music->stop();
+        m_Music->openFromFile("Resources/Audio/PokemonVillage.wav");
+        m_Music->setLoop(true);
+        m_Music->setVolume(10.0f);
+        m_Music->play();
+    }
+    else if (_track == -1)
+    {
+        m_Music->stop();
+        m_Music->openFromFile("Resources/Audio/Encounter.wav");
+        m_Music->setLoop(true);
+        m_Music->setVolume(10.0f);
+        m_Music->play();
+    }
 }
 
 void AudioManager::CreatePointers()

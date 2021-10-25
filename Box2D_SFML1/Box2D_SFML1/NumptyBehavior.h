@@ -66,7 +66,7 @@ public:
 		}
 	}
 
-	static inline void InterceptSceneChange(bool _change) 
+	static inline void InterceptSceneChange(int _change) 
 	{
 		std::ofstream file;
 
@@ -74,15 +74,23 @@ public:
 		if (file.is_open())
 		{
 			file.clear();
-			if (_change == true)
+
+			if (_change == 1) // Game Scene
 			{
 				file << 1;
 			}
-			else if (_change == false)
+			else if (_change == -1) // Battle Scene
+			{
+				file << -1;
+			}
+			else if (_change == 2) // Cave Scene
 			{
 				file << 0;
 			}
-			
+			else if (_change == 0) // Main Menu
+			{
+				file << 0;
+			}
 		}
 		file.close();
 	}
@@ -90,7 +98,7 @@ public:
 	static inline int ReturnSceneChange()
 	{
 		std::ifstream filepart2;
-		int value = -1;
+		int value = 0;
 		filepart2.open("Resources/Output/SceneSettings.ini");
 		if (filepart2.is_open())
 		{

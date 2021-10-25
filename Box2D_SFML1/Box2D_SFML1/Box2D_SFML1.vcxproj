@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="CBattleScene.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CContactListener.cpp" />
     <ClCompile Include="CDebugWindow.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="CBattleScene.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
     <ClInclude Include="CDebugWindow.h" />
