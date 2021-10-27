@@ -38,27 +38,20 @@ void CGameScene::Start()
 void CGameScene::Update()
 {
 	m_MousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow), m_View);
-	if (m_WorldManager != nullptr)
+	if (!IsNullptr(m_WorldManager))
 	{
 		m_WorldManager->Update();
 	}
-	if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
+	if (!IsNullptr(m_Player) && !m_Player->m_MARKASDESTROY)
 	{
 		CenterViewTo(m_Player->GetShape());
 
 		m_Player->Update(m_MousePos);
 	}
-	else if (m_Player == nullptr)
+	else if (IsNullptr(m_Player))
 	{
 		GameOverScreen();
 	}
-
-	////Check contacts
-	//std::vector<MyContact>::iterator it = m_ContactListener->m_Contacts.begin();
-	//for (it ; it != m_ContactListener->m_Contacts.end() ; it++)
-	//{
-	//	MyContact contact = *it;
-	//}
 }
 
 void CGameScene::PolledUpdate()

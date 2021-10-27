@@ -69,7 +69,7 @@ void Render()
 
 void CreateRenderWindow(sf::Uint32 _style)
 {
-	if (m_RenderWindow == nullptr)
+	if (NumptyBehavior::IsNullptr(m_RenderWindow))
 	{
 		m_RenderWindow = new sf::RenderWindow();
 	}

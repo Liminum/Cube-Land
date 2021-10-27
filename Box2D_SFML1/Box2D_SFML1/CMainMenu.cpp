@@ -215,7 +215,7 @@ void CMainMenu::ButtonUpdates()
     {
         if (m_Play->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
         {
-
+            InterceptSceneChange(1);
         }
         else if (m_Exit->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
         {

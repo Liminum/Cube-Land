@@ -1,2 +1,42 @@
-﻿  CBattleScene.cpp
+﻿  CGameScene.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(248,115): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(248,86): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(270,113): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(270,84): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  main.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

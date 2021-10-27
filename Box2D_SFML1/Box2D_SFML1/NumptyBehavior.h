@@ -25,10 +25,20 @@ public:
 	template <typename T>
 	static inline void DeletePointer(T* _pointer)
 	{
-		if (_pointer != nullptr)
+		if (!IsNullptr(_pointer))
 		{
 			delete _pointer;
 		}
+	}
+
+	template <typename T>
+	static inline bool IsNullptr(T* _pointer)
+	{
+		if (_pointer == nullptr)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	static inline sf::Texture* LoadTexture(sf::Texture* _texture, std::string _filePath, bool _repeated = true)
