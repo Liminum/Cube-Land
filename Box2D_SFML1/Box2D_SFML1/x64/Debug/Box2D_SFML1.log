@@ -1,4 +1,28 @@
-﻿  CGameScene.cpp
+﻿  CBattleScene.cpp
+  CDebugWindow.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(106,11): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(107,11): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(113,49): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(358,10): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(359,10): warning C4244: 'initializing': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(365,41): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  CGameScene.cpp
 C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(248,115): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
@@ -36,6 +60,18 @@ C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp
           [
               T=float
           ]
+  CMainMenuScene.cpp
+  CSceneManager.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  GUI.cpp
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(49,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(57,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(83,72): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+  IScene.cpp
   main.cpp
 C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Generating Code...

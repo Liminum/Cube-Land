@@ -19,6 +19,9 @@ public:
 	void HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player* _player);
 	void TimerUI();
 
+	void InitBattleUI();
+	void BattleUI(sf::View& _uiView, sf::View& _worldView);
+
 	sf::Font m_Font;
 
 private:

@@ -101,3 +101,15 @@ void GUI::TimerUI()
 	m_DisplayText.setPosition(m_RenderWindow->getView().getCenter().x + (m_RenderWindow->getView().getSize().x / 2) - 110, m_RenderWindow->getView().getCenter().y - (m_RenderWindow->getView().getSize().y / 2) + 15);
 	m_RenderWindow->draw(m_DisplayText);
 }
+
+void GUI::InitBattleUI()
+{
+}
+
+void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
+{
+	m_RenderWindow->setView(_uiView);
+
+
+	m_RenderWindow->setView(_worldView);
+}
