@@ -34,6 +34,9 @@ private:
 	void GrabTileTypes(std::vector<char>& _tileTypes, std::string _path);
 	void ProcessTileTypes(std::vector<char>& _tileTypes);
 
+	void SelectRandomTypeFrom3(Tile* _tile);
+	void SelectFirstFromSheet(Tile* _tile);
+
 	std::vector<Tile*> m_Tiles = {};
 	std::vector<Tile*> m_Trees = {};
 	std::vector<Tile*> m_Grass = {};

@@ -18,6 +18,13 @@ public:
 	sf::Texture* m_Water = nullptr;
 	sf::Texture* m_Rock = nullptr;
 	sf::Texture* m_CaveEntrance = nullptr;
+
+	sf::Texture* DirtToGrassSheet = nullptr;
+	sf::Texture* GrassToDirtSheet = nullptr;
+	sf::Texture* DirtToWaterSheet = nullptr;
+	sf::Texture* WaterToDirtSheet = nullptr;
+	sf::Texture* GrassToWaterSheet = nullptr;
+	sf::Texture* WaterToGrassSheet = nullptr;
 };
 
 #endif

@@ -17,6 +17,7 @@
 
 CButtons::CButtons()
 {
+	m_IdleTexture = new sf::Texture();
 }
 
 /// <summary>
@@ -25,16 +26,21 @@ CButtons::CButtons()
 /// </summary>
 CButtons::CButtons(sf::RenderWindow* _renderWindow)
 {
-	// Load Textures And Fonts
-	m_IdleTexture.loadFromFile("Resources/Images/ItemSpacer.png");
-	m_HoverTexture.loadFromFile("Resources/Images/ItemSpacer-Hover.png");
-	m_ClickTexture.loadFromFile("Resources/Images/CurrentItem.png");
+	if (m_IdleTexture != nullptr)
+	{
+		// Load Textures And Fonts
+		m_IdleTexture->loadFromFile("Resources/Images/ItemSpacer.png");
+		m_HoverTexture->loadFromFile("Resources/Images/ItemSpacer-Hover.png");
+		m_ClickTexture->loadFromFile("Resources/Images/CurrentItem.png");
+
+		// Make Them Smooth
+		m_IdleTexture->setSmooth(true);
+		m_HoverTexture->setSmooth(true);
+		m_ClickTexture->setSmooth(true);
+	}
 	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
 
-	// Make Them Smooth
-	m_IdleTexture.setSmooth(true);
-	m_HoverTexture.setSmooth(true);
-	m_ClickTexture.setSmooth(true);
+	
 
 	// Set Up Font
 	m_tLabel.setFont(m_Font);
@@ -42,16 +48,16 @@ CButtons::CButtons(sf::RenderWindow* _renderWindow)
 	m_tLabel.setFillColor(sf::Color::Black);
 	
 	// Set Button Texture To Idle
-	Sprite.setTexture(m_IdleTexture, true);
+	if (m_IdleTexture != nullptr)
+	{
+		Sprite.setTexture(*m_IdleTexture, true);
+	}
 	Sprite.setScale(0.3f, 0.3f);
 	m_tLabel.setScale(0.3f, 0.3f);
 
 	// Set Origin's
 	m_tLabel.setOrigin(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2);
 	Sprite.setOrigin(Sprite.getGlobalBounds().width / 2, Sprite.getGlobalBounds().height / 2);
-
-	// Set Label
-	SetLabel(m_Label);
 	
 	// Initialization
 	m_RenderWindow = _renderWindow;
@@ -72,6 +78,12 @@ CButtons::~CButtons()
 {
 	// Cleanup Pointer
 	m_RenderWindow = nullptr;
+	DeletePointer(m_IdleTexture);
+	m_IdleTexture = nullptr;
+	DeletePointer(m_HoverTexture);
+	m_HoverTexture = nullptr;
+	DeletePointer(m_ClickTexture);
+	m_ClickTexture = nullptr;
 }
 
 /// <summary>
@@ -213,15 +225,24 @@ void CButtons::SetState(std::string _type)
 {
 	if (_type == "Idle")
 	{
-		Sprite.setTexture(m_IdleTexture, 1);
+		if (m_IdleTexture != nullptr)
+		{
+			Sprite.setTexture(*m_IdleTexture, 1);
+		}
 	}
 	else if (_type == "Hover")
 	{
-		Sprite.setTexture(m_HoverTexture, 1);
+		if (m_HoverTexture != nullptr)
+		{
+			Sprite.setTexture(*m_HoverTexture, 1);
+		}
 	}
 	else if (_type == "Click")
 	{
-		Sprite.setTexture(m_ClickTexture, 1);
+		if (m_ClickTexture != nullptr)
+		{
+			Sprite.setTexture(*m_ClickTexture, 1);
+		}
 	}
 }
 
@@ -241,7 +262,10 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 		// Checks For Pressed
 		if (m_bIsPressed == false) 
 		{
-			Sprite.setTexture(m_HoverTexture, 1);
+			if (m_HoverTexture != nullptr)
+			{
+				Sprite.setTexture(*m_HoverTexture, 1);
+			}
 
 			SetLabel(m_HoverLabel);
 
@@ -249,7 +273,10 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 		}
 		if (m_bIsPressed == true)
 		{
-			Sprite.setTexture(m_ClickTexture, 1);
+			if (m_ClickTexture != nullptr)
+			{
+				Sprite.setTexture(*m_ClickTexture, 1);
+			}
 
 			SetLabel(m_Label);
 
@@ -274,7 +301,10 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 		}
 		else if (!m_bIsPressed)
 		{
-			Sprite.setTexture(m_IdleTexture, 1);
+			if (m_IdleTexture != nullptr)
+			{
+				Sprite.setTexture(*m_IdleTexture, 1);
+			}
 
 			SetLabel(m_Label);
 
@@ -292,7 +322,7 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 /// Takes In: sf::Texture (_newTexture)
 /// </summary>
 /// <param name="_newTexture"></param>
-void CButtons::SetHoverTex(sf::Texture _newTexture)
+void CButtons::SetHoverTex(sf::Texture* _newTexture)
 {
 	m_HoverTexture = _newTexture;
 }
@@ -302,7 +332,7 @@ void CButtons::SetHoverTex(sf::Texture _newTexture)
 /// Takes In: sf::Texture (_newTexture)
 /// </summary>
 /// <param name="_newTexture"></param>
-void CButtons::SetIdleTex(sf::Texture _newTexture)
+void CButtons::SetIdleTex(sf::Texture* _newTexture)
 {
 	m_IdleTexture = _newTexture;
 }
@@ -312,7 +342,7 @@ void CButtons::SetIdleTex(sf::Texture _newTexture)
 /// Takes In: sf::Texture (_newTexture)
 /// </summary>
 /// <param name="_newTexture"></param>
-void CButtons::SetClickTex(sf::Texture _newTexture)
+void CButtons::SetClickTex(sf::Texture* _newTexture)
 {
 	m_ClickTexture = _newTexture;
 }

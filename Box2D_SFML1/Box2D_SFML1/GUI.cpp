@@ -104,12 +104,23 @@ void GUI::TimerUI()
 
 void GUI::InitBattleUI()
 {
+	m_BattleSceneButtons.insert_or_assign(0, CButtons(m_RenderWindow));
+	InitButton(&m_BattleSceneButtons[0], LoadTexture(CreateTexture(), "ItemSlot.png"), LoadTexture(CreateTexture(), "ItemSlot.png"));
+	
 }
 
 void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 {
 	m_RenderWindow->setView(_uiView);
 
+	m_BattleSceneButtons[0].SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 1.5);
 
 	m_RenderWindow->setView(_worldView);
+}
+
+void GUI::InitButton(CButtons* _button, sf::Texture* _idleTexture, sf::Texture* _hoverTexture)
+{
+	_button->SetClickTex(_hoverTexture);
+	_button->SetHoverTex(_hoverTexture);
+	_button->SetIdleTex(_idleTexture);
 }

@@ -41,6 +41,12 @@ public:
 		return false;
 	}
 
+	static inline sf::Texture* CreateTexture()
+	{
+		auto texture = new sf::Texture;
+		return texture;
+	}
+
 	static inline sf::Texture* LoadTexture(sf::Texture* _texture, std::string _filePath, bool _repeated = true)
 	{
 		if (_texture != nullptr)

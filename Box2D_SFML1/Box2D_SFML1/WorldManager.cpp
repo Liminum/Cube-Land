@@ -194,6 +194,7 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		if (*it == '0')
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 		}
 		else if (*it == '~') // -- Water
 		{
@@ -202,30 +203,38 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		else if (*it == 'i') // -- Tree
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 			m_Trees.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Tree, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, 1), "Wall"));
 		}
 		else if (*it == 'o') // -- Grass
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 		}
 		else if (*it == 'p') // -- Path
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 		}
-		else if (*it == '1') // -- Tree
+		else if (*it == 'l') // -- Tree
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 			m_Trees.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Tree, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, 1), "Wall"));
 		}
-		else if (*it == '2') // -- Grass on Grass
+		else if (*it == '?') // -- Grass on Grass
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GrassTexture, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(1, 1), "Event"));
+			SelectFirstFromSheet(m_Grass.back());
 		}
-		else if (*it == '3') // -- Grass On Path
+		else if (*it == 's') // -- Grass On Path
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			SelectRandomTypeFrom3(m_Tiles.back());
 			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(1, 1), "Event"));
+			SelectFirstFromSheet(m_Grass.back());
 		}
 		else if (*it == '^') // -- Rockface
 		{
@@ -234,6 +243,62 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		else if (*it == 'c') // -- Cave Entrance
 		{
 			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_CaveEntrance, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25) , sf::Vector2f(TILESIZE, TILESIZE), "Event"));
+		}
+
+		// Dirt Water Sheets
+		else if (*it == '1') // BL
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(0,200,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '2') // BM
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(100,200,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '3') // BR
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(200, 200,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '4') // ML
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(0,100,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '5') // MM
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(100,100,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '6') // MR
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(200, 100, 100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '7') // TL
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(0,0,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '8') // TM
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(100,0,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
+		}
+		else if (*it == '9') // TR
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->DirtToWaterSheet, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+			m_Tiles.back()->GetShape()->setTextureRect(sf::IntRect(200,0,100,100));
+			m_Tiles.back()->GetShape()->setOrigin(50, 50);
 		}
 
 		if (iteratorX == INISIZE)
@@ -248,6 +313,31 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 
 		it++;
 	}
+}
+
+void WorldManager::SelectRandomTypeFrom3(Tile* _tile)
+{
+	unsigned i = 1 + rand() % 3;
+
+	if (i == 1)
+	{
+		_tile->GetShape()->setTextureRect(sf::IntRect(0, 0, 100, 100));
+	}
+	else if (i == 2)
+	{
+		_tile->GetShape()->setTextureRect(sf::IntRect(100, 0, 100, 100));
+	}
+	else if (i == 3)
+	{
+		_tile->GetShape()->setTextureRect(sf::IntRect(200, 0, 100, 100));
+	}
+	_tile->GetShape()->setOrigin(50, 50);
+}
+
+void WorldManager::SelectFirstFromSheet(Tile* _tile)
+{
+	_tile->GetShape()->setTextureRect(sf::IntRect(0, 0, 100, 100));
+	_tile->GetShape()->setOrigin(50, 50);
 }
 
 void WorldManager::ImportWorldFromINI()

@@ -4,6 +4,7 @@
 
 // Local Includes
 #include "Player.h"
+#include "CButtons.h"
 
 class GUI : public NumptyBehavior
 {
@@ -21,6 +22,8 @@ public:
 
 	void InitBattleUI();
 	void BattleUI(sf::View& _uiView, sf::View& _worldView);
+
+	void InitButton(CButtons* _button, sf::Texture* _idleTexture, sf::Texture* _hoverTexture);
 
 	sf::Font m_Font;
 
@@ -43,5 +46,7 @@ private:
 	sf::Sprite m_HealthBorderSprite;
 
 	sf::Sprite m_Shape;
+
+	std::map<int, CButtons> m_BattleSceneButtons;
 };
 #endif

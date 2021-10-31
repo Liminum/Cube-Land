@@ -62,17 +62,17 @@ public:
 
 	bool bIsinBounds(sf::Vector2f _vMousePosition);
 
-	void SetHoverTex(sf::Texture _newTexture);
-	void SetIdleTex(sf::Texture _newTexture);
-	void SetClickTex(sf::Texture _newTexture);
+	void SetHoverTex(sf::Texture* _newTexture);
+	void SetIdleTex(sf::Texture* _newTexture);
+	void SetClickTex(sf::Texture* _newTexture);
 
 	void SetFontSize(unsigned int _size);
 
-	inline sf::Texture GetHoverText()
+	inline sf::Texture* GetHoverText()
 	{
 		return m_HoverTexture;
 	}
-	inline sf::Texture GetClickText()
+	inline sf::Texture* GetClickText()
 	{
 		return m_ClickTexture;
 	}
@@ -86,9 +86,9 @@ public:
 private:
 	sf::RenderWindow* m_RenderWindow = nullptr;
 
-	sf::Texture m_IdleTexture;
-	sf::Texture m_HoverTexture;
-	sf::Texture m_ClickTexture;
+	sf::Texture* m_IdleTexture;
+	sf::Texture* m_HoverTexture;
+	sf::Texture* m_ClickTexture;
 
 	sf::Font m_Font;
 
