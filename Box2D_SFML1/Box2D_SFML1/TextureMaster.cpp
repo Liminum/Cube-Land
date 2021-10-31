@@ -72,7 +72,7 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "DirtToWaterSheet Texture Loaded!" << std::endl;
 	}
-	if (WaterToDirtSheet->loadFromFile("Resources/Images/Custom Sprites/Water_01.png"))
+	if (WaterToDirtSheet->loadFromFile("Resources/Images/Custom Sprites/Water_Dirt_Sheet.png"))
 	{
 		std::cout << "WaterToDirtSheet Texture Loaded!" << std::endl;
 	}

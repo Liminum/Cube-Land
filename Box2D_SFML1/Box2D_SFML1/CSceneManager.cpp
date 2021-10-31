@@ -167,6 +167,7 @@ void CSceneManager::CleanupGameScenes()
 		pointer = nullptr;
 	}
 	m_GameSceneVector.erase(std::remove(m_GameSceneVector.begin(), m_GameSceneVector.end(), nullptr), m_GameSceneVector.end());
+
 }
 
 void CSceneManager::CleanupMainMenuScenes()

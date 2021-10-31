@@ -1,12 +1,2 @@
-﻿  CButtons.cpp
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(361,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\CButtons.cpp(370,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
+﻿  WorldManager.cpp
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe
