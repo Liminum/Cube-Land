@@ -17,7 +17,6 @@
 
 CButtons::CButtons()
 {
-	m_IdleTexture = new sf::Texture();
 }
 
 /// <summary>
@@ -26,6 +25,9 @@ CButtons::CButtons()
 /// </summary>
 CButtons::CButtons(sf::RenderWindow* _renderWindow)
 {
+	m_IdleTexture = new sf::Texture();
+	m_ClickTexture = new sf::Texture();
+	m_HoverTexture = new sf::Texture();
 	if (m_IdleTexture != nullptr)
 	{
 		// Load Textures And Fonts
@@ -39,8 +41,6 @@ CButtons::CButtons(sf::RenderWindow* _renderWindow)
 		m_ClickTexture->setSmooth(true);
 	}
 	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
-
-	
 
 	// Set Up Font
 	m_tLabel.setFont(m_Font);

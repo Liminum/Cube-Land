@@ -18,6 +18,11 @@ private:
 	void CreateAudioManager();
 	virtual void CleanupAllPointers()override;
 
+	void InitUIView();
+	void InitWorldView();
+
 	sf::Event* m_Event = nullptr;
+	sf::View m_UIView;
+	sf::View m_WorldView;
 };
 

@@ -47,6 +47,8 @@ private:
 
 	sf::Sprite m_Shape;
 
-	std::map<int, CButtons> m_BattleSceneButtons;
+	CButtons m_BattleSceneButton;
+
+	sf::Texture m_BattleSceneRun;
 };
 #endif
