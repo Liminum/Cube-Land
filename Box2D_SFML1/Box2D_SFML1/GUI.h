@@ -47,7 +47,14 @@ private:
 
 	sf::Sprite m_Shape;
 
-	sf::Texture m_BattleSceneRun;
-	CButtons* m_BattleSceneButton = nullptr;
+	std::vector<CButtons*> m_BattleSceneButtons{};
+	std::vector<sf::RectangleShape> m_BattleSceneMenuShapes{};
+
+	sf::Texture m_PlayerPreview;
+
+	void CleanupBattleSceneButtons();
+	void InitCubeBoyUI();
+	void InitBackpackUI();
+	void InitDialogueUI();
 };
 #endif
