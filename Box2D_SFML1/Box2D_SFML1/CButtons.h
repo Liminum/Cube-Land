@@ -40,7 +40,6 @@ public:
 
 	sf::Text m_tLabel;
 
-	CButtons();
 	CButtons(sf::RenderWindow* _renderWindow);
 	virtual ~CButtons();
 
@@ -86,9 +85,9 @@ public:
 private:
 	sf::RenderWindow* m_RenderWindow = nullptr;
 
-	sf::Texture* m_IdleTexture;
-	sf::Texture* m_HoverTexture;
-	sf::Texture* m_ClickTexture;
+	sf::Texture* m_IdleTexture = nullptr;
+	sf::Texture* m_HoverTexture = nullptr;
+	sf::Texture* m_ClickTexture = nullptr;
 
 	sf::Font m_Font;
 

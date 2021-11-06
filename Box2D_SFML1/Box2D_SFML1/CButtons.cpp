@@ -15,10 +15,6 @@
 // Local Includes
 #include "CButtons.h"
 
-CButtons::CButtons()
-{
-}
-
 /// <summary>
 /// Buttons Constructor.
 /// Takes in:	sf::RenderWindow* (Intended To Be The PopOutMenu Render Window).

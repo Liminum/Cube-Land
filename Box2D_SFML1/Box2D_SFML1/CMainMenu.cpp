@@ -68,6 +68,14 @@ void CMainMenu::Update()
     else if (m_bClose)
     {
         m_RenderWindow->close();
+        DeletePointer(m_Play);
+        DeletePointer(m_Options);
+        DeletePointer(m_Exit);
+        m_Play = nullptr;
+        m_Options = nullptr;
+        m_Exit = nullptr;
+        m_Font = nullptr;
+        m_RenderWindow = nullptr;
     }
 }
 

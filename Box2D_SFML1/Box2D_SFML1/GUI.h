@@ -47,8 +47,7 @@ private:
 
 	sf::Sprite m_Shape;
 
-	CButtons m_BattleSceneButton;
-
 	sf::Texture m_BattleSceneRun;
+	CButtons* m_BattleSceneButton = nullptr;
 };
 #endif

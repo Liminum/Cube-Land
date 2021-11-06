@@ -16,6 +16,8 @@ public:
 
 private:
 	void CreateAudioManager();
+	void CreateGUI();
+
 	virtual void CleanupAllPointers()override;
 
 	void InitUIView();

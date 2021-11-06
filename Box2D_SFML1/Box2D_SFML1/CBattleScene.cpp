@@ -21,10 +21,7 @@ void CBattleScene::Start()
 	CreateAudioManager();
 	m_AudioManager->PlayMusic(-1);
 
-	DeletePointer(m_GUI);
-	m_GUI = nullptr;
-	m_GUI = new GUI(m_RenderWindow, m_TextureMaster, m_Font);
-	m_GUI->InitBattleUI();
+	CreateGUI();
 }
 
 void CBattleScene::Update()
@@ -36,7 +33,12 @@ void CBattleScene::PolledUpdate()
 {
 	while (m_RenderWindow->pollEvent(*m_Event))
 	{
-
+		if (m_Event->type == sf::Event::Closed)
+		{
+			m_RenderWindow->close();
+			CleanupAllPointers();
+			return;
+		}
 	}
 }
 
@@ -50,7 +52,6 @@ void CBattleScene::Render()
 
 void CBattleScene::CheckForMARKASDESTROY()
 {
-
 }
 
 void CBattleScene::CreateAudioManager()
@@ -58,6 +59,14 @@ void CBattleScene::CreateAudioManager()
 	NumptyBehavior::DeletePointer(m_AudioManager);
 	m_AudioManager = nullptr;
 	m_AudioManager = new AudioManager;
+}
+
+void CBattleScene::CreateGUI()
+{
+	DeletePointer(m_GUI);
+	m_GUI = nullptr;
+	m_GUI = new GUI(m_RenderWindow, m_TextureMaster, m_Font);
+	m_GUI->InitBattleUI();
 }
 
 void CBattleScene::CleanupAllPointers()
@@ -73,12 +82,14 @@ void CBattleScene::CleanupAllPointers()
 
 void CBattleScene::InitUIView()
 {
+	m_RenderWindow->setView(m_RenderWindow->getDefaultView());
 	m_UIView.setSize((sf::Vector2f)m_RenderWindow->getSize());
 	m_UIView.setCenter(m_RenderWindow->getView().getCenter());
 }
 
 void CBattleScene::InitWorldView()
 {
+	m_RenderWindow->setView(m_RenderWindow->getDefaultView());
 	m_WorldView.setSize((sf::Vector2f)m_RenderWindow->getSize());
 	m_WorldView.setCenter(m_RenderWindow->getView().getCenter());
 }

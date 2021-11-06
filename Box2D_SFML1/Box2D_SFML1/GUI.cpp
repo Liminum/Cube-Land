@@ -13,6 +13,8 @@ GUI::GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster, sf::Fon
 
 GUI::~GUI()
 {
+	DeletePointer(m_BattleSceneButton);
+	m_BattleSceneButton = nullptr;
 	m_RenderWindow = nullptr;
 	m_TextureMaster = nullptr;
 }
@@ -104,16 +106,21 @@ void GUI::TimerUI()
 
 void GUI::InitBattleUI()
 {
-	LoadTexture(&m_BattleSceneRun, "ItemSlot.png");
-	InitButton(&m_BattleSceneButton, &m_BattleSceneRun, &m_BattleSceneRun);
+	DeletePointer(m_BattleSceneButton);
+	m_BattleSceneButton = nullptr;
+	m_BattleSceneButton = new CButtons(m_RenderWindow);
+	m_BattleSceneButton->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y - m_BattleSceneButton->Sprite.getGlobalBounds().width * 4);
 }
 
 void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 {
 	m_RenderWindow->setView(_uiView);
 
-	m_BattleSceneButton.SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 1.5);
-	m_RenderWindow->draw(m_BattleSceneButton.Sprite);
+	if (m_BattleSceneButton != nullptr)
+	{
+		m_BattleSceneButton->Update();
+		m_RenderWindow->draw(m_BattleSceneButton->Sprite);
+	}
 
 	m_RenderWindow->setView(_worldView);
 }
