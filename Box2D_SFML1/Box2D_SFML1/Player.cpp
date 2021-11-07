@@ -10,6 +10,7 @@ Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, AudioManager* _
 
 Player::~Player()
 {
+	WriteCubmonData();
 	WritePlayerData();
 	CleanupCubemon();
 	DestoryShape();
@@ -30,7 +31,7 @@ void Player::Start()
 
 	CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
 
-	AddCubemon(new CThallic(m_RenderWindow, m_World, *m_Body));
+	GrabCubmonData();
 }
 
 void Player::Update(sf::Vector2f _mousepos)
@@ -426,6 +427,74 @@ void Player::WritePlayerData()
 		file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y;
 	}
 	file.close();
+}
+
+void Player::WriteCubmonData()
+{
+	std::ofstream file;
+
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		file.clear();
+		for (auto& cubemon : m_CubemonVector)
+		{
+			file << (int)cubemon->m_CubeType << ",";
+		}
+	}
+	file.close();
+}
+
+void Player::GrabCubmonData()
+{
+	CleanupCubemon();
+	std::ifstream file;
+	std::string currentLine;
+	char m_Type = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(m_Type))
+		{
+			if (m_Type == (int)ICubemon::CUBEMONTYPE::THALLIC + ASCIIOFFSET)
+			{
+				AddCubemon(new CThallic(m_RenderWindow, m_World, *m_Body));
+			}
+		}
+		file.close();
+	}
+}
+
+std::vector<ICubemon::CUBEMONTYPE> Player::ReturnCubemonData()
+{
+	std::ifstream file;
+	std::string currentLine;
+	char m_Type = 0;
+
+	std::vector<ICubemon::CUBEMONTYPE> cubemon{};
+
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(m_Type))
+		{
+			if (m_Type == (int)ICubemon::CUBEMONTYPE::THALLIC + ASCIIOFFSET)
+			{
+				cubemon.push_back(ICubemon::CUBEMONTYPE::THALLIC);
+			}
+		}
+		file.close();
+	}
+
+	return cubemon;
+}
+
+void Player::WriteInventoryData()
+{
+}
+
+void Player::ReadInventoryData()
+{
 }
 
 void Player::BattleTransition()

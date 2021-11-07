@@ -2,6 +2,8 @@
 #ifndef _NumptyBehavior__
 #define _NumptyBehavior__
 
+#define ASCIIOFFSET 48
+
 // Non-Local Includes
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

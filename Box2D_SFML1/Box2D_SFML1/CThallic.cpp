@@ -10,6 +10,8 @@ CThallic::CThallic(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _pl
 
 	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody);
 
+	m_CubeType = CUBEMONTYPE::THALLIC;
+
 	Start();
 }
 
@@ -36,6 +38,7 @@ void CThallic::Start()
 	LoadSpriteTexture(LoadTexture(m_SpriteTexture, "Cubemon/Thallic.png", false), m_Shape);
 	m_Shape->setScale(0.5f, 0.5f);
 	SetOriginToCenter(*m_Shape);
+
 }
 
 void CThallic::Update()

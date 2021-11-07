@@ -17,10 +17,7 @@ public:
 	{
 		UNASSIGNED,
 
-		FIRE = 1,
-		WATER = 2,
-		EARTH = 3,
-		AIR = 4
+		THALLIC = 1,
 	};
 
 	virtual ~ICubemon() { };

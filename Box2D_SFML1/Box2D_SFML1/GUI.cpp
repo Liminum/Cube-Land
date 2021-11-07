@@ -146,6 +146,8 @@ void GUI::CleanupBattleSceneButtons()
 
 void GUI::InitCubeBoyUI()
 {
+	m_CurrentlyHeldCubemons = Player::ReturnCubemonData();
+
 	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
 	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 10);
 

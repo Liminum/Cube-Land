@@ -38,10 +38,20 @@ public:
 	void LateCubemonRender();
 
 	static void ResetPlayerData();
+
+	void WriteCubmonData();
+	void GrabCubmonData();
+	static std::vector<ICubemon::CUBEMONTYPE> ReturnCubemonData();
+
+	void WriteInventoryData();
+	void ReadInventoryData();
+
 private:
 	void Animation(b2Vec2 _movementVector);
+
 	sf::Vector2f GrabPlayerData();
 	void WritePlayerData();
+
 
 	void BattleTransition();
 

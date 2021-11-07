@@ -85,13 +85,13 @@ void Tile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2Bo
 	m_FixtureDef = new b2FixtureDef;
 	if (_sensor)
 	{
+		m_FixtureDef->filter.categoryBits = 0x0002;
 		m_FixtureDef->isSensor = true;
 	}
 	m_FixtureDef->density = 2.0f;
 	m_FixtureDef->friction = 1.0f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
-	m_FixtureDef->filter.categoryBits = 0x0004;
 	m_Body->CreateFixture(m_FixtureDef);
 }
 

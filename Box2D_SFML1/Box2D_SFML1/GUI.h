@@ -50,6 +50,7 @@ private:
 	std::vector<CButtons*> m_BattleSceneButtons{};
 	std::vector<sf::RectangleShape> m_BattleSceneMenuShapes{};
 
+	std::vector<ICubemon::CUBEMONTYPE> m_CurrentlyHeldCubemons{};
 	sf::Texture m_PlayerPreview;
 
 	void CleanupBattleSceneButtons();

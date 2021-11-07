@@ -148,6 +148,8 @@
     <ClCompile Include="CGameScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="ICubemon.cpp" />
+    <ClCompile Include="IItem.cpp" />
+    <ClCompile Include="CPotion.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -171,6 +173,8 @@
     <ClInclude Include="CGameScene.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="ICubemon.h" />
+    <ClInclude Include="IItem.h" />
+    <ClInclude Include="CPotion.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="NumptyBehavior.h" />
     <ClInclude Include="ParticleSystem.h" />
