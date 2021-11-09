@@ -51,11 +51,28 @@ private:
 	std::vector<sf::RectangleShape> m_BattleSceneMenuShapes{};
 
 	std::vector<ICubemon::CUBEMONTYPE> m_CurrentlyHeldCubemons{};
-	sf::Texture m_PlayerPreview;
+
+	sf::Texture m_AttackButton;
+	sf::Texture m_BackpackButton;
+	sf::Texture m_CubeboyButton;
+	sf::Texture m_FleeButton;
+
+	sf::Texture m_AttackButton_Hover;
+	sf::Texture m_BackpackButton_Hover;
+	sf::Texture m_CubeboyButton_Hover;
+	sf::Texture m_FleeButton_Hover;
+	
+	sf::Texture m_FireElement;
+	sf::Texture m_WaterElement;
+	sf::Texture m_EarthElement;
+	sf::Texture m_AirElement;
 
 	void CleanupBattleSceneButtons();
 	void InitCubeBoyUI();
 	void InitBackpackUI();
 	void InitDialogueUI();
+
+	void InitTextures();
+	void SetAllButtonScaling(float _newScale);
 };
 #endif

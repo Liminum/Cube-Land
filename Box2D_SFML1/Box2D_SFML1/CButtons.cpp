@@ -74,11 +74,20 @@ CButtons::~CButtons()
 {
 	// Cleanup Pointer
 	m_RenderWindow = nullptr;
-	DeletePointer(m_IdleTexture);
+	if (!m_HasChangedIdle)
+	{
+		DeletePointer(m_IdleTexture);
+	}
 	m_IdleTexture = nullptr;
-	DeletePointer(m_HoverTexture);
+	if (!m_HasChangedHover)
+	{
+		DeletePointer(m_HoverTexture);
+	}
 	m_HoverTexture = nullptr;
-	DeletePointer(m_ClickTexture);
+	if (!m_HasChangedClick)
+	{
+		DeletePointer(m_ClickTexture);
+	}
 	m_ClickTexture = nullptr;
 }
 
@@ -320,7 +329,10 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 /// <param name="_newTexture"></param>
 void CButtons::SetHoverTex(sf::Texture* _newTexture)
 {
+	NumptyBehavior::DeletePointer(m_HoverTexture);
+	m_HoverTexture = nullptr;
 	m_HoverTexture = _newTexture;
+	m_HasChangedHover = true;
 }
 
 /// <summary>
@@ -330,7 +342,10 @@ void CButtons::SetHoverTex(sf::Texture* _newTexture)
 /// <param name="_newTexture"></param>
 void CButtons::SetIdleTex(sf::Texture* _newTexture)
 {
+	NumptyBehavior::DeletePointer(m_IdleTexture);
+	m_IdleTexture = nullptr;
 	m_IdleTexture = _newTexture;
+	m_HasChangedIdle = true;
 }
 
 /// <summary>
@@ -340,11 +355,15 @@ void CButtons::SetIdleTex(sf::Texture* _newTexture)
 /// <param name="_newTexture"></param>
 void CButtons::SetClickTex(sf::Texture* _newTexture)
 {
+	NumptyBehavior::DeletePointer(m_ClickTexture);
+	m_ClickTexture = nullptr;
 	m_ClickTexture = _newTexture;
+	m_HasChangedClick = true;
 }
 
 void CButtons::SetFontSize(unsigned int _size)
 {
+
 	m_tLabel.setCharacterSize(_size);
 }
 

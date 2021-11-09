@@ -106,8 +106,8 @@ void GUI::TimerUI()
 void GUI::InitBattleUI()
 {
 	InitCubeBoyUI();
-	InitBackpackUI();
-	InitDialogueUI();
+	//InitBackpackUI();
+	//InitDialogueUI();
 }
 
 void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
@@ -148,36 +148,67 @@ void GUI::InitCubeBoyUI()
 {
 	m_CurrentlyHeldCubemons = Player::ReturnCubemonData();
 
-	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 10);
+	InitTextures();
 
 	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 11);
-
+	//m_BattleSceneButtons.back()->Sprite.setOrigin(m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width / 2, m_BattleSceneButtons.back()->Sprite.getGlobalBounds().height / 2);
+	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 120, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 8.5);
+	m_BattleSceneButtons.back()->SetIdleTex(&m_AttackButton);
+	m_BattleSceneButtons.back()->SetHoverTex(&m_AttackButton_Hover);
+	m_BattleSceneButtons.back()->SetClickTex(&m_AttackButton_Hover);
+	m_BattleSceneButtons.back()->Sprite.setScale(0.9, 0.9);
+	
 	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 10);
-
+	//m_BattleSceneButtons.back()->Sprite.setOrigin(m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width / 2, m_BattleSceneButtons.back()->Sprite.getGlobalBounds().height / 2);
+	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 120, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 10.91666666666667);
+	m_BattleSceneButtons.back()->SetIdleTex(&m_BackpackButton);
+	m_BattleSceneButtons.back()->SetHoverTex(&m_BackpackButton_Hover);
+	m_BattleSceneButtons.back()->SetClickTex(&m_BackpackButton_Hover);
+	m_BattleSceneButtons.back()->Sprite.setScale(0.9, 0.9);
+	
 	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 12);
-
+	//m_BattleSceneButtons.back()->Sprite.setOrigin(m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width / 2, m_BattleSceneButtons.back()->Sprite.getGlobalBounds().height / 2);
+	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 120, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 13.36066666666667);
+	m_BattleSceneButtons.back()->SetIdleTex(&m_CubeboyButton);
+	m_BattleSceneButtons.back()->SetHoverTex(&m_CubeboyButton_Hover);
+	m_BattleSceneButtons.back()->SetClickTex(&m_CubeboyButton_Hover);
+	m_BattleSceneButtons.back()->Sprite.setScale(0.9, 0.9);
+	
 	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 13);
-
-	m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
-	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 20, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 14);
+	//m_BattleSceneButtons.back()->Sprite.setOrigin(m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width / 2, m_BattleSceneButtons.back()->Sprite.getGlobalBounds().height / 2);
+	m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x - m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 5 - 120, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * 15.75);
+	m_BattleSceneButtons.back()->SetIdleTex(&m_FleeButton);
+	m_BattleSceneButtons.back()->SetHoverTex(&m_FleeButton_Hover);
+	m_BattleSceneButtons.back()->SetClickTex(&m_FleeButton_Hover);
+	m_BattleSceneButtons.back()->Sprite.setScale(0.9, 0.9);
 
 	sf::RectangleShape CubeBoyBackgrounds;
-	CubeBoyBackgrounds.setSize(sf::Vector2f(400, 200));
-	CubeBoyBackgrounds.setFillColor(sf::Color::Red);
-	CubeBoyBackgrounds.setOrigin(200, 100);
+	CubeBoyBackgrounds.setSize(sf::Vector2f(800, 300));
+	CubeBoyBackgrounds.setFillColor(sf::Color(128,128,128));
+	CubeBoyBackgrounds.setOrigin(400, 150);
 	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 370);
 	m_BattleSceneMenuShapes.push_back(CubeBoyBackgrounds);
 
-	CubeBoyBackgrounds.setSize(sf::Vector2f(300, 150));
-	CubeBoyBackgrounds.setFillColor(sf::Color(128, 128, 128));
-	CubeBoyBackgrounds.setOrigin(150, 150 / 2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 20, m_RenderWindow->getView().getCenter().y + 370);
+	CubeBoyBackgrounds.setSize(sf::Vector2f(470, 275));
+	CubeBoyBackgrounds.setFillColor(sf::Color(100, 100, 100));
+	CubeBoyBackgrounds.setOrigin(100, 275/2);
+	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 370);
 	m_BattleSceneMenuShapes.push_back(CubeBoyBackgrounds);
+
+	CubeBoyBackgrounds.setSize(sf::Vector2f(110, 110));
+	CubeBoyBackgrounds.setFillColor(sf::Color::Magenta);
+	CubeBoyBackgrounds.setOrigin(55, 55);
+	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	m_BattleSceneMenuShapes.push_back(CubeBoyBackgrounds);
+
+	CubeBoyBackgrounds.setSize(sf::Vector2f(100, 100));
+	CubeBoyBackgrounds.setFillColor(sf::Color::White);
+	CubeBoyBackgrounds.setOrigin(50, 50);
+	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	CubeBoyBackgrounds.setTexture(&m_FireElement);
+	m_BattleSceneMenuShapes.push_back(CubeBoyBackgrounds);
+
+
 }
 
 void GUI::InitBackpackUI()
@@ -189,7 +220,6 @@ void GUI::InitBackpackUI()
 			m_BattleSceneButtons.push_back(new CButtons(m_RenderWindow));
 			m_BattleSceneButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x + j, m_RenderWindow->getView().getCenter().y + m_BattleSceneButtons.back()->Sprite.getGlobalBounds().width * i);
 		}
-		
 	}
 
 	sf::RectangleShape BackpackBackground;
@@ -209,14 +239,6 @@ void GUI::InitBackpackUI()
 	BackpackBackground.setFillColor(sf::Color(100, 100, 100));
 	BackpackBackground.setOrigin(370 / 2, 170 / 2);
 	BackpackBackground.setPosition(m_RenderWindow->getView().getCenter().x + 450, m_RenderWindow->getView().getCenter().y + 370);
-	m_BattleSceneMenuShapes.push_back(BackpackBackground);
-
-	BackpackBackground.setSize(sf::Vector2f(180 / 2, 160));
-	m_PlayerPreview.loadFromFile("Resources/Images/PlayerPreview.png");
-	BackpackBackground.setTexture(&m_PlayerPreview, true);
-	BackpackBackground.setFillColor(sf::Color(230, 230, 230));
-	BackpackBackground.setOrigin(180 / 4, 160 / 2);
-	BackpackBackground.setPosition(m_RenderWindow->getView().getCenter().x + 450 - 170 / 2 - 45, m_RenderWindow->getView().getCenter().y + 370);
 	m_BattleSceneMenuShapes.push_back(BackpackBackground);
 }
 
@@ -252,4 +274,31 @@ void GUI::InitDialogueUI()
 	DialogueBackground.setOrigin(5, 80);
 	DialogueBackground.setPosition(m_RenderWindow->getView().getCenter().x - 450 - 147.5f, m_RenderWindow->getView().getCenter().y + 370);
 	m_BattleSceneMenuShapes.push_back(DialogueBackground);
+}
+
+void GUI::InitTextures()
+{
+	LoadTexture(&m_AttackButton, "GUI/Attack.png", false);
+	LoadTexture(&m_BackpackButton, "GUI/Backpack.png", false);
+	LoadTexture(&m_CubeboyButton, "GUI/CubeBoy.png", false);
+	LoadTexture(&m_FleeButton, "GUI/Flee.png", false);
+
+	LoadTexture(&m_AttackButton_Hover, "GUI/Attack_Hover.png", false);
+	LoadTexture(&m_BackpackButton_Hover, "GUI/Backpack_Hover.png", false);
+	LoadTexture(&m_CubeboyButton_Hover, "GUI/CubeBoy_Hover.png", false);
+	LoadTexture(&m_FleeButton_Hover, "GUI/Flee_Hover.png", false);
+
+	LoadTexture(&m_FireElement, "GUI/Fire.png", false);
+	LoadTexture(&m_WaterElement, "GUI/Water.png", false);
+	LoadTexture(&m_EarthElement, "GUI/Earth.png", false);
+	LoadTexture(&m_AirElement, "GUI/Air.png", false);
+}
+
+void GUI::SetAllButtonScaling(float _newScale)
+{
+	for (auto& button : m_BattleSceneButtons)
+	{
+		button->Sprite.setScale(_newScale, _newScale);
+		button->Sprite.setOrigin(button->Sprite.getGlobalBounds().height / 2, button->Sprite.getGlobalBounds().width / 2);
+	}
 }

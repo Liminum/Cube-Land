@@ -32,6 +32,10 @@ public:
 	bool m_bIsPressed = false;
 	bool m_bIsClicked = false;
 
+	bool m_HasChangedIdle = false;
+	bool m_HasChangedHover = false;
+	bool m_HasChangedClick = false;
+
 	std::string m_Label;
 	std::string m_OnClickLabel;
 	std::string m_HoverLabel;
