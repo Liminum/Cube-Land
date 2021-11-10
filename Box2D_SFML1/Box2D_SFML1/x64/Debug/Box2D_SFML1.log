@@ -6,13 +6,44 @@ C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(84,72)
           [
               T=int
           ]
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(155,196): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(159,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(163,196): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(167,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(171,196): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(175,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(179,196): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(183,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(218,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(215,187): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(220,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(225,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(230,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(293,192): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(298,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(303,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\Box2D_SFML1\GUI.cpp(308,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cube-Land\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

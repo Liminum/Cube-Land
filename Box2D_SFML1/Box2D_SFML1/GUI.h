@@ -52,6 +52,9 @@ private:
 
 	std::vector<ICubemon::CUBEMONTYPE> m_CurrentlyHeldCubemons{};
 
+	std::vector<CButtons*> m_BattleSceneAttackButtons{};
+	std::vector<sf::RectangleShape> m_BattleSceneAttackShapes{};
+
 	sf::Texture m_AttackButton;
 	sf::Texture m_BackpackButton;
 	sf::Texture m_CubeboyButton;
@@ -67,12 +70,30 @@ private:
 	sf::Texture m_EarthElement;
 	sf::Texture m_AirElement;
 
+	sf::Texture m_AttackFire;
+	sf::Texture m_AttackWater;
+	sf::Texture m_AttackEarth;
+	sf::Texture m_AttackAir;
+
+	sf::Texture m_AttackFire_Hover;
+	sf::Texture m_AttackWater_Hover;
+	sf::Texture m_AttackEarth_Hover;
+	sf::Texture m_AttackAir_Hover;
+
+	sf::Texture m_FireDeminishAttack;
+	sf::Texture m_FireBurnAttack;
+	sf::Texture m_FireEmberAttack;
+	sf::Texture m_FireIncinerateAttack;
+
 	void CleanupBattleSceneButtons();
 	void InitCubeBoyUI();
-	void InitBackpackUI();
-	void InitDialogueUI();
+	void InitCubeBoyMenuButtons();
+	void InitCubeBoyAttackUI();
+	void InitCubeBoyAttackButtons();
 
 	void InitTextures();
 	void SetAllButtonScaling(float _newScale);
+
+	void InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale, sf::Texture* _idleTexture, sf::Texture* _hoverTexture, std::vector<CButtons*> _vector);
 };
 #endif
